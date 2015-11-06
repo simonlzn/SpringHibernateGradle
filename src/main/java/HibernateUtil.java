@@ -1,4 +1,4 @@
-package main.java.HibernateConfig;
+package main.java;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -24,4 +24,4 @@ public class HibernateUtil {
     public static SessionFactory getSessionFactory() {  
         return sessionFactory;  
     }  
-}
+}  
