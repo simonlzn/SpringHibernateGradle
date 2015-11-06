@@ -19,6 +19,6 @@
 	<property name="hibernate.hbm2ddl.auto">update</property>
 	<property name="connection.username">root</property>
 	<property name="connection.password">sphic</property>
-	<mapping class="main.java.Patient" />
+	<mapping class="main.java.Model.Patient" />
 </session-factory>
 </hibernate-configuration>

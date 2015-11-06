@@ -1,4 +1,7 @@
-package main.java;
+package main.java.Controller;
+import main.java.HibernateConfig.HibernateUtil;
+import main.java.Model.Patient;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
