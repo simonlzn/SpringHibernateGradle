@@ -1,4 +1,6 @@
 package main.java.Controller;
+import javax.transaction.Transactional;
+
 import main.java.HibernateConfig.HibernateUtil;
 import main.java.Model.Patient;
 
@@ -12,16 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/patient")
 public class PatientController {
 	private SessionFactory sf = HibernateUtil.getSessionFactory();
-	
+	private Session session = sf.openSession();
 	
     public PatientController() {
 	}
 
 	@RequestMapping("/info")
     public Patient Info(@RequestParam(value="id", defaultValue="1") int id) {
-		Session session = sf.openSession();
+		
 		Patient patient = (Patient)session.get(Patient.class, id);
-		session.close();
+		
 		
 		if (patient == null) {
 			return new Patient();			

@@ -1,8 +1,14 @@
 package main.java.Model;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Proxy;
 
 @Entity
 @Table(name="patient")
@@ -17,9 +23,21 @@ public class Patient {
     private String address;
 	@Column(name="phone")
     private String phone;
+	
+	@OneToMany(targetEntity = Study.class)
+	@JoinColumn(name="patient_id")
+	private List<Study> studies;
 
     public String getName() {
 		return name;
+	}
+
+	public List<Study> getStudy() {
+		return studies;
+	}
+
+	public void setStudy(List<Study> studies) {
+		this.studies = studies;
 	}
 
 	public void setId(int id) {
@@ -49,11 +67,13 @@ public class Patient {
 		return phone;
 	}
 
-    public Patient(int id, String name, String address, String phone) {		
+	public Patient(int id, String name, String address, String phone,
+			List<Study> studies) {		
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
+		this.studies = studies;
 	}
 
 	public long getId() {
