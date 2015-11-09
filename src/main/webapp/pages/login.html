@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+
+<meta name="content-type" content="text/html; charset=ISO-8859-1">
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+
+
+</head>
+
+<body style="background-color:lightblue">
+	
+
+	<table style="margin: 200px auto; width:500px;font-size:24px;">
+	
+		<tr >
+			<td>Username:</td>
+			<td><input style="height: 24px; width:300px" type="text" name="login" id="username"></td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input style="height: 24px; width:300px" type="password" name="password" id="password"></td>
+		</tr>
+		<tr>
+			<td colspan=2><input style="margin: 10px auto; height:30px; width:100px; display:block;" id="submit" type="button" value="submit" /><div id="loginMessage" style="display:none;color:red"></div></td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+		$('#submit').on('click', function() {
+			$.ajax({
+				url : '/auth/login',
+				type : 'POST',
+				data : {
+					'username' : $('#username').val(),
+					'password' : $('#password').val()
+				},
+				success : function(ret) {
+					$('#loginMessage').show();
+					if (ret)
+						$('#loginMessage').text('success');
+					else
+						$('#loginMessage').text('Your credential is wrong');
+				}
+			})
+		})
+	</script>
+</body>
+</html>
