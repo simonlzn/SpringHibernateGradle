@@ -22,6 +22,9 @@ public class AutheticationController {
 		
 		Session session = HibernateUtil.currentSession();
 		Criteria cr = session.createCriteria(Account.class).add(Restrictions.eq("username", username));
+		if(cr.list().size()== 0)
+			return false;
+		
 		Account account = (Account) cr.list().get(0);		
 		String hashedPassowrd = hash(password);
 		

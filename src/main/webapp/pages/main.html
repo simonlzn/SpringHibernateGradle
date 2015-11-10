@@ -46,16 +46,31 @@
 	</table>
 
 	<table id="study_table" style="display:none" cellpadding="10">
-		<tr><td><h2>Study</h2></td></tr>
+		<tr>
+			<td><h2>Study</h2></td>
+		</tr>
 		<tr>
 			<td>id</td>
 			<td>patient id</td>
 			<td>comments</td>
 			<td>physician</td>
 			<td>modalities</td>
-			
-		</tr>
 
+		</tr>
+	</table>
+	
+	<table id="series_table" style="display:none" cellpadding="10">
+		<tr>
+			<td><h2>Series</h2></td>
+		</tr>
+		<tr>
+			<td>id</td>
+			<td>study id</td>			
+			<td>institution</td>
+			<td>comments</td>
+			<td>modality</td>
+			<td>time</td>
+		</tr>
 	</table>
 
 	<script type="text/javascript">
@@ -77,6 +92,18 @@
 					for(var i=0; i<ret.studies.length;i++){
 						$('#study_table').append('<tr>			<td name="study_id">'+ret.studies[i].studyId+'</td>			<td name="patient_id">'+ret.studies[i].patientId+'</td>			<td name="comments">'+ret.studies[i].comments+'</td>			<td name="physician">'+ret.studies[i].physician+'</td>			<td name="modalities">'+ret.studies[i].modalities+'</td>		</tr>')
 					}
+					
+					$('[name="study_id"]').parent().on('click', function(){
+						$.ajax({
+							url : '/study/info',
+							success : function(ret) {
+								$('#series_table').show();
+								for(var i=0; i<ret.series.length;i++){
+									$('#series_table').append('<tr>		<td name="series_id">'+ret.series[i].seriesId+'</td>		<td name="study_id">'+ret.series[i].studyId+'</td>			<td name="patient_id">'+ret.series[i].institution+'</td>			<td name="comments">'+ret.series[i].comments+'</td>			<td name="physician">'+ret.series[i].modality+'</td>			<td name="modalities">'+ret.series[i].time+'</td>		</tr>')
+								}
+							}
+						});
+					})
 				}
 			})
 		})
