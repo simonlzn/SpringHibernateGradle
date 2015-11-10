@@ -37,8 +37,9 @@
 				},
 				success : function(ret) {
 					$('#loginMessage').show();
-					if (ret)
-						$('#loginMessage').text('success');
+					if (ret){
+						window.location = "/home/main"
+					}					
 					else
 						$('#loginMessage').text('Your credential is wrong');
 				}

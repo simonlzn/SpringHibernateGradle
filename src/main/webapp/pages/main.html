@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Patient</title>
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+
+<body>
+	<h2>Patient</h2>
+	<div id="patient">San Zhang</div>
+	<table id="pt" style="display:none">
+		<tr>
+			<td>id</td>
+			<td id="id"></td>
+		</tr>
+
+		<tr>
+			<td>cname</td>
+			<td id="cname"></td>
+		</tr>
+
+		<tr>
+			<td>name</td>
+			<td id="name"></td>
+		</tr>
+
+		<tr>
+			<td>address</td>
+			<td id="address"></td>
+		</tr>
+
+		<tr>
+			<td>phone</td>
+			<td id="phone"></td>
+		</tr>
+
+		<tr>
+			<td>age</td>
+			<td id="age"></td>
+		</tr>
+
+		<tr>
+			<td>birthdate</td>
+			<td id="birthdate"></td>
+		</tr>
+	</table>
+
+	<table id="study_table" style="display:none" cellpadding="10">
+		<tr><td><h2>Study</h2></td></tr>
+		<tr>
+			<td>id</td>
+			<td>patient id</td>
+			<td>comments</td>
+			<td>physician</td>
+			<td>modalities</td>
+			
+		</tr>
+
+	</table>
+
+	<script type="text/javascript">
+		$('#patient').on('click', function() {
+			$('#pt').show();
+			$('#study_table').show();
+
+			$.ajax({
+				url : '/patient/info?id=1',
+				success : function(ret) {
+					$('#id').text(ret.id);
+					$('#name').text(ret.name);
+					$('#cname').text(ret.c_name);
+					$('#address').text(ret.address);
+					$('#phone').text(ret.phone);
+					$('#age').text(ret.age);
+					$('#birthdate').text(ret.birthdate);
+					
+					for(var i=0; i<ret.studies.length;i++){
+						$('#study_table').append('<tr>			<td name="study_id">'+ret.studies[i].studyId+'</td>			<td name="patient_id">'+ret.studies[i].patientId+'</td>			<td name="comments">'+ret.studies[i].comments+'</td>			<td name="physician">'+ret.studies[i].physician+'</td>			<td name="modalities">'+ret.studies[i].modalities+'</td>		</tr>')
+					}
+				}
+			})
+		})
+	</script>
+</body>
+</html>
