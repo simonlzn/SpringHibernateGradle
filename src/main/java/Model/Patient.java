@@ -1,4 +1,6 @@
 package main.java.Model;
+
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,36 +10,82 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Proxy;
-
 @Entity
-@Table(name="patient")
+@Table(name = "patient")
 public class Patient {
 
 	@Id
-	@Column(name="id")
-    private int id;
-	@Column(name="name")
-    private String name;
-	@Column(name="address")
-    private String address;
-	@Column(name="phone")
-    private String phone;
+	@Column(name = "id")
+	private int id;
 	
-	@OneToMany(targetEntity = Study.class)
-	@JoinColumn(name="patient_id")
-	private List<Study> studies;
+	@Column(name = "name")
+	private String name;
+	
+	@Column(name = "c_name")
+	private String c_name;
+	
+	@Column(name = "address")
+	private String address;
+	
+	@Column(name = "phone")
+	private String phone;
+	
+	@Column(name = "age")
+	private int age;
+	
+	@Column(name = "birthdate")
+	private Date birthdate;
 
-    public String getName() {
-		return name;
+	@OneToMany(targetEntity = Study.class)
+	@JoinColumn(name = "patient_id")
+	private List<Study> studies;
+	
+	public Patient(int id, String name, String c_name, String address,
+			String phone, int age, Date birthdate, List<Study> studies) {
+		this.id = id;
+		this.name = name;
+		this.c_name = c_name;
+		this.address = address;
+		this.phone = phone;
+		this.age = age;
+		this.birthdate = birthdate;
+		this.studies = studies;
 	}
 
-	public List<Study> getStudy() {
+	public String getC_name() {
+		return c_name;
+	}
+
+	public void setC_name(String c_name) {
+		this.c_name = c_name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public List<Study> getStudies() {
 		return studies;
 	}
 
-	public void setStudy(List<Study> studies) {
+	public void setStudies(List<Study> studies) {
 		this.studies = studies;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void setId(int id) {
@@ -52,7 +100,7 @@ public class Patient {
 		this.address = address;
 	}
 
-	public Patient() {		
+	public Patient() {
 	}
 
 	public void setPhone(String phone) {
@@ -67,16 +115,7 @@ public class Patient {
 		return phone;
 	}
 
-	public Patient(int id, String name, String address, String phone,
-			List<Study> studies) {		
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.phone = phone;
-		this.studies = studies;
-	}
-
 	public long getId() {
-        return id;
-    }
+		return id;
+	}
 }
