@@ -1,8 +1,11 @@
 package main.java.Controller;
 
 import java.security.MessageDigest;
+
 import main.java.HibernateConfig.HibernateUtil;
 import main.java.Model.Account;
+import main.java.util.Hash;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -26,7 +29,7 @@ public class AutheticationController {
 			return false;
 		
 		Account account = (Account) cr.list().get(0);		
-		String hashedPassowrd = hash(password);
+		String hashedPassowrd = Hash.SHA256(password);
 		
 		if (username.equals("admin") && hashedPassowrd.equals(account.getPassword()))
 			return true;
@@ -35,22 +38,5 @@ public class AutheticationController {
 
 	}
 
-	private String hash(String password) {
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-256");
-			md.update(password.getBytes("UTF-8"));
-		} catch (Exception e) { 
-			e.printStackTrace();
-		} 
-		byte[] digest = md.digest();
-		StringBuffer hexString = new StringBuffer();
-
-        for (int i = 0; i < digest.length; i++) {
-            String hex = Integer.toHexString(0xff & digest[i]);
-            if(hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-		return hexString.toString();
-	}
+	
 }
