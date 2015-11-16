@@ -2,13 +2,36 @@
 <html>
 <head>
 <title>Patient</title>
-<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+<script src="/js/jquery-1.9.0.min.js"></script>
 </head>
 
 <body>
 	<h2>Patient</h2>
 	<div id="patient">San Zhang</div>
-	<table id="pt" style="display:none">
+	<div id="profile"><input type="button" value="history" /></div>
+	<br>
+	<table id="profileTable" style="display:none" cellpadding="10">
+		<tr>
+			<td>patient_id</td>
+		
+			<td>step</td>
+	
+			<td>staff_type</td>
+	
+			<td>staff</td>
+		
+			<td>start_date</td>
+		
+			<td>end_date</td>
+		
+			<td>description</td>
+		</tr>
+	</table>
+	
+	<table id="pt" style="display:none; margin-left : 10px">
+		<tr>
+			<td><h2>Profile</h2></td>
+		</tr>
 		<tr>
 			<td>id</td>
 			<td id="id"></td>
@@ -87,7 +110,7 @@
 					$('#address').text(ret.address);
 					$('#phone').text(ret.phone);
 					$('#age').text(ret.age);
-					$('#birthdate').text(ret.birthdate);
+					$('#birthdate').text(new Date(ret.birthdate).toLocaleDateString());
 					
 					for(var i=0; i<ret.studies.length;i++){
 						$('#study_table').append('<tr>			<td name="study_id">'+ret.studies[i].studyId+'</td>			<td name="patient_id">'+ret.studies[i].patientId+'</td>			<td name="comments">'+ret.studies[i].comments+'</td>			<td name="physician">'+ret.studies[i].physician+'</td>			<td name="modalities">'+ret.studies[i].modalities+'</td>		</tr>')
@@ -99,11 +122,23 @@
 							success : function(ret) {
 								$('#series_table').show();
 								for(var i=0; i<ret.series.length;i++){
-									$('#series_table').append('<tr>		<td name="series_id">'+ret.series[i].seriesId+'</td>		<td name="study_id">'+ret.series[i].studyId+'</td>			<td name="patient_id">'+ret.series[i].institution+'</td>			<td name="comments">'+ret.series[i].comments+'</td>			<td name="physician">'+ret.series[i].modality+'</td>			<td name="modalities">'+ret.series[i].time+'</td>		</tr>')
+									$('#series_table').append('<tr>		<td name="series_id">'+ret.series[i].seriesId+'</td>		<td name="study_id">'+ret.series[i].studyId+'</td>			<td name="patient_id">'+ret.series[i].institution+'</td>			<td name="comments">'+ret.series[i].comments+'</td>			<td name="physician">'+ret.series[i].modality+'</td>			<td name="modalities">'+new Date(ret.series[i].time).toLocaleDateString()+'</td>		</tr>')
 								}
 							}
 						});
 					})
+				}
+			})
+		})
+		
+		$('#profile').on('click', function() {
+		$.ajax({
+				url : '/profile/info?id=1',
+				success : function(ret) {
+					$('#profileTable').show();
+					for(var i=0; i<ret.length;i++){
+						$('#profileTable').append('<tr>		<td name="patient_id">'+ret[i].patientId+'</td>		<td name="step">'+ret[i].step+'</td>			<td name="staff_type">'+ret[i].staffType+'</td>			<td name="staff">'+ret[i].staff+'</td>			<td name="start_date">'+new Date(ret[i].startDate).toLocaleDateString()+'</td>			<td name="end_date">'+new Date(ret[i].endDate).toLocaleDateString()+'</td>		<td name="description">'+ret[i].description+'</td></tr>')
+					}
 				}
 			})
 		})

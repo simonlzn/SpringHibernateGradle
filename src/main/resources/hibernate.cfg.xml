@@ -23,5 +23,6 @@
 	<mapping class="main.java.Model.Study" />
 	<mapping class="main.java.Model.Series" />
 	<mapping class="main.java.Model.Account" />
+	<mapping class="main.java.Model.Profile" />
 </session-factory>
 </hibernate-configuration>
