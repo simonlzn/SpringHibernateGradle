@@ -10,7 +10,7 @@ import com.rabbitmq.client.ConnectionFactory;
 public class MessagingQueue {
 	private final static String QUEUE_NAME = "queue2";
 
-	public void Send() {
+	public void Send(String func) {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("localhost");
@@ -20,7 +20,7 @@ public class MessagingQueue {
 			Channel channel = connection.createChannel();
 
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-			String message = "test";
+			String message = func;
 			channel.basicPublish("", QUEUE_NAME, null,
 					message.getBytes("UTF-8"));
 			System.out.println(" [x] Sent '" + message + "' to queue 2");

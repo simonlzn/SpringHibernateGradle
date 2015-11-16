@@ -16,9 +16,9 @@ public class ITKCommunicationController {
 	}
 
 	@RequestMapping("/call")
-	public void Info() {
+	public void Info(@RequestParam(value = "func", defaultValue = "")String func) {
 		MessagingQueue m = new MessagingQueue();
-		m.Send();
+		m.Send(func);
 	}
 }
 
