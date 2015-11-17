@@ -16,6 +16,7 @@ public class MessageQueue {
 
 	public String Recv() {
 		String ret = (String) template.receiveAndConvert(RabbitMQConfig.QUEUE_NAME);
+		System.out.println("message " + ret + " received");
 		return ret;
 	}
 
