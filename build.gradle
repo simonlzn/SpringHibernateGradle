@@ -30,7 +30,7 @@ dependencies {
     compile 'org.javassist:javassist:3.15.0-GA'
     compile 'mysql:mysql-connector-java:5.1.31'
     compile 'commons-dbcp:commons-dbcp:1.4'  
-    compile 'com.rabbitmq:amqp-client:3.5.5'
+    compile 'org.springframework.amqp:spring-rabbit:1.5.1.RELEASE'
 	//compile("org.springframework.boot:spring-boot-starter-security")
     testCompile("junit:junit")
 }
