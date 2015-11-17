@@ -1,16 +1,9 @@
-package main.java.Controller;
+package org.sphic.Controller;
 
-import java.util.List;
+import org.sphic.HibernateConfig.HibernateUtil;
+import org.sphic.Model.Study;
 
-import main.java.HibernateConfig.HibernateUtil;
-import main.java.Model.Account;
-import main.java.Model.Patient;
-import main.java.Model.Series;
-import main.java.Model.Study;
-
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

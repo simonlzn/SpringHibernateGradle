@@ -1,4 +1,4 @@
-package main.java.HibernateConfig;
+package org.sphic.HibernateConfig;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

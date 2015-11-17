@@ -1,10 +1,10 @@
-package main.java.Controller;
+package org.sphic.Controller;
 
 import java.security.MessageDigest;
 
-import main.java.HibernateConfig.HibernateUtil;
-import main.java.Model.Account;
-import main.java.util.Hash;
+import org.sphic.HibernateConfig.HibernateUtil;
+import org.sphic.Model.Account;
+import org.sphic.util.Hash;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;

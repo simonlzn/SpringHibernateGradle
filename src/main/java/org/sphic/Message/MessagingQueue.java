@@ -1,4 +1,4 @@
-package main.java.Message;
+package org.sphic.Message;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

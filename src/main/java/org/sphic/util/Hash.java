@@ -1,4 +1,4 @@
-package main.java.util;
+package org.sphic.util;
 
 import java.security.MessageDigest;
 

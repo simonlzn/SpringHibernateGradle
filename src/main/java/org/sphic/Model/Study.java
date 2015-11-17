@@ -1,4 +1,4 @@
-package main.java.Model;
+package org.sphic.Model;
 
 import java.util.Date;
 import java.util.List;

@@ -1,11 +1,11 @@
-package main.java.Controller;
+package org.sphic.Controller;
 
 import java.util.List;
 
-import main.java.HibernateConfig.HibernateUtil;
-import main.java.Model.Account;
-import main.java.Model.Patient;
-import main.java.Model.Profile;
+import org.sphic.HibernateConfig.HibernateUtil;
+import org.sphic.Model.Account;
+import org.sphic.Model.Patient;
+import org.sphic.Model.Profile;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;

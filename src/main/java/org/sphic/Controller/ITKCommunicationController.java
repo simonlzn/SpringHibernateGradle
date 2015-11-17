@@ -1,8 +1,8 @@
-package main.java.Controller;
+package org.sphic.Controller;
 
-import main.java.HibernateConfig.HibernateUtil;
-import main.java.Message.MessagingQueue;
-import main.java.Model.Patient;
+import org.sphic.HibernateConfig.HibernateUtil;
+import org.sphic.Message.MessagingQueue;
+import org.sphic.Model.Patient;
 
 import org.hibernate.Session;
 import org.springframework.web.bind.annotation.RequestMapping;
