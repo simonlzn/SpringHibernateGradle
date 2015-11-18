@@ -10,9 +10,11 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan("org.sphic")
 public class RabbitMQConfig {
 	public final static String QUEUE_NAME = "queue1";
 	
@@ -51,13 +53,13 @@ public class RabbitMQConfig {
 		return container;
 	}
 
-    @Bean
-    Receiver receiver() {
-        return new Receiver();
-    }
-
 	@Bean
-	MessageListenerAdapter listenerAdapter(Receiver receiver) {
-		return new MessageListenerAdapter(receiver, "receiveMessage");
+	MessageListenerAdapter listenerAdapter(MessageQueue messageQueue) {
+		return new MessageListenerAdapter(messageQueue, "Recv");
 	}
+
+//    @Bean
+//    MessageQueue messageQueue()    {
+//        return new MessageQueue();
+//    }
 }

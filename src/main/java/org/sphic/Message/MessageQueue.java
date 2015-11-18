@@ -1,38 +1,32 @@
 package org.sphic.Message;
 
-import org.springframework.amqp.core.AmqpAdmin;
+import org.sphic.util.PubSub;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+
+@Component
 public class MessageQueue {
 
-	private ConnectionFactory connectionFactory = new CachingConnectionFactory();
+	private AmqpTemplate template;
 
-	private AmqpAdmin admin = new RabbitAdmin(connectionFactory);
-	private AmqpTemplate template = new RabbitTemplate(connectionFactory);
-	private ApplicationContext context = new AnnotationConfigApplicationContext(
-			RabbitMQConfig.class);
-//	private AmqpTemplate template = context.getBean(AmqpTemplate.class);
-
-	public MessageQueue () {
-//		admin.declareQueue(new Queue("queue1"));
-//		admin.declareQueue(new Queue("queue3"));
+	@Autowired
+	public MessageQueue(AmqpTemplate template){
+		this.template = template;
 	}
+
 	public void Send(String message) {
 		template.convertAndSend("queue3", message);
 	}
 
-	public String Recv() {
-		String ret = (String) template
-				.receiveAndConvert(RabbitMQConfig.QUEUE_NAME);
-		System.out.println("message " + ret + " received");
-		return ret;
+	public void Recv(byte[] message) throws UnsupportedEncodingException {
+		String messageString = new String(message, "UTF-8");
+		System.out.println("Received <" + messageString + ">");
+		PubSub.Publish("rabbitmq", messageString);
 	}
 
 }
