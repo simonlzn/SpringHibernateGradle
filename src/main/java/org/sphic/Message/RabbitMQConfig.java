@@ -1,9 +1,7 @@
 package org.sphic.Message;
 
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -16,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-	public final static String QUEUE_NAME = "queue2";
+	public final static String QUEUE_NAME = "queue1";
 	
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -37,16 +35,29 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue queue() {
-       return new Queue(QUEUE_NAME);
+       return new Queue(QUEUE_NAME, false);
     }
     
     @Bean
     public TopicExchange exchange() {
        return new TopicExchange("");
     }
-    
+    @Bean
+	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+		container.setConnectionFactory(connectionFactory);
+		container.setQueueNames(QUEUE_NAME);
+		container.setMessageListener(listenerAdapter);
+		return container;
+	}
+
+    @Bean
+    Receiver receiver() {
+        return new Receiver();
+    }
+
 	@Bean
-	Binding binding(Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with(QUEUE_NAME);
-	}	
+	MessageListenerAdapter listenerAdapter(Receiver receiver) {
+		return new MessageListenerAdapter(receiver, "receiveMessage");
+	}
 }

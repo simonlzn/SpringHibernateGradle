@@ -16,13 +16,13 @@ public class MessageQueue {
 
 	private AmqpAdmin admin = new RabbitAdmin(connectionFactory);
 	private AmqpTemplate template = new RabbitTemplate(connectionFactory);
-//	private ApplicationContext context = new AnnotationConfigApplicationContext(
-//			RabbitMQConfig.class);
+	private ApplicationContext context = new AnnotationConfigApplicationContext(
+			RabbitMQConfig.class);
 //	private AmqpTemplate template = context.getBean(AmqpTemplate.class);
 
 	public MessageQueue () {
-		admin.declareQueue(new Queue("queue1"));
-		admin.declareQueue(new Queue("queue3"));
+//		admin.declareQueue(new Queue("queue1"));
+//		admin.declareQueue(new Queue("queue3"));
 	}
 	public void Send(String message) {
 		template.convertAndSend("queue3", message);
