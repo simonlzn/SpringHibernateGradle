@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("org.sphic")
 public class RabbitMQConfig {
-	public final static String QUEUE_NAME = "queue1";
 	
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -36,11 +35,6 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue queue() {
-       return new Queue(QUEUE_NAME, false);
-    }
-    
-    @Bean
     public TopicExchange exchange() {
        return new TopicExchange("");
     }
@@ -48,7 +42,7 @@ public class RabbitMQConfig {
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(QUEUE_NAME);
+		container.setQueueNames("queue1", "queue2");
 		container.setMessageListener(listenerAdapter);
 		return container;
 	}
@@ -57,9 +51,4 @@ public class RabbitMQConfig {
 	MessageListenerAdapter listenerAdapter(MessageQueue messageQueue) {
 		return new MessageListenerAdapter(messageQueue, "Recv");
 	}
-
-//    @Bean
-//    MessageQueue messageQueue()    {
-//        return new MessageQueue();
-//    }
 }

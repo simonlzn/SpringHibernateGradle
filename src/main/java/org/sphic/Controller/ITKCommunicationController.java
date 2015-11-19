@@ -1,5 +1,7 @@
 package org.sphic.Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sphic.Message.MessageQueue;
 import org.sphic.util.PubSub;
 import org.sphic.util.Subscriber;
@@ -10,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/itk")
 @Component
 public class ITKCommunicationController {
-	private final Queue<DeferredResult<String>> responseBodyQueue = new ConcurrentLinkedQueue<DeferredResult<String>>();
 	private Subscriber subscriber;
 	private MessageQueue messageQueue;
 
@@ -27,8 +28,8 @@ public class ITKCommunicationController {
 	}
 
 	@RequestMapping("/call")
-	public DeferredResult<String> Info(@RequestParam(value = "func", defaultValue = "")String func) {
-		messageQueue.Send(func);
+	public DeferredResult<String> Info(@RequestParam(defaultValue = "" ) Map<String, String> params) throws JsonProcessingException {
+		messageQueue.Send(new ObjectMapper().writeValueAsString(params));
 		DeferredResult<String> result = new DeferredResult<String>();
 		subscriber =
 		new Subscriber(){
