@@ -1,17 +1,14 @@
 package org.sphic.Controller;
 
-import java.util.List;
-
-import org.sphic.HibernateConfig.HibernateUtil;
-import org.sphic.Model.Account;
-import org.sphic.Model.Patient;
-import org.sphic.Model.Profile;
-
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.sphic.HibernateConfig.HibernateUtil;
+import org.sphic.Model.Profile;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/profile")

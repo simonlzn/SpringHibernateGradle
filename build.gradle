@@ -9,6 +9,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'spring-boot' 
 
 jar {
@@ -18,8 +19,13 @@ jar {
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://www.dcm4che.org/maven2/"
+    }
 }
-
+configurations.all {
+    exclude module: 'slf4j-log4j12'
+}
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -32,6 +38,7 @@ dependencies {
     compile 'commons-dbcp:commons-dbcp:1.4'  
     compile 'org.springframework.amqp:spring-rabbit:1.5.1.RELEASE'
     compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+    compile 'org.dcm4che:dcm4che-core:3.3.7'
 	//compile("org.springframework.boot:spring-boot-starter-security")
     testCompile("junit:junit")
 }

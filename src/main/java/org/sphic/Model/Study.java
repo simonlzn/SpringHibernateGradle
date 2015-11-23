@@ -1,14 +1,9 @@
 package org.sphic.Model;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name="study")
@@ -18,7 +13,7 @@ public class Study {
 	private int studyId;
 	
 	@Column(name="patient_id")
-	private int patientId;	
+	private UUID patientId;
 	
 	@Column(name="time")
 	private Date time;
@@ -40,7 +35,7 @@ public class Study {
 		
 	}
 		
-	public Study(int studyId, int patientId, Date time, String comments,
+	public Study(int studyId, UUID patientId, Date time, String comments,
 			String physician, String modalities) {
 		this.studyId = studyId;
 		this.patientId = patientId;
@@ -66,11 +61,11 @@ public class Study {
 		this.studyId = studyId;
 	}
 
-	public int getPatientId() {
+	public UUID getPatientId() {
 		return patientId;
 	}
 
-	public void setPatientId(int patientId) {
+	public void setPatientId(UUID patientId) {
 		this.patientId = patientId;
 	}
 

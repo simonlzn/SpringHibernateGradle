@@ -1,14 +1,11 @@
 package org.sphic.Controller;
 
-import java.security.MessageDigest;
-
-import org.sphic.HibernateConfig.HibernateUtil;
-import org.sphic.Model.Account;
-import org.sphic.util.Hash;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.sphic.HibernateConfig.HibernateUtil;
+import org.sphic.Model.Account;
+import org.sphic.util.Hash;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

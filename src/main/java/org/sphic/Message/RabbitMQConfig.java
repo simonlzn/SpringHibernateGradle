@@ -38,6 +38,8 @@ public class RabbitMQConfig {
     public TopicExchange exchange() {
        return new TopicExchange("");
     }
+
+
     @Bean
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
