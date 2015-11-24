@@ -9,7 +9,7 @@ public class PubSub {
     private static Hashtable<String, Set<Subscriber>> subscribers = new Hashtable<>();
 
     public static void Publish(String channel, String message) {
-        Set<Subscriber> subscribersInChannel = new HashSet(subscribers.get(channel));
+        Set<Subscriber> subscribersInChannel = subscribers.get(channel);
         if (subscribersInChannel == null)
             return;
         for (Iterator<Subscriber> i = subscribersInChannel.iterator();i.hasNext();) {

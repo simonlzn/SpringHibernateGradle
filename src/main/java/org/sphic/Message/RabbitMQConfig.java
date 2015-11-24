@@ -39,6 +39,15 @@ public class RabbitMQConfig {
        return new TopicExchange("");
     }
 
+    @Bean
+    public Queue queue1(){
+        return new Queue("queue1");
+    }
+
+    @Bean
+    public Queue queue2(){
+        return new Queue("queue2");
+    }
 
     @Bean
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {

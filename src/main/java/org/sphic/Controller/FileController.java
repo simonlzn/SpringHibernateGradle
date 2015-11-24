@@ -79,6 +79,8 @@ public class FileController {
                         stream.write(bytes);
                         stream.close();
 
+                        System.out.println(name + " is uploaded!");
+
 
                     }
 
