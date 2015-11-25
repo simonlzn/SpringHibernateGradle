@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -47,7 +49,10 @@ public class ITKCommunicationController {
 //	}
 
 	@RequestMapping(value = "/call", method = RequestMethod.GET)
-	public DeferredResult<String> Info(@RequestParam MultiValueMap func) throws JsonProcessingException {
+	public DeferredResult<String> Info(@RequestParam Map func, final HttpServletResponse response) throws JsonProcessingException {
+		System.out.println(func);
+		if (func.get("func").toString().compareTo("imageReady") == 0)
+			response.setHeader("Cache-Control", "private, max-age=86400");
 		messageQueue.Send(new ObjectMapper().writeValueAsString(func));
 		DeferredResult<String> result = new DeferredResult<String>();
 		subscriber =
