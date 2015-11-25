@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
@@ -33,10 +34,17 @@ public class FileController {
         this.messageQueue = messageQueue;
     }
 
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public @ResponseBody String download( final HttpServletResponse response) {
+//        response.setHeader("Cache-Control", "private, max-age=86400");
+//        response.setHeader("Expires", new Date(180,1,1).toGMTString());
+//        response.setHeader("Last-Modified", new Date(80,1,1).toGMTString());
+        return "very weird string";
+    }
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody String Upload(@RequestParam("file") MultipartFile[] files) {
         Boolean HasBeenSavedToDatabase = false;
-        UUID patientId =null;
+        String patientId =null;
         for (MultipartFile file : files) {
 
             if (!file.isEmpty()) {
@@ -55,7 +63,7 @@ public class FileController {
                         Patient p = new Patient(Integer.getInteger(dcmObj.getString(Tag.PatientID), 0) , dcmObj.getString(Tag.PatientName), "", dcmObj.getString(Tag.PatientAddress), "", Integer.getInteger(dcmObj.getString(Tag.PatientAge), 0), null,dcmObj.getString(Tag.InstitutionName), null);
 
 
-                        patientId = (UUID) session.save(p);
+                        patientId = (String) session.save(p);
 
                         List<Study> studies = new ArrayList<Study>();
                         studies.add(new Study(Integer.parseInt(dcmObj.getString(Tag.StudyID)), patientId, dcmObj.getDate(Tag.StudyDateAndTime), dcmObj.getString(Tag.StudyDescription), "", dcmObj.getString(Tag.Modality)));

@@ -14,7 +14,7 @@ public class PatientController {
 	}
 
 	@RequestMapping("/info")
-	public Patient Info(@RequestParam(value = "id", defaultValue = "1") int id) {
+	public Patient Info(@RequestParam(value = "id", defaultValue = "1") String id) {
 		Session session = HibernateUtil.currentSession();
 		Patient patient = (Patient) session.get(Patient.class, id);
 

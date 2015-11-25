@@ -13,7 +13,7 @@ public class Patient {
 
 	@Id
 	@Column(name = "uuid")
-	private UUID uuid;
+	private String uuid;
 
 	@Column(name = "id")
 	private int id;
@@ -45,7 +45,7 @@ public class Patient {
 	
 	public Patient(int id, String name, String c_name, String address,
 			String phone, int age, Date birthdate, String institutionName, List<Study> studies) {
-		this.uuid = UUID.randomUUID();
+		this.uuid = UUID.randomUUID().toString();
 		this.id = id;
 		this.name = name;
 		this.c_name = c_name;
