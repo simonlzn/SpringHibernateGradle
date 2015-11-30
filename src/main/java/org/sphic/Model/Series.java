@@ -1,10 +1,8 @@
 package org.sphic.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="series")
@@ -27,20 +25,28 @@ public class Series {
 	
 	@Column(name="modality")
 	private String modality;
+
+	@OneToMany(targetEntity = StructureSet.class)
+	@JoinColumn(name = "series_id")
+	private List<StructureSet> structureSets;
+
+	@OneToMany(targetEntity = Slice.class)
+	@JoinColumn(name = "series_id")
+	private List<StructureSet> slices;
 	
 	public Series(){
 		
 	}
 
 	public Series(int seriesId, int studyId, Date time, String comments,
-			String institution, String modality) {
-		super();
+			String institution, String modality, List<StructureSet> structureSets) {
 		this.seriesId = seriesId;
 		this.studyId = studyId;
 		this.time = time;
 		this.comments = comments;
 		this.institution = institution;
 		this.modality = modality;
+		this.structureSets = structureSets;
 	}
 
 	public int getSeriesId() {
@@ -89,5 +95,21 @@ public class Series {
 
 	public void setModality(String modality) {
 		this.modality = modality;
+	}
+
+	public List<StructureSet> getStructureSets() {
+		return structureSets;
+	}
+
+	public void setStructureSets(List<StructureSet> structureSets) {
+		this.structureSets = structureSets;
+	}
+
+	public List<StructureSet> getSlices() {
+		return slices;
+	}
+
+	public void setSlices(List<StructureSet> slices) {
+		this.slices = slices;
 	}
 }

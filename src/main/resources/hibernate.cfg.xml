@@ -24,5 +24,9 @@
 	<mapping class="org.sphic.Model.Series" />
 	<mapping class="org.sphic.Model.Account" />
 	<mapping class="org.sphic.Model.Profile" />
+	<mapping class="org.sphic.Model.StructureSet" />
+	<mapping class="org.sphic.Model.Structure" />
+	<mapping class="org.sphic.Model.Contour" />
+	<mapping class="org.sphic.Model.Slice" />
 </session-factory>
 </hibernate-configuration>

@@ -35,10 +35,11 @@ public class FileController {
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public @ResponseBody String download( final HttpServletResponse response) {
+    public @ResponseBody String download( final HttpServletResponse response) throws InterruptedException {
 //        response.setHeader("Cache-Control", "private, max-age=86400");
 //        response.setHeader("Expires", new Date(180,1,1).toGMTString());
 //        response.setHeader("Last-Modified", new Date(80,1,1).toGMTString());
+        Thread.sleep(5000);
         return "very weird string";
     }
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -54,7 +55,6 @@ public class FileController {
                         InputStream is = file.getInputStream();
 
                         DicomInputStream dis = new DicomInputStream(is);
-
 
                         Attributes dcmObj = dis.readDataset(-1, -1);
 
@@ -78,9 +78,9 @@ public class FileController {
                     if (patientId == null)
                         throw new Exception("patient ID can not be retrieved");
 
-                    String name = "/home/zshen/data/" + patientId.toString() + "/" + file.getOriginalFilename();
+                    String name = "~/data/" + patientId.toString() + "/" + file.getOriginalFilename();
 
-                    File dataFolder = new File("/home/zshen/data/" + patientId.toString() + "/" );
+                    File dataFolder = new File("~/data/" + patientId.toString() + "/" );
                     if (dataFolder.exists() || dataFolder.mkdirs()) {
                         BufferedOutputStream stream =
                                 new BufferedOutputStream(new FileOutputStream(new File(name)));
@@ -100,7 +100,7 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
         }
-        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"/home/zshen/data/" + patientId.toString() + "/\"" + "}");
+        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}");
         return "You successfully uploaded !";
     }
 }
