@@ -14,8 +14,14 @@ public class Series {
 	@Column(name="study_id")
 	private int studyId;	
 	
-	@Column(name="time")
-	private Date time;
+	@Column(name="created")
+	private Date created;
+
+	@Column(name="updated")
+	private Date updated;
+
+	@Column(name="deleted")
+	private Date deleted;
 	
 	@Column(name="comments")
 	private String comments;
@@ -38,17 +44,6 @@ public class Series {
 		
 	}
 
-	public Series(int seriesId, int studyId, Date time, String comments,
-			String institution, String modality, List<StructureSet> structureSets) {
-		this.seriesId = seriesId;
-		this.studyId = studyId;
-		this.time = time;
-		this.comments = comments;
-		this.institution = institution;
-		this.modality = modality;
-		this.structureSets = structureSets;
-	}
-
 	public int getSeriesId() {
 		return seriesId;
 	}
@@ -63,14 +58,6 @@ public class Series {
 
 	public void setStudyId(int studyId) {
 		this.studyId = studyId;
-	}
-
-	public Date getTime() {
-		return time;
-	}
-
-	public void setTime(Date time) {
-		this.time = time;
 	}
 
 	public String getComments() {
@@ -111,5 +98,29 @@ public class Series {
 
 	public void setSlices(List<StructureSet> slices) {
 		this.slices = slices;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Date getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Date deleted) {
+		this.deleted = deleted;
 	}
 }

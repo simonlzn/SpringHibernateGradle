@@ -66,7 +66,7 @@ public class FileController {
                         patientId = (String) session.save(p);
 
                         List<Study> studies = new ArrayList<Study>();
-                        studies.add(new Study(Integer.parseInt(dcmObj.getString(Tag.StudyID)), patientId, dcmObj.getDate(Tag.StudyDateAndTime), dcmObj.getString(Tag.StudyDescription), "", dcmObj.getString(Tag.Modality)));
+                        studies.add(new Study(Integer.parseInt(dcmObj.getString(Tag.StudyID)), patientId, dcmObj.getDate(Tag.StudyDateAndTime), dcmObj.getDate(Tag.StudyDateAndTime), null, dcmObj.getString(Tag.StudyDescription), "", dcmObj.getString(Tag.Modality), null));
 
                         p.setStudies(studies);
                         System.out.println(patientId);

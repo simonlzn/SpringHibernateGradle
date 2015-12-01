@@ -5,22 +5,51 @@ import java.util.Date;
 
 @Entity
 @Table(name="contour")
-@SecondaryTable(name="structure")
 public class Contour {
 
     @Id
     @Column(name="id")
     private int contourId;
 
-    @Column(name="structure_id")
-    private int structureId;
-
     @Column(name="name")
     private String name;
 
-    @Column(name = "color_id", table = "structure")
-//    @JoinColumn(name = "structure_id")
+    @ManyToOne(targetEntity = Structure.class)
+    private Structure structure;
+
+    @ManyToOne(targetEntity = Slice.class)
+    private Slice slice;
+
+
+    @Transient
+    private char view;
+    public int getView(){
+        return slice.getView();
+    }
+
+    public void setView(char view){
+        slice.setView(view);
+    }
+
+    @Transient
+    private int number;
+    public int getNumber(){
+        return slice.getNumber();
+    }
+
+    public void setNumber(int number){
+        slice.setNumber(number);
+    }
+
+    @Transient
     private int colorId;
+    public int getColorId(){
+        return structure.colorId;
+    }
+
+    public void setColorId(int colorId){
+        structure.colorId = colorId;
+    }
 
     @Column(name="created")
     private Date created;
@@ -37,11 +66,9 @@ public class Contour {
     @Column(name="data")
     private String data;
 
-    public Contour(int contourId, int structureId, String name, int colorId, Date created, Date updated, Date deleted, String description) {
+    public Contour(int contourId, String name, Date created, Date updated, Date deleted, String description) {
         this.contourId = contourId;
-        this.structureId = structureId;
         this.name = name;
-        this.colorId = colorId;
         this.created = created;
         this.updated = updated;
         this.deleted = deleted;
@@ -57,14 +84,6 @@ public class Contour {
 
     public void setContourId(int contourId) {
         this.contourId = contourId;
-    }
-
-    public int getStructureId() {
-        return structureId;
-    }
-
-    public void setStructureId(int structureId) {
-        this.structureId = structureId;
     }
 
     public String getName() {
@@ -107,13 +126,13 @@ public class Contour {
         this.description = description;
     }
 
-    public int getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
-    }
+//    public int getColorId() {
+//        return colorId;
+//    }
+//
+//    public void setColorId(int colorId) {
+//        this.colorId = colorId;
+//    }
 
     public String getData() {
         return data;

@@ -18,7 +18,7 @@ public class Slice {
     private char view;
 
     @Column(name="number")
-    private char number;
+    private int number;
 
     @Column(name="created")
     private Date created;
@@ -116,11 +116,11 @@ public class Slice {
         this.view = view;
     }
 
-    public char getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(char number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 

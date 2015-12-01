@@ -1,6 +1,8 @@
 package org.sphic.Model;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 import java.util.Date;
