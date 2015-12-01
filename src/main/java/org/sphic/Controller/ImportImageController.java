@@ -9,7 +9,6 @@ import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Message.MessageQueue;
 import org.sphic.Model.Patient;
 import org.sphic.Model.Study;
-import org.sphic.Model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -26,24 +25,11 @@ import java.util.*;
 
 @Controller
 @Component
-@RequestMapping("/file")
-public class FileController {
-    private final MessageQueue messageQueue;
-
-    @Autowired
-    public FileController(MessageQueue messageQueue) {
-        this.messageQueue = messageQueue;
-    }
-
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public @ResponseBody String download( final HttpServletResponse response) {
-//        response.setHeader("Cache-Control", "private, max-age=86400");
-//        response.setHeader("Expires", new Date(180,1,1).toGMTString());
-//        response.setHeader("Last-Modified", new Date(80,1,1).toGMTString());
-        return "very weird string";
-    }
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public @ResponseBody String Upload(@RequestParam("file") MultipartFile[] files) {
+@RequestMapping("/import")
+public class ImportImageController{
+	
+	@RequestMapping(value = "/image", method = RequestMethod.POST)
+    public @ResponseBody String Upload(@RequestParam("image") MultipartFile[] files) {
         Boolean HasBeenSavedToDatabase = false;
         String patientId =null;
         for (MultipartFile file : files) {
@@ -68,12 +54,6 @@ public class FileController {
 
                         List<Study> studies = new ArrayList<Study>();
                         studies.add(new Study(Integer.parseInt(dcmObj.getString(Tag.StudyID)), patientId, dcmObj.getDate(Tag.StudyDateAndTime), dcmObj.getString(Tag.StudyDescription), "", dcmObj.getString(Tag.Modality)));
-                        
-                        List<Image> images = new ArrayList<Image>();
-                        images.add(new Image(dcmObj.getString(Tag.SeriesInstanceUID),dcmObj.getDate(Tag.StudyDateAndTime),dcmObj.getString(Tag.SOPClassUID),dcmObj.getString(Tag.SOPInstanceUID),dcmObj.getString(Tag.StudyDescription),dcmObj.getString(Tag.Manufacturer),dcmObj.getString(Tag.ManufacturerModelName),
-                        		dcmObj.getDouble(Tag.PixelSpacing,0),dcmObj.getDouble(Tag.PixelSpacing,0),true,dcmObj.getDouble(Tag.SliceThickness,0),Integer.getInteger(dcmObj.getString(Tag.Rows),0),Integer.getInteger(dcmObj.getString(Tag.Columns),0),
-                        		dcmObj.getDouble(Tag.RescaleSlope,0),dcmObj.getDouble(Tag.RescaleIntercept,0)));
-                        
 
                         p.setStudies(studies);
                         System.out.println(patientId);
@@ -96,6 +76,7 @@ public class FileController {
 
                         System.out.println(name + " is uploaded!");
 
+
                     }
 
                 } catch (Exception e) {
@@ -106,7 +87,7 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
         }
-        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"/home/zshen/data/" + patientId.toString() + "/\"" + "}");
-        return "You successfully uploaded !";
+        return "You successfully imported image !";
     }
+	
 }
