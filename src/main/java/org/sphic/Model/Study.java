@@ -13,9 +13,15 @@ public class Study {
 	
 	@Column(name="patient_id")
 	private String patientId;
-	
-	@Column(name="time")
-	private Date time;
+
+	@Column(name="created")
+	private Date created;
+
+	@Column(name="updated")
+	private Date updated;
+
+	@Column(name="deleted")
+	private Date deleted;
 	
 	@Column(name="comments")
 	private String comments;
@@ -33,15 +39,17 @@ public class Study {
 	public Study(){
 		
 	}
-		
-	public Study(int studyId, String patientId, Date time, String comments,
-			String physician, String modalities) {
+
+	public Study(int studyId, String patientId, Date created, Date updated, Date deleted, String comments, String physician, String modalities, List<Series> series) {
 		this.studyId = studyId;
 		this.patientId = patientId;
-		this.time = time;
+		this.created = created;
+		this.updated = updated;
+		this.deleted = deleted;
 		this.comments = comments;
 		this.physician = physician;
 		this.modalities = modalities;
+		this.series = series;
 	}
 
 	public String getComments() {
@@ -68,14 +76,6 @@ public class Study {
 		this.patientId = patientId;
 	}
 
-	public Date getTime() {
-		return time;
-	}
-
-	public void setTime(Date time) {
-		this.time = time;
-	}
-
 	public String getPhysician() {
 		return physician;
 	}
@@ -98,5 +98,29 @@ public class Study {
 
 	public void setSeries(List<Series> series) {
 		this.series = series;
-	}	
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Date getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Date deleted) {
+		this.deleted = deleted;
+	}
 }

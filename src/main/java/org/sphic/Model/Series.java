@@ -1,10 +1,8 @@
 package org.sphic.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="series")
@@ -16,8 +14,14 @@ public class Series {
 	@Column(name="study_id")
 	private int studyId;	
 	
-	@Column(name="time")
-	private Date time;
+	@Column(name="created")
+	private Date created;
+
+	@Column(name="updated")
+	private Date updated;
+
+	@Column(name="deleted")
+	private Date deleted;
 	
 	@Column(name="comments")
 	private String comments;
@@ -27,20 +31,17 @@ public class Series {
 	
 	@Column(name="modality")
 	private String modality;
+
+	@OneToMany(targetEntity = StructureSet.class)
+	@JoinColumn(name = "series_id")
+	private List<StructureSet> structureSets;
+
+	@OneToMany(targetEntity = Slice.class)
+	@JoinColumn(name = "series_id")
+	private List<StructureSet> slices;
 	
 	public Series(){
 		
-	}
-
-	public Series(int seriesId, int studyId, Date time, String comments,
-			String institution, String modality) {
-		super();
-		this.seriesId = seriesId;
-		this.studyId = studyId;
-		this.time = time;
-		this.comments = comments;
-		this.institution = institution;
-		this.modality = modality;
 	}
 
 	public int getSeriesId() {
@@ -57,14 +58,6 @@ public class Series {
 
 	public void setStudyId(int studyId) {
 		this.studyId = studyId;
-	}
-
-	public Date getTime() {
-		return time;
-	}
-
-	public void setTime(Date time) {
-		this.time = time;
 	}
 
 	public String getComments() {
@@ -89,5 +82,45 @@ public class Series {
 
 	public void setModality(String modality) {
 		this.modality = modality;
+	}
+
+	public List<StructureSet> getStructureSets() {
+		return structureSets;
+	}
+
+	public void setStructureSets(List<StructureSet> structureSets) {
+		this.structureSets = structureSets;
+	}
+
+	public List<StructureSet> getSlices() {
+		return slices;
+	}
+
+	public void setSlices(List<StructureSet> slices) {
+		this.slices = slices;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Date getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Date deleted) {
+		this.deleted = deleted;
 	}
 }

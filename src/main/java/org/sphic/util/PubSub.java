@@ -1,20 +1,19 @@
 package org.sphic.util;
 
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class PubSub {
-    private static Hashtable<String, Set<Subscriber>> subscribers = new Hashtable<>();
+    private static HashMap<String, Set<Subscriber>> subscribers = new HashMap<String, Set<Subscriber>>();
 
     public static void Publish(String channel, String message) {
         Set<Subscriber> subscribersInChannel = subscribers.get(channel);
+
         if (subscribersInChannel == null)
             return;
-        for (Iterator<Subscriber> i = subscribersInChannel.iterator();i.hasNext();) {
-            Subscriber s = i.next();
-            s.Callback(message);
+
+        Set<Subscriber> s = (Set<Subscriber>)((HashSet)subscribersInChannel).clone();
+        for (Subscriber i : s) {
+            i.Callback(message);
         }
     }
 

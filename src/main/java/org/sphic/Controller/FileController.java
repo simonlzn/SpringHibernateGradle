@@ -36,10 +36,11 @@ public class FileController {
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public @ResponseBody String download( final HttpServletResponse response) {
+    public @ResponseBody String download( final HttpServletResponse response) throws InterruptedException {
 //        response.setHeader("Cache-Control", "private, max-age=86400");
 //        response.setHeader("Expires", new Date(180,1,1).toGMTString());
 //        response.setHeader("Last-Modified", new Date(80,1,1).toGMTString());
+        Thread.sleep(5000);
         return "very weird string";
     }
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -56,7 +57,6 @@ public class FileController {
 
                         DicomInputStream dis = new DicomInputStream(is);
 
-
                         Attributes dcmObj = dis.readDataset(-1, -1);
 
                         Session session = HibernateUtil.currentSession();
@@ -67,13 +67,14 @@ public class FileController {
                         patientId = (String) session.save(p);
 
                         List<Study> studies = new ArrayList<Study>();
-                        studies.add(new Study(Integer.parseInt(dcmObj.getString(Tag.StudyID)), patientId, dcmObj.getDate(Tag.StudyDateAndTime), dcmObj.getString(Tag.StudyDescription), "", dcmObj.getString(Tag.Modality)));
+
+                        studies.add(new Study(Integer.parseInt(dcmObj.getString(Tag.StudyID)), patientId, dcmObj.getDate(Tag.StudyDateAndTime), dcmObj.getDate(Tag.StudyDateAndTime), null, dcmObj.getString(Tag.StudyDescription), "", dcmObj.getString(Tag.Modality), null));
                         
                         List<Image> images = new ArrayList<Image>();
                         images.add(new Image(dcmObj.getString(Tag.SeriesInstanceUID),dcmObj.getDate(Tag.StudyDateAndTime),dcmObj.getString(Tag.SOPClassUID),dcmObj.getString(Tag.SOPInstanceUID),dcmObj.getString(Tag.StudyDescription),dcmObj.getString(Tag.Manufacturer),dcmObj.getString(Tag.ManufacturerModelName),
                         		dcmObj.getDouble(Tag.PixelSpacing,0),dcmObj.getDouble(Tag.PixelSpacing,0),true,dcmObj.getDouble(Tag.SliceThickness,0),Integer.getInteger(dcmObj.getString(Tag.Rows),0),Integer.getInteger(dcmObj.getString(Tag.Columns),0),
                         		dcmObj.getDouble(Tag.RescaleSlope,0),dcmObj.getDouble(Tag.RescaleIntercept,0)));
-                        
+ 
 
                         p.setStudies(studies);
                         System.out.println(patientId);
@@ -85,9 +86,9 @@ public class FileController {
                     if (patientId == null)
                         throw new Exception("patient ID can not be retrieved");
 
-                    String name = "/home/zshen/data/" + patientId.toString() + "/" + file.getOriginalFilename();
+                    String name = "~/data/" + patientId.toString() + "/" + file.getOriginalFilename();
 
-                    File dataFolder = new File("/home/zshen/data/" + patientId.toString() + "/" );
+                    File dataFolder = new File("~/data/" + patientId.toString() + "/" );
                     if (dataFolder.exists() || dataFolder.mkdirs()) {
                         BufferedOutputStream stream =
                                 new BufferedOutputStream(new FileOutputStream(new File(name)));
@@ -106,7 +107,7 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
         }
-        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"/home/zshen/data/" + patientId.toString() + "/\"" + "}");
+        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}");
         return "You successfully uploaded !";
     }
 }
