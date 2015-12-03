@@ -9,10 +9,50 @@ public class Contour {
 
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int contourId;
 
     @Column(name="name")
     private String name;
+
+//    @Column(name="structure_id")
+//    private int structureId;
+//
+//    public int getStructureId() {
+//        return structureId;
+//    }
+//
+//    public void setStructureId(int structureId) {
+//        this.structureId = structureId;
+//    }
+//
+//    @Column(name="slice_id")
+//    private int sliceId;
+//
+//    public int getSliceId() {
+//        return sliceId;
+//    }
+//
+//    public void setSliceId(int sliceId) {
+//        this.sliceId = sliceId;
+//    }
+
+
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+    }
+
+    public Slice getSlice() {
+        return slice;
+    }
+
+    public void setSlice(Slice slice) {
+        this.slice = slice;
+    }
 
     @ManyToOne(targetEntity = Structure.class)
     private Structure structure;
@@ -23,7 +63,7 @@ public class Contour {
 
     @Transient
     private char view;
-    public int getView(){
+    public char getView(){
         return slice.getView();
     }
 
@@ -125,14 +165,6 @@ public class Contour {
     public void setDescription(String description) {
         this.description = description;
     }
-
-//    public int getColorId() {
-//        return colorId;
-//    }
-//
-//    public void setColorId(int colorId) {
-//        this.colorId = colorId;
-//    }
 
     public String getData() {
         return data;

@@ -53,10 +53,12 @@ public class ITKCommunicationController {
 		System.out.println(func);
 		if (func.get("func").toString().compareTo("slicing") == 0)
 			response.setHeader("Cache-Control", "private, max-age=86400");
+		String channel = request.getRequestURI()+"?"+request.getQueryString();
+		func.put("key", channel);
 		messageQueue.Send(new ObjectMapper().writeValueAsString(func));
 
 		final DeferredResult<String> result = new DeferredResult<String>();
-		String channel = request.getRequestURI();
+
 		subscriber =
 			new Subscriber(channel){
 				@Override
