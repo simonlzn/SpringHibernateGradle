@@ -13,8 +13,8 @@ public class StudyController {
 	public StudyController() {
 	}
 
-	@RequestMapping("/info")
-	public Study Info(@RequestParam(value = "studyId", defaultValue = "3") int id) {
+	@RequestMapping("/{id}")
+	public Study Get(@RequestParam(value = "id", defaultValue = "3") int id) {
 		Session session = HibernateUtil.currentSession();
 		Study study = (Study)session.get(Study.class, id);	
 
