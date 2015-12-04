@@ -100,7 +100,7 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
         }
-        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}");
+        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
         return "You successfully uploaded !";
     }
 }
