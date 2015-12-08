@@ -10,7 +10,7 @@ import org.sphic.Model.Structure;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/contour")
+@RequestMapping("/series")
 public class SeriesController {
 	public SeriesController() {
 	}
