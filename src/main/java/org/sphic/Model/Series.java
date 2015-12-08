@@ -64,8 +64,7 @@ public class Series {
 	@JoinColumn(name = "series_id")
 	private List<StructureSet> slices;
 	
-	@OneToOne(cascade = CascadeType.ALL, targetEntity = ImageSeries.class)
-	@JoinColumn(name = "series_id")
+	@OneToOne(mappedBy = "series", targetEntity = ImageSeries.class, cascade = CascadeType.ALL)
 	private ImageSeries imageSeries;
 
 	@OneToMany(targetEntity = Images.class)

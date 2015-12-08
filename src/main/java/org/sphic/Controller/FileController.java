@@ -98,16 +98,16 @@ public class FileController {
 								dcmObj.getString(Tag.ReferringPhysicianName),
 								dcmObj.getString(Tag.ManufacturerModelName));
 						SeriesID = nSeries.getSeriesId();
-						ImageSeries imageSeries = new ImageSeries(SeriesID, dcmObj
+						ImageSeries imageSeries = new ImageSeries(SeriesID,dcmObj
 								.getString(Tag.SeriesInstanceUID), dcmObj
 								.getDouble(Tag.SliceThickness, 0.0), dcmObj
 								.getInt(Tag.Rows, 512), dcmObj.getInt(
 								Tag.Columns, 512), dcmObj
-								.getString(Tag.PatientPosition), dcmObj
-								.getString(Tag.PixelSpacing), dcmObj
+								.getString(Tag.PatientPosition), String.join(",",dcmObj
+								.getStrings(Tag.PixelSpacing)), dcmObj
 								.getString(Tag.PatientOrientation), dcmObj
 								.getDouble(Tag.RescaleSlope, 1.0), dcmObj
-								.getDouble(Tag.RescaleIntercept, 0.0));
+                                .getDouble(Tag.RescaleIntercept, 0.0));
 
 						List<Images> Images = new ArrayList<Images>();
 						Images nImage = new Images(Integer.parseInt(dcmObj
@@ -121,7 +121,8 @@ public class FileController {
 //						Images.add(nImage);
                         nSeries.setImageSeries(imageSeries);
                         session.save(nSeries);
-                        session.save(imageSeries);
+//                        imageSeries.setSeries(nSeries);
+//                        session.save(imageSeries);
 //						nSeries.setImages(Images);
 						series.add(nSeries);
 						nStudy.setSeries(series);
@@ -146,9 +147,9 @@ public class FileController {
 										.getDouble(Tag.SliceLocation, 0.0),
 								Integer.parseInt(dcmObj
 										.getString(Tag.InstanceNumber)), dcmObj
-										.getString(Tag.ImagePositionPatient),SeriesID);
+										.getString(Tag.ImagePositionPatient),4);
 //						nImage.setSeries(nSeries);
-						session.save(nImage);
+						session.saveOrUpdate(nImage);
 						tx1.commit();
 						is.close();
 					}

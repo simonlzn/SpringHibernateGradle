@@ -33,7 +33,7 @@ public class Study {
 	private String modalities;
 	
 	@Transient
-	@OneToMany(targetEntity = Series.class)
+	@OneToMany(targetEntity = Series.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "study_id")
 	private List<Series> series;
 	

@@ -10,8 +10,17 @@ public class ImageSeries {
 	@Column(name="id")
 	private int id;
 
-	@Column(name="series_id")
-	private int series_id;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "series_id")
+	private Series series;
+
+	public Series getSeries() {
+		return series;
+	}
+
+	public void setSeries(Series series) {
+		this.series = series;
+	}
 	
 	@Column(name="sop_cls_uid")
 	private String sop_cls_uid;
@@ -47,7 +56,6 @@ public class ImageSeries {
 	public ImageSeries(int seriesId, String sop_cls_uid, double slice_thick, int rows, int columns, String patient_position,
 			String pixel_spacing, String Image_Orient_Pat, double slope, double intercept  ) {
 		super();
-		this.series_id = seriesId;
 		this.sop_cls_uid = sop_cls_uid;
 		this.slice_thick = slice_thick;
 		this.rows = rows;
@@ -57,13 +65,6 @@ public class ImageSeries {
 		this.Image_Orient_Pat = Image_Orient_Pat;
 		this.slope = slope;
 		this.intercept = intercept;			
-	}
-	public int getSeriesId() {
-		return series_id;
-	}
-
-	public void setSeriesId(int seriesId) {
-		this.series_id = seriesId;
 	}
 
 	public String getSOPClassUID() {
