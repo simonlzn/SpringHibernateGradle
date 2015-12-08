@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/slice")
 public class SliceController {
-	public SliceController() {
-	}
+    public SliceController() {
+    }
 
-	@RequestMapping(value = "/{view}/{number}", method = RequestMethod.GET)
-	public Slice Get(@PathVariable char view, @PathVariable int number) {
-		Session session = HibernateUtil.currentSession();
-		Criteria cr = session.createCriteria(Account.class).add(Restrictions.eq("view", view)).add(Restrictions.eq("number", number));
-		Slice slice = (Slice)cr.list().get(0);
+    @RequestMapping(value = "/{seriesId}/{view}/{number}", method = RequestMethod.GET)
+    public Slice Get(@PathVariable int seriesId, @PathVariable char view, @PathVariable int number) {
+        Session session = HibernateUtil.currentSession();
+        Criteria cr = session.createCriteria(Account.class).add(Restrictions.eq("series_id", seriesId)).add(Restrictions.eq("view", view)).add(Restrictions.eq("number", number));
+        Slice slice = (Slice) cr.list().get(0);
 
-		return slice;
-	}
+        return slice;
+    }
 }

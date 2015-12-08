@@ -22,8 +22,8 @@ public class MessageQueue {
 		this.template = template;
 	}
 
-	public void Send(String message) {
-		template.convertAndSend("queue3", message);
+	public void Send(String message, String routingKey) {
+		template.convertAndSend("itk",routingKey, message);
 	}
 
 	public void Recv(byte[] message) throws UnsupportedEncodingException {

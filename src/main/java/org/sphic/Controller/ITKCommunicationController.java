@@ -51,13 +51,19 @@ public class ITKCommunicationController {
 	@RequestMapping(value = "/call", method = RequestMethod.GET)
 	public DeferredResult<String> Info(@RequestParam Map func, final HttpServletRequest request, final HttpServletResponse response) throws JsonProcessingException {
 		System.out.println(func);
-		if (func.get("func").toString().compareTo("slicing") == 0)
-			response.setHeader("Cache-Control", "private, max-age=86400");
+//		if (func.get("func").toString().compareTo("slicing") == 0)
+//			response.setHeader("Cache-Control", "private, max-age=86400");
 		String channel = request.getRequestURI()+"?"+request.getQueryString();
 		func.put("key", channel);
-		messageQueue.Send(new ObjectMapper().writeValueAsString(func));
+		messageQueue.Send(new ObjectMapper().writeValueAsString(func), func.get("id").toString());
 
 		final DeferredResult<String> result = new DeferredResult<String>();
+		result.onTimeout(new Runnable() {
+			@Override
+			public void run() {
+				result.setErrorResult("Time out");
+			}
+		});
 
 		subscriber =
 			new Subscriber(channel){
@@ -83,7 +89,7 @@ public class ITKCommunicationController {
 		params.put("func", func);
 		params.put("seeds", seeds);
 		String channel = request.getRequestURI();
-		messageQueue.Send(new ObjectMapper().writeValueAsString(params));
+		messageQueue.Send(new ObjectMapper().writeValueAsString(params), "2");
 		final DeferredResult<String> result = new DeferredResult<String>();
 		subscriber =
 				new Subscriber(channel){

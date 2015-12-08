@@ -1,8 +1,6 @@
 package org.sphic.Message;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -25,29 +23,37 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin() {
-        return new RabbitAdmin(connectionFactory());
+    public AmqpAdmin amqpAdmin(TopicExchange exchange) {
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
+//        rabbitAdmin.declareExchange(exchange);
+        return rabbitAdmin;
     }
 
     @Bean
     public RabbitTemplate rabbitTemplate() {
-        return new RabbitTemplate(connectionFactory());
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
+        return rabbitTemplate;
+    }
+
+    @Bean
+    public Binding binding() {
+        return new Binding("queue1", Binding.DestinationType.QUEUE, "java", "queue1",null);
     }
 
     @Bean
     public TopicExchange exchange() {
-       return new TopicExchange("");
+       return new TopicExchange("itk", false, false);
     }
 
     @Bean
-    public Queue queue1(){
-        return new Queue("queue1");
+    public DirectExchange javaExchange() {
+        return new DirectExchange("java", false, false);
     }
 
-    @Bean
-    public Queue queue2(){
-        return new Queue("queue2");
-    }
+//    @Bean
+//    public Queue queue1(){
+//        return new Queue("queue1");
+//    }
 
     @Bean
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
