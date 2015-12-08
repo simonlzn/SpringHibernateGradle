@@ -23,15 +23,39 @@ public class Series {
 	@Column(name="deleted")
 	private Date deleted;
 	
+	@Column(name="seriesInsUID")
+	private String seriesInsUID;
+	
+	@Column(name="seriesNumber")
+	private int seriesNumber;
+	
+	@Column(name="seriesDate")
+	private String seriesDate;
+	
+	@Column(name="seriesTime")
+	private String seriesTime;
+	
+	@Column(name="seriesDescrip")
+	private String seriesDescrip;
+	
+	@Column(name="modality")
+	private String modality;
+	
+	@Column(name="manufacturer")
+	private String manufacturer;
+	
+	@Column(name="manufctModel")
+	private String manufctModel;
+	
+	@Column(name="physician")
+	private String physician;
+	
 	@Column(name="comments")
 	private String comments;
 	
 	@Column(name="institution")
 	private String institution;
 	
-	@Column(name="modality")
-	private String modality;
-
 	@OneToMany(targetEntity = StructureSet.class)
 	@JoinColumn(name = "series_id")
 	private List<StructureSet> structureSets;
@@ -40,8 +64,30 @@ public class Series {
 	@JoinColumn(name = "series_id")
 	private List<StructureSet> slices;
 	
+	@OneToOne(cascade = CascadeType.ALL, targetEntity = ImageSeries.class)
+	@JoinColumn(name = "series_id")
+	private ImageSeries imageSeries;
+
+	@OneToMany(targetEntity = Images.class)
+	@JoinColumn(name = "series_id")
+	private List<Images> Images;
+	
 	public Series(){
 		
+	}
+	
+	public Series(int seriesId, int studyId, String seriesInsUID, String seriesDate, String seriesTime, String seriesDescrip,
+			String modality, String manufacturer, String physician, String manufctModel){
+		
+		this.seriesId = seriesId;
+		this.studyId = studyId;
+		this.seriesInsUID = seriesInsUID;
+		this.seriesDate = seriesDate;
+		this.seriesTime = seriesTime;
+		this.modality = modality;
+		this.manufacturer = manufacturer;
+		this.physician = physician;
+		this.manufctModel = manufctModel;	
 	}
 
 	public int getSeriesId() {
@@ -100,6 +146,12 @@ public class Series {
 		this.slices = slices;
 	}
 
+	public ImageSeries getImageSeries(){ return this.imageSeries; }
+
+	public void setImageSeries(ImageSeries imageSeries){
+		this.imageSeries = imageSeries;
+	}
+
 	public Date getCreated() {
 		return created;
 	}
@@ -123,4 +175,9 @@ public class Series {
 	public void setDeleted(Date deleted) {
 		this.deleted = deleted;
 	}
+
+	public List<Images> getImages() { return this.Images; }
+
+	public void setImages(List<Images> images) { this.Images = images;}
+
 }

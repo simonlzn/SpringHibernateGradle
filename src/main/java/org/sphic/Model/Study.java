@@ -32,6 +32,7 @@ public class Study {
 	@Column(name="modalities")
 	private String modalities;
 	
+	@Transient
 	@OneToMany(targetEntity = Series.class)
 	@JoinColumn(name = "study_id")
 	private List<Series> series;
@@ -51,7 +52,7 @@ public class Study {
 		this.modalities = modalities;
 		this.series = series;
 	}
-
+	
 	public String getComments() {
 		return comments;
 	}
