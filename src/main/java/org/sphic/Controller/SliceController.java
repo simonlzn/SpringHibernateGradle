@@ -42,9 +42,14 @@ public class SliceController {
 //            }
 //        });
 
+
         if (sliceList.isEmpty()) {
             try {
-                String url = "http://localhost:8080/itk/call?func=slicing&view=" + view + "&number=" + number + "&id=" +seriesId;
+                String views = "";
+		if(view == 'T')
+		    views +=number+",-1,-1";
+
+                String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" +seriesId;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet(url);
 //                StringBuffer response = getHTTPResponse(url);
