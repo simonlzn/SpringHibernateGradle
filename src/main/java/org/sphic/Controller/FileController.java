@@ -119,8 +119,9 @@ public class FileController {
 										.getString(Tag.ImagePositionPatient),5);
 
 //						Images.add(nImage);
+                        imageSeries.setSeries(nSeries);
                         nSeries.setImageSeries(imageSeries);
-                        session.save(nSeries);
+                        session.saveOrUpdate(nSeries);
 //                        imageSeries.setSeries(nSeries);
 //                        session.save(imageSeries);
 //						nSeries.setImages(Images);
