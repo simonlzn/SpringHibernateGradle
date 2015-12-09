@@ -50,7 +50,7 @@ public class Series {
     @Column(name = "manufctModel")
     private String manufctModel;
 
-    @ManyToOne(targetEntity = Study.class)
+    @ManyToOne(targetEntity = Study.class, cascade = CascadeType.ALL)
     @JoinColumn(name ="study_id")
     private Study study;
 
