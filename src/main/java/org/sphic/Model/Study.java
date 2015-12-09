@@ -43,8 +43,7 @@ public class Study {
 
     @Column(name = "institution_name")
 	private String institutionName;
-	
-	@Transient
+
 	@OneToMany(targetEntity = Series.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "study_id")
 	private List<Series> series;

@@ -5,24 +5,21 @@ create database sphic;
 use sphic;
 
 DROP TABLE IF EXISTS patient;
-create table IF NOT EXISTs patient (ID int not null, institution_name varchar(50) not null, uuid varchar(50) not null primary key,c_name varchar(100), name varchar(100), birthdate date, age int, address varchar(100), phone varchar(20));
-insert into patient(ID,uuid, c_name, name, birthdate, age, address, phone, institution_name) values(1, '1e33f6b3-93eb-11e5-ac6d-000c295d1671', '张三','San Zhang','1980-01-01', '35', 'Shanghai', '123456789', 'SPHIC');
-
+create table IF NOT EXISTs patient (ID int not null, uuid varchar(50) not null primary key,c_name varchar(100), name varchar(100), birthdate date, age int, address varchar(100), phone varchar(20));
+insert into patient(ID,uuid, c_name, name, birthdate, age, address, phone) values(1, '1e33f6b3-93eb-11e5-ac6d-000c295d1671', '张三','San Zhang','1980-01-01', '35', 'Shanghai', '123456789');
 
 DROP TABLE IF EXISTS study;
-create table IF NOT EXISTs study(ID int not null primary key, patient_id varchar(100) not null, FOREIGN KEY fk_patient(patient_id) REFERENCES patient(uuid) ON DELETE CASCADE, physician varchar(100), modalities varchar(20), comments varchar(100), created date, updated date, deleted date);
-
-insert into study(ID, patient_id, physician, modalities, comments, created, updated, deleted) values(1, '1e33f6b3-93eb-11e5-ac6d-000c295d1671', 'Alice', 'CT', 'test study', now(), now(), null);
-insert into study(ID, patient_id, physician, modalities, comments, created, updated, deleted) values(3, '1e33f6b3-93eb-11e5-ac6d-000c295d1671', 'Alice', 'CT/MRI', 'test study 2', now(), now(), null);
-insert into study(ID, patient_id, physician, modalities, comments, created, updated, deleted) values(8, '1e33f6b3-93eb-11e5-ac6d-000c295d1671', 'Bob', 'CT', 'test study 3', now(), now(), null);
-
+create table IF NOT EXISTs study(ID int not null primary key, patient_id varchar(100) not null, FOREIGN KEY fk_patient(patient_id) REFERENCES patient(uuid) ON DELETE CASCADE, study_ins_uid varchar(800), referring_physician_Name varchar(100), accession_number varchar(100),institution_name varchar(100), description varchar(300), comments varchar(100), created date, updated date, deleted date);
 
 DROP TABLE IF EXISTS series;
-create table IF NOT EXISTs series(ID int not null primary key, study_id int not null, foreign key fk_study(study_id) references study(ID) ON DELETE CASCADE, modality varchar(20), institution varchar(100), comments varchar(100), created date, updated date, deleted date);
-insert into series(ID, study_id, modality,institution, comments, created, updated, deleted) values(1, 1, 'CT', 'sphic', 'test series', now(), now(), null);
-insert into series(ID, study_id, modality,institution, comments, created, updated, deleted) values(2, 3, 'CT', 'sphic', 'test series with CT', now(), now(), null);
-insert into series(ID, study_id, modality,institution, comments, created, updated, deleted) values(3, 3, 'CT', 'sphic', 'test series with CT 2', now(), now(), null);
-insert into series(ID, study_id, modality,institution, comments, created, updated, deleted) values(4, 3, 'MRI', 'sphic', 'test series with MRI', now(), now(), null);
+create table IF NOT EXISTs series(ID int not null primary key, study_id int not null, foreign key fk_study(study_id) references study(ID) ON DELETE CASCADE, modality varchar(20), seriesInsUID varchar(800), manufacturer varchar(100), manufctModel varchar(100), seriesNumber int,seriesDate varchar(20),seriesTime varchar(20), seriesDescrip varchar(100), comments varchar(100), created date, updated date, deleted date);
+
+DROP TABLE IF EXISTS image_series;
+create table IF NOT EXISTS image_series(ID int not null primary key auto_increment, series_id int not null, foreign key fk_series(series_id) references series(ID) ON DELETE CASCADE, sop_cls_uid varchar(500),slice_thick double, image_orient_pat varchar(100),rows int, columns int, patient_position varchar(100),pixel_spacing varchar(100), slope double, intercept double, image_type varchar(100),
+  derivation_descrpt varchar(100), patient_orient varchar(100), specific_character_set varchar(100), sample_per_pixel varchar(100),photometric_interpretation varchar(100), bits_allocated int, bits_stored int, high_bit int,  pixel_representation int, smallest_img_pixel_val int, largest_img_pixel_val int);
+
+DROP TABLE IF EXISTS images;
+create table IF NOT EXISTS images(ID int not null primary key auto_increment, series_id int not null, foreign key fk_series(series_id) references series(ID) ON DELETE CASCADE,  sop_ins_uid varchar(200), ins_num varchar(50), slice_location int, image_pos_pat varchar(50) );
 
 DROP TABLE IF EXISTS account;
 create table account(ID int not null auto_increment primary key,username varchar(100), password varchar(100), created date);

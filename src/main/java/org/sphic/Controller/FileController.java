@@ -96,7 +96,9 @@ public class FileController {
 								dcmObj.getString(Tag.SeriesDescription),
 								dcmObj.getString(Tag.Modality),
 								dcmObj.getString(Tag.Manufacturer),
-								dcmObj.getString(Tag.ManufacturerModelName));
+								dcmObj.getString(Tag.ManufacturerModelName),
+								dcmObj.getDate(Tag.StudyDateAndTime),
+								dcmObj.getDate(Tag.StudyDateAndTime), null,null);
 						SeriesID = nSeries.getSeriesId();
 
 						ImageSeries imageSeries = new ImageSeries(SeriesID,
@@ -133,10 +135,8 @@ public class FileController {
 
                         imageSeries.setSeries(nSeries);
                         nSeries.setImageSeries(imageSeries);
+						nSeries.setStudy(nStudy);
                         session.saveOrUpdate(nSeries);
-//                        imageSeries.setSeries(nSeries);
-//                        session.save(imageSeries);
-//						nSeries.setImages(Images);
 						series.add(nSeries);
 						nStudy.setSeries(series);
 						studies.add(nStudy);

@@ -11,8 +11,8 @@ public class Series {
     @Column(name = "id")
     private int seriesId;
 
-    @Column(name = "study_id")
-    private int studyId;
+//    @Column(name = "study_id")
+//    private int studyId;
 
     @Column(name = "created")
     private Date created;
@@ -50,6 +50,9 @@ public class Series {
     @Column(name = "manufctModel")
     private String manufctModel;
 
+    @ManyToOne(targetEntity = Study.class)
+    @JoinColumn(name ="study_id")
+    private Study study;
 
     @OneToMany(targetEntity = StructureSet.class)
     @JoinColumn(name = "series_id")
@@ -71,10 +74,10 @@ public class Series {
     }
 
     public Series(int seriesId, int studyId, String seriesInsUID, int seriesNumber, String seriesDate, String seriesTime, String seriesDescrip,
-                  String modality, String manufacturer, String manufctModel) {
+                  String modality, String manufacturer, String manufctModel,Date creted, Date updated, Date deleted, String comments) {
 
         this.seriesId = seriesId;
-        this.studyId = studyId;
+//        this.studyId = studyId;
         this.seriesInsUID = seriesInsUID;
         this.seriesNumber = seriesNumber;
         this.seriesDate = seriesDate;
@@ -85,6 +88,14 @@ public class Series {
         this.manufctModel = manufctModel;
     }
 
+    public Study getStudy() {
+        return study;
+    }
+
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+
     public int getSeriesId() {
         return seriesId;
     }
@@ -93,13 +104,13 @@ public class Series {
         this.seriesId = seriesId;
     }
 
-    public int getStudyId() {
-        return studyId;
-    }
-
-    public void setStudyId(int studyId) {
-        this.studyId = studyId;
-    }
+//    public int getStudyId() {
+//        return studyId;
+//    }
+//
+//    public void setStudyId(int studyId) {
+//        this.studyId = studyId;
+//    }
 
     public Date getCreated() {
         return created;
