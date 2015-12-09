@@ -14,6 +14,9 @@ public class Study {
 	@Column(name="patient_id")
 	private String patientId;
 
+	@Column(name="study_ins_uid")
+	private String study_ins_uid;
+
 	@Column(name="created")
 	private Date created;
 
@@ -22,15 +25,24 @@ public class Study {
 
 	@Column(name="deleted")
 	private Date deleted;
-	
+
 	@Column(name="comments")
 	private String comments;
+
+	@Column(name="description")
+	private String study_description;
 	
-	@Column(name="physician")
+	@Column(name="referring_physician_Name")
 	private String physician;
-	
-	@Column(name="modalities")
-	private String modalities;
+
+	@Column(name="accession_number")
+	private String accession_number;
+
+//	@Column(name="modalities")
+//	private String modalities;
+
+    @Column(name = "institution_name")
+	private String institutionName;
 	
 	@Transient
 	@OneToMany(targetEntity = Series.class, cascade = CascadeType.ALL)
@@ -41,15 +53,18 @@ public class Study {
 		
 	}
 
-	public Study(int studyId, String patientId, Date created, Date updated, Date deleted, String comments, String physician, String modalities, List<Series> series) {
+	public Study(int studyId, String patientId, String studyInstantUID, Date created, Date updated, Date deleted, String comments, String description, String physician, String accessionNumber, String institutionName, List<Series> series) {
 		this.studyId = studyId;
 		this.patientId = patientId;
+		this.study_ins_uid = studyInstantUID;
 		this.created = created;
 		this.updated = updated;
 		this.deleted = deleted;
 		this.comments = comments;
+		this.study_description = description;
 		this.physician = physician;
-		this.modalities = modalities;
+		this.accession_number = accessionNumber;
+		this.institutionName = institutionName;
 		this.series = series;
 	}
 	
@@ -85,13 +100,13 @@ public class Study {
 		this.physician = physician;
 	}
 
-	public String getModalities() {
-		return modalities;
-	}
-
-	public void setModalities(String modalities) {
-		this.modalities = modalities;
-	}
+//	public String getModalities() {
+//		return modalities;
+//	}
+//
+//	public void setModalities(String modalities) {
+//		this.modalities = modalities;
+//	}
 
 	public List<Series> getSeries() {
 		return series;
@@ -124,4 +139,12 @@ public class Study {
 	public void setDeleted(Date deleted) {
 		this.deleted = deleted;
 	}
+
+	public String getInstitutionName() { return this.institutionName; }
+
+	public void setInstitutionName(String institutionName) { this.institutionName = institutionName;}
+
+	public String getStudyInstantUID() { return this.study_ins_uid; }
+
+	public void getStudyInstantUID(String studyInstantUID) { this.study_ins_uid = studyInstantUID;}
 }

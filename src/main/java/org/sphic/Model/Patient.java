@@ -31,9 +31,6 @@ public class Patient {
 	
 	@Column(name = "phone")
 	private String phone;
-
-	@Column(name = "institution_name")
-	private String institutionName;
 	
 	@Column(name = "age")
 	private int age;
@@ -44,9 +41,14 @@ public class Patient {
 	@OneToMany(targetEntity = Study.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "patient_id")
 	private List<Study> studies;
+
+	public Patient()
+	{
+
+	}
 	
 	public Patient(int id, String name, String c_name, String address,
-			String phone, int age, Date birthdate, String institutionName, List<Study> studies) {
+			String phone, int age, Date birthdate,/* String institutionName,*/ List<Study> studies) {
 		this.uuid = UUID.randomUUID().toString();
 		this.id = id;
 		this.name = name;
@@ -55,8 +57,32 @@ public class Patient {
 		this.phone = phone;
 		this.age = age;
 		this.birthdate = birthdate;
-		this.institutionName = institutionName;
+//		this.institutionName = institutionName;
 		this.studies = studies;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getC_name() {
@@ -65,6 +91,22 @@ public class Patient {
 
 	public void setC_name(String c_name) {
 		this.c_name = c_name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public int getAge() {
@@ -89,48 +131,5 @@ public class Patient {
 
 	public void setStudies(List<Study> studies) {
 		this.studies = studies;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Patient() {
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public String getInstitutionName() {
-		return institutionName;
-	}
-
-	public void setInstitutionName(String institutionName) {
-		this.institutionName = institutionName;
-	}
-
-	public long getId() {
-		return id;
 	}
 }
