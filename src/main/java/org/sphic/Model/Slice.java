@@ -20,6 +20,18 @@ public class Slice {
     @Column(name="number")
     private int number;
 
+    @Column(name="row")
+    private int row;
+
+    @Column(name="column")
+    private int column;
+
+    @Column(name="rowspacing")
+    private int rowspacing;
+
+    @Column(name="columnspacing")
+    private int columnspacing;
+
     @Column(name="created")
     private Date created;
 
@@ -130,5 +142,37 @@ public class Slice {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public int getRowspacing() {
+        return rowspacing;
+    }
+
+    public void setRowspacing(int rowspacing) {
+        this.rowspacing = rowspacing;
+    }
+
+    public int getColumnspacing() {
+        return columnspacing;
+    }
+
+    public void setColumnspacing(int columnspacing) {
+        this.columnspacing = columnspacing;
     }
 }

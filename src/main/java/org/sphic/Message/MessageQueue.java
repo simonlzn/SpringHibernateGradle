@@ -32,7 +32,7 @@ public class MessageQueue {
 		try {
 			Map<String,String> userData = new ObjectMapper().readValue(messageString, Map.class);
 			System.out.println(userData.get("key"));
-			PubSub.Publish(userData.get("key"), messageString);
+			PubSub.Publish(userData.get("key"), userData.get("info"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
