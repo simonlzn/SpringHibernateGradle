@@ -55,9 +55,11 @@ public class Contour {
     }
 
     @ManyToOne(targetEntity = Structure.class)
+    @JoinColumn(name = "structure_id")
     private Structure structure;
 
     @ManyToOne(targetEntity = Slice.class)
+    @JoinColumn(name = "slice_id")
     private Slice slice;
 
 

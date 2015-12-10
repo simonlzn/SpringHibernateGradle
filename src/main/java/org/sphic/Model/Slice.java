@@ -11,8 +11,9 @@ public class Slice {
     @Column(name="id")
     private int sliceId;
 
-    @Column(name="series_id")
-    private int seriesId;
+    @ManyToOne(targetEntity = Series.class)
+    @JoinColumn(name = "series_id")
+    private Series series;
 
     @Column(name="view")
     private char view;
@@ -47,8 +48,7 @@ public class Slice {
     @Column(name="data")
     private String data;
 
-    @OneToMany(targetEntity = Contour.class)
-    @JoinColumn(name = "slice_id")
+    @OneToMany(targetEntity = Contour.class, mappedBy = "slice")
     private List<Contour> contours;
 
     public Slice() {
@@ -56,7 +56,6 @@ public class Slice {
 
     public Slice(int sliceId, int seriesId, Date created, Date updated, Date deleted, String comments, List<Contour> contours) {
         this.sliceId = sliceId;
-        this.seriesId = seriesId;
         this.created = created;
         this.updated = updated;
         this.deleted = deleted;
@@ -72,12 +71,12 @@ public class Slice {
         this.sliceId = sliceId;
     }
 
-    public int getSeriesId() {
-        return seriesId;
+    public Series getSeries() {
+        return series;
     }
 
-    public void setSeriesId(int seriesId) {
-        this.seriesId = seriesId;
+    public void setSeries(Series series) {
+        this.series = series;
     }
 
     public Date getCreated() {

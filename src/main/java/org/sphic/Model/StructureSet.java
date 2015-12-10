@@ -11,8 +11,9 @@ public class StructureSet {
 	@Column(name="id")
 	private int structureSetId;
 
-	@Column(name="series_id")
-	private int seriesId;
+	@ManyToOne(targetEntity = Series.class)
+	@JoinColumn(name = "series_id")
+	private Series series;
 
 	@Column(name="name")
 	private String name;
@@ -30,8 +31,7 @@ public class StructureSet {
 	private String description;
 
 
-	@OneToMany(targetEntity = Structure.class)
-	@JoinColumn(name = "structure_set_id")
+	@OneToMany(targetEntity = Structure.class, mappedBy = "structureSet")
 	private List<Structure> structures;
 
 	public StructureSet(){
@@ -40,7 +40,6 @@ public class StructureSet {
 
 	public StructureSet(int structureSetId, int seriesId, String name, Date created, Date updated, Date deleted, String description, List<Structure> structures) {
 		this.structureSetId = structureSetId;
-		this.seriesId = seriesId;
 		this.name = name;
 		this.created = created;
 		this.updated = updated;
@@ -57,12 +56,12 @@ public class StructureSet {
 		this.structureSetId = structureSetId;
 	}
 
-	public int getSeriesId() {
-		return seriesId;
+	public Series getSeries() {
+		return series;
 	}
 
-	public void setSeriesId(int seriesId) {
-		this.seriesId = seriesId;
+	public void setSeries(Series series) {
+		this.series = series;
 	}
 
 	public String getName() {

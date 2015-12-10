@@ -17,9 +17,6 @@ public class Patient {
 	@Column(name = "uuid")
 	private String uuid;
 
-	@Column(name = "id")
-	private int id;
-	
 	@Column(name = "name")
 	private String name;
 	
@@ -38,8 +35,7 @@ public class Patient {
 	@Column(name = "birthdate")
 	private Date birthdate;
 
-	@OneToMany(targetEntity = Study.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "patient_id")
+	@OneToMany(targetEntity = Study.class, cascade = CascadeType.ALL, mappedBy = "patient")
 	private List<Study> studies;
 
 	public Patient()
@@ -50,7 +46,6 @@ public class Patient {
 	public Patient(int id, String name, String c_name, String address,
 			String phone, int age, Date birthdate,/* String institutionName,*/ List<Study> studies) {
 		this.uuid = UUID.randomUUID().toString();
-		this.id = id;
 		this.name = name;
 		this.c_name = c_name;
 		this.address = address;
@@ -67,14 +62,6 @@ public class Patient {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {

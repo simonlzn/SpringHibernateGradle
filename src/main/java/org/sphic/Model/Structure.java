@@ -11,8 +11,9 @@ public class Structure {
     @Column(name="id")
     private int structureId;
 
-    @Column(name="structure_set_id")
-    private int structureSetId;
+    @ManyToOne(targetEntity = StructureSet.class)
+    @JoinColumn(name = "structure_set_id")
+    private StructureSet structureSet;
 
     @Column(name="name")
     private String name;
@@ -32,14 +33,12 @@ public class Structure {
     @Column(name="color_id")
     public int colorId;
 
-    @OneToMany(targetEntity = Contour.class)
-    @JoinColumn(name = "structure_id")
+    @OneToMany(targetEntity = Contour.class, mappedBy = "structure")
     private List<Contour> contours;
 
 
     public Structure(int structureId, int structureSetId, String name, Date created, Date updated, Date deleted, String description, List<Contour> contours) {
         this.structureId = structureId;
-        this.structureSetId = structureSetId;
         this.name = name;
         this.created = created;
         this.updated = updated;
@@ -59,12 +58,12 @@ public class Structure {
         this.structureId = structureId;
     }
 
-    public int getStructureSetId() {
-        return structureSetId;
+    public StructureSet getStructureSet() {
+        return structureSet;
     }
 
-    public void setStructureSetId(int structureSetId) {
-        this.structureSetId = structureSetId;
+    public void setStructureSet(StructureSet structureSet) {
+        this.structureSet = structureSet;
     }
 
     public String getName() {

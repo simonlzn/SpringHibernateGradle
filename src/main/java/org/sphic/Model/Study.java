@@ -10,9 +10,10 @@ public class Study {
 	@Id
 	@Column(name="id")
 	private int studyId;
-	
-	@Column(name="patient_id")
-	private String patientId;
+
+	@ManyToOne(targetEntity = Patient.class)
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
 
 	@Column(name="study_ins_uid")
 	private String study_ins_uid;
@@ -26,8 +27,8 @@ public class Study {
 	@Column(name="deleted")
 	private Date deleted;
 
-	@Column(name="comments")
-	private String comments;
+	@Column(name="name")
+	private String name;
 
 	@Column(name="description")
 	private String study_description;
@@ -38,40 +39,60 @@ public class Study {
 	@Column(name="accession_number")
 	private String accession_number;
 
-//	@Column(name="modalities")
-//	private String modalities;
-
     @Column(name = "institution_name")
 	private String institutionName;
 
-	@OneToMany(targetEntity = Series.class, cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = Series.class, cascade = CascadeType.ALL, mappedBy = "study")
 	private List<Series> series;
 	
 	public Study(){
 		
 	}
 
-	public Study(int studyId, String patientId, String studyInstantUID, Date created, Date updated, Date deleted, String comments, String description, String physician, String accessionNumber, String institutionName, List<Series> series) {
+	public Study(int studyId, String studyInstantUID, Date created, Date updated, Date deleted, String name, String description, String physician, String accessionNumber, String institutionName, List<Series> series) {
 		this.studyId = studyId;
-		this.patientId = patientId;
 		this.study_ins_uid = studyInstantUID;
 		this.created = created;
 		this.updated = updated;
 		this.deleted = deleted;
-		this.comments = comments;
+		this.name = name;
 		this.study_description = description;
 		this.physician = physician;
 		this.accession_number = accessionNumber;
 		this.institutionName = institutionName;
 		this.series = series;
 	}
-	
-	public String getComments() {
-		return comments;
+
+	public String getStudy_ins_uid() {
+		return study_ins_uid;
 	}
 
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setStudy_ins_uid(String study_ins_uid) {
+		this.study_ins_uid = study_ins_uid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getStudy_description() {
+		return study_description;
+	}
+
+	public void setStudy_description(String study_description) {
+		this.study_description = study_description;
+	}
+
+	public String getAccession_number() {
+		return accession_number;
+	}
+
+	public void setAccession_number(String accession_number) {
+		this.accession_number = accession_number;
 	}
 
 	public int getStudyId() {
@@ -82,12 +103,12 @@ public class Study {
 		this.studyId = studyId;
 	}
 
-	public String getPatientId() {
-		return patientId;
+	public Patient getPatient() {
+		return patient;
 	}
 
-	public void setPatientId(String patientId) {
-		this.patientId = patientId;
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	public String getPhysician() {
@@ -97,14 +118,6 @@ public class Study {
 	public void setPhysician(String physician) {
 		this.physician = physician;
 	}
-
-//	public String getModalities() {
-//		return modalities;
-//	}
-//
-//	public void setModalities(String modalities) {
-//		this.modalities = modalities;
-//	}
 
 	public List<Series> getSeries() {
 		return series;

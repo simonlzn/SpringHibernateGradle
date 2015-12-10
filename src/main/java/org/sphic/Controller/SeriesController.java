@@ -29,7 +29,7 @@ public class SeriesController {
 		Series s = (Series)session.load(Series.class, id);
 
 		Transaction tx = session.beginTransaction();
-		s.setComments(description);
+		s.setDescription(description);
 
 		session.save(s);
 		tx.commit();

@@ -11,9 +11,6 @@ public class Series {
     @Column(name = "id")
     private int seriesId;
 
-//    @Column(name = "study_id")
-//    private int studyId;
-
     @Column(name = "created")
     private Date created;
 
@@ -23,23 +20,20 @@ public class Series {
     @Column(name = "deleted")
     private Date deleted;
 
-    @Column(name = "comments")
-    private String comments;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "seriesInsUID")
     private String seriesInsUID;
 
-    @Column(name = "seriesNumber")
+    @Column(name = "series_number")
     private int seriesNumber;
 
-    @Column(name = "seriesDate")
-    private String seriesDate;
+    @Column(name = "series_date_time")
+    private Date seriesDateTime;
 
-    @Column(name = "seriesTime")
-    private String seriesTime;
-
-    @Column(name = "seriesDescrip")
-    private String seriesDescrip;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "modality")
     private String modality;
@@ -47,44 +41,45 @@ public class Series {
     @Column(name = "manufacturer")
     private String manufacturer;
 
-    @Column(name = "manufctModel")
+    @Column(name = "manufct_model")
     private String manufctModel;
 
-    @ManyToOne(targetEntity = Study.class)
+
+    @ManyToOne(targetEntity = Study.class, cascade = CascadeType.ALL)
     @JoinColumn(name ="study_id")
     private Study study;
 
-    @OneToMany(targetEntity = StructureSet.class)
-    @JoinColumn(name = "series_id")
+    @OneToMany(targetEntity = StructureSet.class, mappedBy = "series")
     private List<StructureSet> structureSets;
 
-    @OneToMany(targetEntity = Slice.class)
-    @JoinColumn(name = "series_id")
+    @OneToMany(targetEntity = Slice.class, mappedBy = "series")
     private List<StructureSet> slices;
 
     @OneToOne(mappedBy = "series", targetEntity = ImageSeries.class, cascade = CascadeType.ALL)
     private ImageSeries imageSeries;
 
-    @OneToMany(targetEntity = Images.class)
+    @OneToMany(targetEntity = Images.class, mappedBy = "series")
     private List<Images> Images;
 
     public Series() {
 
     }
 
-    public Series(int seriesId, int studyId, String seriesInsUID, int seriesNumber, String seriesDate, String seriesTime, String seriesDescrip,
-                  String modality, String manufacturer, String manufctModel,Date creted, Date updated, Date deleted, String comments) {
+    public Series(int seriesId, int studyId, String seriesInsUID, int seriesNumber, Date seriesDateTime, String description,
+                  String modality, String manufacturer, String manufctModel,Date created, Date updated, Date deleted, String name) {
 
         this.seriesId = seriesId;
-//        this.studyId = studyId;
         this.seriesInsUID = seriesInsUID;
         this.seriesNumber = seriesNumber;
-        this.seriesDate = seriesDate;
-        this.seriesTime = seriesTime;
-        this.seriesDescrip = seriesDescrip;
+        this.seriesDateTime = seriesDateTime;
+        this.description = description;
         this.modality = modality;
         this.manufacturer = manufacturer;
         this.manufctModel = manufctModel;
+        this.created = created;
+        this.updated = updated;
+        this.deleted = deleted;
+        this.name = name;
     }
 
     public Study getStudy() {
@@ -135,13 +130,6 @@ public class Series {
         this.deleted = deleted;
     }
 
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
 
     public String getSeriesInsUID() {
         return seriesInsUID;
@@ -159,28 +147,28 @@ public class Series {
         this.seriesNumber = seriesNumber;
     }
 
-    public String getSeriesDate() {
-        return seriesDate;
+    public String getName() {
+        return name;
     }
 
-    public void setSeriesDate(String seriesDate) {
-        this.seriesDate = seriesDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSeriesTime() {
-        return seriesTime;
+    public Date getSeriesDateTime() {
+        return seriesDateTime;
     }
 
-    public void setSeriesTime(String seriesTime) {
-        this.seriesTime = seriesTime;
+    public void setSeriesDateTime(Date seriesDateTime) {
+        this.seriesDateTime = seriesDateTime;
     }
 
-    public String getSeriesDescrip() {
-        return seriesDescrip;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSeriesDescrip(String seriesDescrip) {
-        this.seriesDescrip = seriesDescrip;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getModality() {

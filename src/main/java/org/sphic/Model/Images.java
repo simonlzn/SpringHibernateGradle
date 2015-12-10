@@ -23,8 +23,9 @@ public class Images {
 	@Column(name="image_pos_pat")
 	private String image_pos_pat;
 
-	@Column(name="series_id")
-	private int series_id;
+	@ManyToOne(targetEntity = Series.class)
+	@JoinColumn(name = "series_id")
+	private Series series;
 	
 	public Images(){
 		
@@ -36,7 +37,6 @@ public class Images {
 		this.ins_number = ins_number;
 		this.slice_location = slice_location;
 		this.image_pos_pat = image_pos_pat;
-		this.series_id = series_id;
 	}
 
 	public int getImageId() {
@@ -79,11 +79,11 @@ public class Images {
 		this.image_pos_pat = image_pos_pat;
 	}
 
-	public int getSeries_id() {
-		return series_id;
+	public Series getSeries() {
+		return series;
 	}
 
-	public void setSeries_id(int series_id) {
-		this.series_id = series_id;
+	public void setSeries(Series series) {
+		this.series = series;
 	}
 }

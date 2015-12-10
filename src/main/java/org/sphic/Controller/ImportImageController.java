@@ -59,7 +59,7 @@ public class ImportImageController{
 
                         List<Study> studies = new ArrayList<Study>();
                         studies.add(new Study(Integer.parseInt(dcmObj
-                                .getString(Tag.StudyID)), patientId,
+                                .getString(Tag.StudyID)),
                                 dcmObj.getString(Tag.StudyInstanceUID),
                                 dcmObj.getDate(Tag.StudyDateAndTime),
                                 dcmObj.getDate(Tag.StudyDateAndTime), null,null,

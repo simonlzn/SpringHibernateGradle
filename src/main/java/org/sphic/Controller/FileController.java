@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.Image;
 import java.io.*;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -52,11 +53,12 @@ public class FileController {
         Boolean HasBeenSavedToDatabase = false;
         String patientId =null;
         int SeriesID = 0;
+		Series nSeries = null;
         for (MultipartFile file : files) {
 
             if (!file.isEmpty()) {
                 try {
-                	Series nSeries = null;
+
 					if (!HasBeenSavedToDatabase) {
 						HasBeenSavedToDatabase = true;
 						InputStream is = file.getInputStream();
@@ -74,11 +76,11 @@ public class FileController {
 										dcmObj.getString(Tag.PatientAge), 0),
 								null, null);
 
-						patientId = (String) session.save(p);
+
 
 						List<Study> studies = new ArrayList<Study>();
 						Study nStudy = new Study(Integer.parseInt(dcmObj
-								.getString(Tag.StudyID)), patientId,
+								.getString(Tag.StudyID)),
 								dcmObj.getString(Tag.StudyInstanceUID),
 								dcmObj.getDate(Tag.StudyDateAndTime),
 								dcmObj.getDate(Tag.StudyDateAndTime), null,null,
@@ -91,8 +93,8 @@ public class FileController {
 								nStudy.getStudyId(),
 								dcmObj.getString(Tag.SeriesInstanceUID),
 								dcmObj.getInt(Tag.SeriesNumber,0),
-								dcmObj.getString(Tag.SeriesDate),
-								dcmObj.getString(Tag.SeriesTime),
+								/*new SimpleDateFormat("yyyyMMddhhmmss").parse(dcmObj.getString(Tag.SeriesDate)+
+								dcmObj.getString(Tag.SeriesTime))*/ new Date(),
 								dcmObj.getString(Tag.SeriesDescription),
 								dcmObj.getString(Tag.Modality),
 								dcmObj.getString(Tag.Manufacturer),
@@ -136,12 +138,14 @@ public class FileController {
                         imageSeries.setSeries(nSeries);
                         nSeries.setImageSeries(imageSeries);
 						nSeries.setStudy(nStudy);
-                        session.saveOrUpdate(nSeries);
+//                        session.saveOrUpdate(nSeries);
 						series.add(nSeries);
 						nStudy.setSeries(series);
+						nStudy.setPatient(p);
 						studies.add(nStudy);
 						p.setStudies(studies);
-						System.out.println(patientId);
+						patientId = (String) session.save(p);
+//						System.out.println(patientId);
 						tx1.commit();
 						is.close();
 					}
@@ -160,6 +164,7 @@ public class FileController {
 										.getString(Tag.InstanceNumber)), dcmObj
 										.getString(Tag.ImagePositionPatient),SeriesID);
 //						nImage.setSeries(nSeries);
+						nImage.setSeries(nSeries);
 						session.saveOrUpdate(nImage);
 						tx1.commit();
 						is.close();
