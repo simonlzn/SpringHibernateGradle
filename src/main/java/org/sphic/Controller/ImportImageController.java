@@ -47,14 +47,24 @@ public class ImportImageController{
 
                         Session session = HibernateUtil.currentSession();
                         Transaction tx1 = session.beginTransaction();
-                        Patient p = new Patient(Integer.getInteger(dcmObj.getString(Tag.PatientID), 0) , dcmObj.getString(Tag.PatientName), "", dcmObj.getString(Tag.PatientAddress), "", Integer.getInteger(dcmObj.getString(Tag.PatientAge), 0), null,dcmObj.getString(Tag.InstitutionName), null);
+                        Patient p = new Patient(Integer.getInteger(
+                                dcmObj.getString(Tag.PatientID), 0),
+                                dcmObj.getString(Tag.PatientName), "",
+                                dcmObj.getString(Tag.PatientAddress), "",
+                                Integer.getInteger(
+                                        dcmObj.getString(Tag.PatientAge), 0),null,null);
 
 
                         patientId = (String) session.save(p);
 
                         List<Study> studies = new ArrayList<Study>();
-                        studies.add(new Study(Integer.parseInt(dcmObj.getString(Tag.StudyID)), patientId, dcmObj.getDate(Tag.StudyDateAndTime),dcmObj.getDate(Tag.StudyDateAndTime),null, dcmObj.getString(Tag.StudyDescription), "", dcmObj.getString(Tag.Modality),null));
-
+                        studies.add(new Study(Integer.parseInt(dcmObj
+                                .getString(Tag.StudyID)), patientId,
+                                dcmObj.getString(Tag.StudyInstanceUID),
+                                dcmObj.getDate(Tag.StudyDateAndTime),
+                                dcmObj.getDate(Tag.StudyDateAndTime), null,null,
+                                dcmObj.getString(Tag.StudyDescription), dcmObj.getString(Tag.ReferringPhysicianName),
+                                dcmObj.getString(Tag.AccessionNumber), dcmObj.getString(Tag.InstitutionName), null));
                         p.setStudies(studies);
                         System.out.println(patientId);
                         tx1.commit();

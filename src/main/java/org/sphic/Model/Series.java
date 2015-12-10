@@ -5,178 +5,238 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="series")
+@Table(name = "series")
 public class Series {
-	@Id
-	@Column(name="id")
-	private int seriesId;
-	
-	@Column(name="study_id")
-	private int studyId;	
-	
-	@Column(name="created")
-	private Date created;
+    @Id
+    @Column(name = "id")
+    private int seriesId;
 
-	@Column(name="updated")
-	private Date updated;
+//    @Column(name = "study_id")
+//    private int studyId;
 
-	@Column(name="deleted")
-	private Date deleted;
-	
-	@Column(name="seriesInsUID")
-	private String seriesInsUID;
-	
-	@Column(name="seriesNumber")
-	private int seriesNumber;
-	
-	@Column(name="seriesDate")
-	private String seriesDate;
-	
-	@Column(name="seriesTime")
-	private String seriesTime;
-	
-	@Column(name="seriesDescrip")
-	private String seriesDescrip;
-	
-	@Column(name="modality")
-	private String modality;
-	
-	@Column(name="manufacturer")
-	private String manufacturer;
-	
-	@Column(name="manufctModel")
-	private String manufctModel;
-	
-	@Column(name="physician")
-	private String physician;
-	
-	@Column(name="comments")
-	private String comments;
-	
-	@Column(name="institution")
-	private String institution;
-	
-	@OneToMany(targetEntity = StructureSet.class)
-	@JoinColumn(name = "series_id")
-	private List<StructureSet> structureSets;
+    @Column(name = "created")
+    private Date created;
 
-	@OneToMany(targetEntity = Slice.class)
-	@JoinColumn(name = "series_id")
-	private List<StructureSet> slices;
-	
-	@OneToOne(mappedBy = "series", targetEntity = ImageSeries.class, cascade = CascadeType.ALL)
-	private ImageSeries imageSeries;
+    @Column(name = "updated")
+    private Date updated;
 
-	@OneToMany(targetEntity = Images.class)
-	@JoinColumn(name = "series_id")
-	private List<Images> Images;
-	
-	public Series(){
-		
-	}
-	
-	public Series(int seriesId, int studyId, String seriesInsUID, String seriesDate, String seriesTime, String seriesDescrip,
-			String modality, String manufacturer, String physician, String manufctModel){
-		
-		this.seriesId = seriesId;
-		this.studyId = studyId;
-		this.seriesInsUID = seriesInsUID;
-		this.seriesDate = seriesDate;
-		this.seriesTime = seriesTime;
-		this.modality = modality;
-		this.manufacturer = manufacturer;
-		this.physician = physician;
-		this.manufctModel = manufctModel;	
-	}
+    @Column(name = "deleted")
+    private Date deleted;
 
-	public int getSeriesId() {
-		return seriesId;
-	}
+    @Column(name = "comments")
+    private String comments;
 
-	public void setSeriesId(int seriesId) {
-		this.seriesId = seriesId;
-	}
+    @Column(name = "seriesInsUID")
+    private String seriesInsUID;
 
-	public int getStudyId() {
-		return studyId;
-	}
+    @Column(name = "seriesNumber")
+    private int seriesNumber;
 
-	public void setStudyId(int studyId) {
-		this.studyId = studyId;
-	}
+    @Column(name = "seriesDate")
+    private String seriesDate;
 
-	public String getComments() {
-		return comments;
-	}
+    @Column(name = "seriesTime")
+    private String seriesTime;
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    @Column(name = "seriesDescrip")
+    private String seriesDescrip;
 
-	public String getInstitution() {
-		return institution;
-	}
+    @Column(name = "modality")
+    private String modality;
 
-	public void setInstitution(String institution) {
-		this.institution = institution;
-	}
+    @Column(name = "manufacturer")
+    private String manufacturer;
 
-	public String getModality() {
-		return modality;
-	}
+    @Column(name = "manufctModel")
+    private String manufctModel;
 
-	public void setModality(String modality) {
-		this.modality = modality;
-	}
+    @ManyToOne(targetEntity = Study.class)
+    @JoinColumn(name ="study_id")
+    private Study study;
 
-	public List<StructureSet> getStructureSets() {
-		return structureSets;
-	}
+    @OneToMany(targetEntity = StructureSet.class)
+    @JoinColumn(name = "series_id")
+    private List<StructureSet> structureSets;
 
-	public void setStructureSets(List<StructureSet> structureSets) {
-		this.structureSets = structureSets;
-	}
+    @OneToMany(targetEntity = Slice.class)
+    @JoinColumn(name = "series_id")
+    private List<StructureSet> slices;
 
-	public List<StructureSet> getSlices() {
-		return slices;
-	}
+    @OneToOne(mappedBy = "series", targetEntity = ImageSeries.class, cascade = CascadeType.ALL)
+    private ImageSeries imageSeries;
 
-	public void setSlices(List<StructureSet> slices) {
-		this.slices = slices;
-	}
+    @OneToMany(targetEntity = Images.class)
+    @JoinColumn(name = "series_id")
+    private List<Images> Images;
 
-	public ImageSeries getImageSeries(){ return this.imageSeries; }
+    public Series() {
 
-	public void setImageSeries(ImageSeries imageSeries){
-		this.imageSeries = imageSeries;
-	}
+    }
 
-	public Date getCreated() {
-		return created;
-	}
+    public Series(int seriesId, int studyId, String seriesInsUID, int seriesNumber, String seriesDate, String seriesTime, String seriesDescrip,
+                  String modality, String manufacturer, String manufctModel,Date creted, Date updated, Date deleted, String comments) {
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+        this.seriesId = seriesId;
+//        this.studyId = studyId;
+        this.seriesInsUID = seriesInsUID;
+        this.seriesNumber = seriesNumber;
+        this.seriesDate = seriesDate;
+        this.seriesTime = seriesTime;
+        this.seriesDescrip = seriesDescrip;
+        this.modality = modality;
+        this.manufacturer = manufacturer;
+        this.manufctModel = manufctModel;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public Study getStudy() {
+        return study;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
+    public void setStudy(Study study) {
+        this.study = study;
+    }
 
-	public Date getDeleted() {
-		return deleted;
-	}
+    public int getSeriesId() {
+        return seriesId;
+    }
 
-	public void setDeleted(Date deleted) {
-		this.deleted = deleted;
-	}
+    public void setSeriesId(int seriesId) {
+        this.seriesId = seriesId;
+    }
 
-	public List<Images> getImages() { return this.Images; }
+//    public int getStudyId() {
+//        return studyId;
+//    }
+//
+//    public void setStudyId(int studyId) {
+//        this.studyId = studyId;
+//    }
 
-	public void setImages(List<Images> images) { this.Images = images;}
+    public Date getCreated() {
+        return created;
+    }
 
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public Date getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Date deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getSeriesInsUID() {
+        return seriesInsUID;
+    }
+
+    public void setSeriesInsUID(String seriesInsUID) {
+        this.seriesInsUID = seriesInsUID;
+    }
+
+    public int getSeriesNumber() {
+        return seriesNumber;
+    }
+
+    public void setSeriesNumber(int seriesNumber) {
+        this.seriesNumber = seriesNumber;
+    }
+
+    public String getSeriesDate() {
+        return seriesDate;
+    }
+
+    public void setSeriesDate(String seriesDate) {
+        this.seriesDate = seriesDate;
+    }
+
+    public String getSeriesTime() {
+        return seriesTime;
+    }
+
+    public void setSeriesTime(String seriesTime) {
+        this.seriesTime = seriesTime;
+    }
+
+    public String getSeriesDescrip() {
+        return seriesDescrip;
+    }
+
+    public void setSeriesDescrip(String seriesDescrip) {
+        this.seriesDescrip = seriesDescrip;
+    }
+
+    public String getModality() {
+        return modality;
+    }
+
+    public void setModality(String modality) {
+        this.modality = modality;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getManufctModel() {
+        return manufctModel;
+    }
+
+    public void setManufctModel(String manufctModel) {
+        this.manufctModel = manufctModel;
+    }
+
+    public List<StructureSet> getStructureSets() {
+        return structureSets;
+    }
+
+    public void setStructureSets(List<StructureSet> structureSets) {
+        this.structureSets = structureSets;
+    }
+
+    public List<StructureSet> getSlices() {
+        return slices;
+    }
+
+    public void setSlices(List<StructureSet> slices) {
+        this.slices = slices;
+    }
+
+    public ImageSeries getImageSeries() {
+        return imageSeries;
+    }
+
+    public void setImageSeries(ImageSeries imageSeries) {
+        this.imageSeries = imageSeries;
+    }
+
+    public List<org.sphic.Model.Images> getImages() {
+        return Images;
+    }
+
+    public void setImages(List<org.sphic.Model.Images> images) {
+        Images = images;
+    }
 }

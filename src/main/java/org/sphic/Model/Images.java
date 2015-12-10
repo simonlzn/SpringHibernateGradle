@@ -30,39 +30,60 @@ public class Images {
 		
 	}
 
-	public Images(int imageId, String sop_ins_uid, double ins_number, int slice_location, String image_pos_pat, int SeriesID ) {
-		super();
+	public Images(int imageId, String sop_ins_uid, double ins_number, int slice_location, String image_pos_pat, int series_id) {
 		this.imageId = imageId;
 		this.sop_ins_uid = sop_ins_uid;
 		this.ins_number = ins_number;
 		this.slice_location = slice_location;
 		this.image_pos_pat = image_pos_pat;
-		this.series_id = SeriesID;
-	}
-//	public int getSeriesId() {
-//		return series_id;
-//	}
-//
-//	public void setSeriesId(int seriesId) {
-//		this.series_id = seriesId;
-//	}
-
-	public String getSOPInstanceUID() {
-		return this.sop_ins_uid;
+		this.series_id = series_id;
 	}
 
-	public double getSliceThickness() {
-		return this.ins_number;
+	public int getImageId() {
+		return imageId;
 	}
 
-	public int getSliceLocation() {
-		return this.slice_location;
+	public void setImageId(int imageId) {
+		this.imageId = imageId;
 	}
 
-	public String getPatientImageLocation() {
-		return this.image_pos_pat;
+	public String getSop_ins_uid() {
+		return sop_ins_uid;
 	}
 
-	public int getSeries_id(){ return this.series_id; }
-	
+	public void setSop_ins_uid(String sop_ins_uid) {
+		this.sop_ins_uid = sop_ins_uid;
+	}
+
+	public double getIns_number() {
+		return ins_number;
+	}
+
+	public void setIns_number(double ins_number) {
+		this.ins_number = ins_number;
+	}
+
+	public int getSlice_location() {
+		return slice_location;
+	}
+
+	public void setSlice_location(int slice_location) {
+		this.slice_location = slice_location;
+	}
+
+	public String getImage_pos_pat() {
+		return image_pos_pat;
+	}
+
+	public void setImage_pos_pat(String image_pos_pat) {
+		this.image_pos_pat = image_pos_pat;
+	}
+
+	public int getSeries_id() {
+		return series_id;
+	}
+
+	public void setSeries_id(int series_id) {
+		this.series_id = series_id;
+	}
 }

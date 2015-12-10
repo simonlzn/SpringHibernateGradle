@@ -2,7 +2,6 @@
 /build/
 .gradle/
 .idea/
-TimpsPOC.iml
 .project
 .classpath
 .settings/org.eclipse.jdt.core.prefs
