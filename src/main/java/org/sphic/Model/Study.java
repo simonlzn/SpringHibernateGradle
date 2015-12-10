@@ -45,7 +45,6 @@ public class Study {
 	private String institutionName;
 
 	@OneToMany(targetEntity = Series.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "study_id")
 	private List<Series> series;
 	
 	public Study(){

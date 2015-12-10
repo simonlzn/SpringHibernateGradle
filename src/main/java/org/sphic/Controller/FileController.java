@@ -179,8 +179,6 @@ public class FileController {
                         stream.close();
 
                         System.out.println(name + " is uploaded!");
-
-
                     }
 
                 } catch (Exception e) {

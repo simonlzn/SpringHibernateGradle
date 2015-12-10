@@ -66,7 +66,6 @@ public class Series {
     private ImageSeries imageSeries;
 
     @OneToMany(targetEntity = Images.class)
-    @JoinColumn(name = "series_id")
     private List<Images> Images;
 
     public Series() {
