@@ -135,6 +135,7 @@ public class FileController {
 										.getString(Tag.InstanceNumber)),
 								String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),SeriesID);
 
+						session.saveOrUpdate(nImage);
                         imageSeries.setSeries(nSeries);
                         nSeries.setImageSeries(imageSeries);
 						nSeries.setStudy(nStudy);
@@ -161,8 +162,8 @@ public class FileController {
 								dcmObj.getString(Tag.SOPInstanceUID), dcmObj
 										.getDouble(Tag.SliceLocation, 0.0),
 								Integer.parseInt(dcmObj
-										.getString(Tag.InstanceNumber)), dcmObj
-										.getString(Tag.ImagePositionPatient),SeriesID);
+										.getString(Tag.InstanceNumber)),
+								String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),SeriesID);
 //						nImage.setSeries(nSeries);
 						nImage.setSeries(nSeries);
 						session.saveOrUpdate(nImage);
