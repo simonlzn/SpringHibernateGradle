@@ -9,6 +9,7 @@ import java.util.List;
 public class Slice {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int sliceId;
 
     @ManyToOne(targetEntity = Series.class)
@@ -21,17 +22,17 @@ public class Slice {
     @Column(name="number")
     private int number;
 
-    @Column(name="row")
+    @Column(name="rows")
     private int row;
 
-    @Column(name="column")
+    @Column(name="columns")
     private int column;
 
     @Column(name="rowspacing")
-    private int rowspacing;
+    private double rowspacing;
 
     @Column(name="columnspacing")
-    private int columnspacing;
+    private double columnspacing;
 
     @Column(name="created")
     private Date created;
@@ -54,13 +55,18 @@ public class Slice {
     public Slice() {
     }
 
-    public Slice(int sliceId, int seriesId, Date created, Date updated, Date deleted, String comments, List<Contour> contours) {
-        this.sliceId = sliceId;
+    public Slice(char view, int number, int row, int column, double rowspacing, double columnspacing, Date created, Date updated, Date deleted, String comments, String data) {
+        this.view = view;
+        this.number = number;
+        this.row = row;
+        this.column = column;
+        this.rowspacing = rowspacing;
+        this.columnspacing = columnspacing;
         this.created = created;
         this.updated = updated;
         this.deleted = deleted;
         this.comments = comments;
-        this.contours = contours;
+        this.data = data;
     }
 
     public int getSliceId() {
@@ -159,7 +165,7 @@ public class Slice {
         this.column = column;
     }
 
-    public int getRowspacing() {
+    public double getRowspacing() {
         return rowspacing;
     }
 
@@ -167,7 +173,7 @@ public class Slice {
         this.rowspacing = rowspacing;
     }
 
-    public int getColumnspacing() {
+    public double getColumnspacing() {
         return columnspacing;
     }
 
