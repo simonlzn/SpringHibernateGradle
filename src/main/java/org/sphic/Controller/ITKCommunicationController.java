@@ -49,16 +49,14 @@ public class ITKCommunicationController {
 //	}
 
 	@RequestMapping(value = "/call", method = RequestMethod.GET)
-	public DeferredResult<String> Info(@RequestParam Map func, final HttpServletRequest request, final HttpServletResponse response) throws JsonProcessingException {
+	public DeferredResult<Object> Info(@RequestParam Map func, final HttpServletRequest request, final HttpServletResponse response) throws JsonProcessingException {
 
-//		if (func.get("func").toString().compareTo("slicing") == 0)
-//			response.setHeader("Cache-Control", "private, max-age=86400");
 		String channel = request.getRequestURI()+"?"+request.getQueryString();
 		func.put("key", channel);
 		System.out.println(func);
 		messageQueue.Send(new ObjectMapper().writeValueAsString(func), func.get("id").toString());
 
-		final DeferredResult<String> result = new DeferredResult<String>();
+		final DeferredResult<Object> result = new DeferredResult<Object>();
 		result.onTimeout(new Runnable() {
 			@Override
 			public void run() {
@@ -69,7 +67,7 @@ public class ITKCommunicationController {
 		subscriber =
 			new Subscriber(channel){
 				@Override
-				public void Callback(String message){
+				public void Callback(Object message){
 					try {
 						result.setResult(message);
 					}catch (Exception e){
@@ -84,24 +82,24 @@ public class ITKCommunicationController {
 	}
 
 	// $.ajax({url: 'http://localhost:8080/itk/call?func=render', type:'POST', data:  {seeds : ["(1,1,1)","(2,2,2)","(3,3,3)"]}, success:function(ret){console.log(ret)}})
-	@RequestMapping(value = "/call", method = RequestMethod.POST)
-	public DeferredResult<String> Info(@RequestParam(value = "func" , defaultValue = "" ) String func, final HttpServletRequest request, @RequestParam(value = "seeds[]" , defaultValue = "" ) String[] seeds) throws JsonProcessingException {
-		HashMap params = new HashMap<String, List<String>>();
-		params.put("func", func);
-		params.put("seeds", seeds);
-		String channel = request.getRequestURI();
-		messageQueue.Send(new ObjectMapper().writeValueAsString(params), "2");
-		final DeferredResult<String> result = new DeferredResult<String>();
-		subscriber =
-				new Subscriber(channel){
-					@Override
-					public void Callback(String message){
-						result.setResult(message);
-						PubSub.Unsubscribe(this.channel, subscriber);
-					}
-				};
-		PubSub.Subscribe(channel, subscriber);
-		return result;
-	}
+//	@RequestMapping(value = "/call", method = RequestMethod.POST)
+//	public DeferredResult<String> Info(@RequestParam(value = "func" , defaultValue = "" ) String func, final HttpServletRequest request, @RequestParam(value = "seeds[]" , defaultValue = "" ) String[] seeds) throws JsonProcessingException {
+//		HashMap params = new HashMap<String, List<String>>();
+//		params.put("func", func);
+//		params.put("seeds", seeds);
+//		String channel = request.getRequestURI();
+//		messageQueue.Send(new ObjectMapper().writeValueAsString(params), "2");
+//		final DeferredResult<String> result = new DeferredResult<String>();
+//		subscriber =
+//				new Subscriber(channel){
+//					@Override
+//					public void Callback(String message){
+//						result.setResult(message);
+//						PubSub.Unsubscribe(this.channel, subscriber);
+//					}
+//				};
+//		PubSub.Subscribe(channel, subscriber);
+//		return result;
+//	}
 
 }

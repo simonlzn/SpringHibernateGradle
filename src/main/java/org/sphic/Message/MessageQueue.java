@@ -1,10 +1,8 @@
 package org.sphic.Message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.sphic.util.PubSub;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.support.converter.JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,15 +28,12 @@ public class MessageQueue {
 		String messageString = new String(message, "UTF-8");
 		System.out.println("Received <" + messageString + ">");
 		try {
-			Map<String,String> userData = new ObjectMapper().readValue(messageString, Map.class);
-			System.out.println(userData.get("key"));
-			PubSub.Publish(userData.get("key"), userData.get("info"));
+			Map<String, Object> userData = new ObjectMapper().readValue(messageString, Map.class);
+			PubSub.Publish(userData.get("key").toString(), userData.get("info"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
-
 	}
 
 }
+

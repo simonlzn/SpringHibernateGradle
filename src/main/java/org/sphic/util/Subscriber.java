@@ -7,5 +7,5 @@ public abstract class Subscriber{
         this.channel = channel;
     }
 
-    public abstract void Callback(String message);
+    public abstract void Callback(Object message);
 }

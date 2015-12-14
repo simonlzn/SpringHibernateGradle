@@ -5,7 +5,7 @@ import java.util.*;
 public class PubSub {
     private static HashMap<String, Set<Subscriber>> subscribers = new HashMap<String, Set<Subscriber>>();
 
-    public static void Publish(String channel, String message) {
+    public static void Publish(String channel, Object message) {
         Set<Subscriber> subscribersInChannel = subscribers.get(channel);
 
         if (subscribersInChannel == null)

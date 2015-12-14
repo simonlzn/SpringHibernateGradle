@@ -72,7 +72,7 @@ public class SliceController {
                 }
 
 
-                result.setResult(ret);
+                result.setResult(ret.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }

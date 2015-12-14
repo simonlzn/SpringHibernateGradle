@@ -180,4 +180,23 @@ public class Slice {
     public void setColumnspacing(int columnspacing) {
         this.columnspacing = columnspacing;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "sliceId:" + sliceId +
+                ", view:" + view +
+                ", number:" + number +
+                ", row:" + row +
+                ", column:" + column +
+                ", rowspacing:" + rowspacing +
+                ", columnspacing:" + columnspacing +
+                ", created:" + created +
+                ", updated:" + updated +
+                ", deleted:" + deleted +
+                ", comments:'" + comments + '\'' +
+                ", data:'" + data + '\'' +
+                ", contours:" + contours +
+                '}';
+    }
 }

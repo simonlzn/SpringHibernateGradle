@@ -50,6 +50,7 @@ public class FileController {
     }
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody String Upload(@RequestParam("file") MultipartFile[] files) {
+
         Boolean HasBeenSavedToDatabase = false;
         String patientId =null;
         int SeriesID = 0;
