@@ -1,11 +1,14 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="slice")
+@JsonIgnoreProperties(value={"series"})
 public class Slice {
     @Id
     @Column(name="id")

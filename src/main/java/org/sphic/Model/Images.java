@@ -1,11 +1,14 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name="images")
+@JsonIgnoreProperties(value={"series"})
 public class Images {
 	@Id
 	@Column(name="id")
@@ -31,7 +34,7 @@ public class Images {
 		
 	}
 
-	public Images(int imageId, String sop_ins_uid, double ins_number, int slice_location, String image_pos_pat, int series_id) {
+	public Images(int imageId, String sop_ins_uid, double ins_number, int slice_location, String image_pos_pat) {
 		this.imageId = imageId;
 		this.sop_ins_uid = sop_ins_uid;
 		this.ins_number = ins_number;

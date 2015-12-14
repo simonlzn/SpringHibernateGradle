@@ -1,10 +1,13 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="contour")
+@JsonIgnoreProperties(value={"structure","slice"})
 public class Contour {
 
     @Id

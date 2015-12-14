@@ -1,10 +1,13 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name="image_series")
+@JsonIgnoreProperties(value={"series"})
 public class ImageSeries {
 	@Id
 	@Column(name="id")
