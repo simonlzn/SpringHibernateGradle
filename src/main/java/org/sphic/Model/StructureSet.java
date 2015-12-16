@@ -12,6 +12,7 @@ import java.util.List;
 public class StructureSet {
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int structureSetId;
 
 	@ManyToOne(targetEntity = Series.class, cascade = CascadeType.ALL)
@@ -34,7 +35,7 @@ public class StructureSet {
 	private String description;
 
 
-	@OneToMany(targetEntity = Structure.class, mappedBy = "structureSet")
+	@OneToMany(targetEntity = Structure.class, mappedBy = "structureSet", cascade = CascadeType.ALL)
 	private List<Structure> structures;
 
 	public StructureSet(){
