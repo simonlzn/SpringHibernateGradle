@@ -39,7 +39,7 @@ public class SliceController {
         response.setHeader("Cache-Control", "private, max-age=86400");
         Session session = HibernateUtil.currentSession();
         Criteria cr = session.createCriteria(Slice.class).add(Restrictions.eq("series.id", seriesId)).add(Restrictions.eq("view", view)).add(Restrictions.eq("number", number));
-        List sliceList = cr.list();
+        List<Slice> sliceList = cr.list();
         final DeferredResult<String> result = new DeferredResult<String>();
         result.onTimeout(new Runnable() {
             @Override
@@ -63,7 +63,7 @@ public class SliceController {
                 List<Map> userDatas = new ObjectMapper().readValue(ret, ArrayList.class);
                 for (Map userData : userDatas) {
                     if (userData.size() > 0) {
-                        Slice slice = new Slice('T', number, Integer.parseInt(userData.get("row").toString()),Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()),null,0,0,null, new Date(), new Date(), null, "", userData.get("data").toString(), null);
+                        Slice slice = new Slice('T', number, Integer.parseInt(userData.get("row").toString()), Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()), null, 0, 0, null, new Date(), new Date(), null, "", userData.get("data").toString(), null);
                         System.out.println(userData);
                         Series series = dao.get(Series.class, seriesId);
                         slice.setSeries(series);
@@ -76,8 +76,31 @@ public class SliceController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (sliceList.get(0).getData() == null) {
+            Slice slice = sliceList.get(0);
+            try {
+                String views = "";
+                if (view == 'T')
+                    views += number + ",-1,-1";
+
+                String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" + seriesId;
+                String ret = getHTTPResponse(url).toString();
+
+                List<Map> userDatas = new ObjectMapper().readValue(ret, ArrayList.class);
+                for (Map userData : userDatas) {
+                    if (userData.size() > 0) {
+                        slice.setData(userData.get("data").toString());
+                        Series series = dao.get(Series.class, seriesId);
+                        slice.setSeries(series);
+                        dao.save(slice);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } else {
-            Slice slice = (Slice) sliceList.get(0);
+            Slice slice = sliceList.get(0);
             result.setResult(slice.toString());
         }
 

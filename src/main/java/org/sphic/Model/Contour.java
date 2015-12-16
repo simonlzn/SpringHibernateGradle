@@ -18,29 +18,6 @@ public class Contour {
     @Column(name="name")
     private String name;
 
-//    @Column(name="structure_id")
-//    private int structureId;
-//
-//    public int getStructureId() {
-//        return structureId;
-//    }
-//
-//    public void setStructureId(int structureId) {
-//        this.structureId = structureId;
-//    }
-//
-//    @Column(name="slice_id")
-//    private int sliceId;
-//
-//    public int getSliceId() {
-//        return sliceId;
-//    }
-//
-//    public void setSliceId(int sliceId) {
-//        this.sliceId = sliceId;
-//    }
-
-
     public Structure getStructure() {
         return structure;
     }
@@ -115,7 +92,6 @@ public class Contour {
 
     public Contour(String SOPInstanceUID, Date created, Date updated, Date deleted, String description,
                    String contourData) {
-
         this.SOPInstanceUID = SOPInstanceUID;
         this.created = created;
         this.updated = updated;
