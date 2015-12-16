@@ -35,12 +35,12 @@ public class SliceController {
     }
 
     @RequestMapping(value = "/{seriesId}/{view}/{number}", method = RequestMethod.GET)
-    public DeferredResult<String> Get(@PathVariable int seriesId, @PathVariable char view, @PathVariable int number, final HttpServletResponse response) {
+    public DeferredResult Get(@PathVariable int seriesId, @PathVariable char view, @PathVariable int number, final HttpServletResponse response) {
         response.setHeader("Cache-Control", "private, max-age=86400");
         Session session = HibernateUtil.currentSession();
         Criteria cr = session.createCriteria(Slice.class).add(Restrictions.eq("series.id", seriesId)).add(Restrictions.eq("view", view)).add(Restrictions.eq("number", number));
         List<Slice> sliceList = cr.list();
-        final DeferredResult<String> result = new DeferredResult<String>();
+        final DeferredResult result = new DeferredResult();
         result.onTimeout(new Runnable() {
             @Override
             public void run() {
@@ -56,10 +56,13 @@ public class SliceController {
                 {
                     case  'T':
                         views += number + ",-1,-1";
+                        break;
                     case 'S':
                         views += "-1,-1,"+number;
+                        break;
                     case 'C':
                         views += "-1," + number + ",-1";
+                        break;
                 }
 
                 String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" + seriesId;
@@ -79,7 +82,7 @@ public class SliceController {
                 }
 
 
-                result.setResult(ret.toString());
+                result.setResult(ret);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -91,10 +94,13 @@ public class SliceController {
                 {
                     case  'T':
                         views += number + ",-1,-1";
+                        break;
                     case 'S':
                         views += "-1,-1,"+number;
+                        break;
                     case 'C':
                         views += "-1," + number + ",-1";
+                        break;
                 }
 
                 String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" + seriesId;
@@ -109,13 +115,14 @@ public class SliceController {
                         dao.save(slice);
                     }
                 }
+                result.setResult(ret);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         } else {
             Slice slice = sliceList.get(0);
-            result.setResult(slice.toString());
+            result.setResult(slice);
         }
 
         return result;
