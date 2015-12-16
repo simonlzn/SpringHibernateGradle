@@ -16,7 +16,7 @@ public class SliceDao extends Dao{
     public List<Slice> getByStructureId(int id){
         Session session = HibernateUtil.currentSession();
 
-        Criteria criteria = session.createCriteria(Slice.class).add(Restrictions.eq("structure.id", id));
+        Criteria criteria = session.createCriteria(Slice.class).add(Restrictions.eq("series.id", id));
 
         return criteria.list();
     }

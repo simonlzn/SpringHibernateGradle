@@ -3,10 +3,12 @@ package org.sphic.Service;
 import org.sphic.Model.DAO.SliceDao;
 import org.sphic.Model.Slice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
 
+@Component
 public class SliceService {
     private SliceDao sliceDao;
 

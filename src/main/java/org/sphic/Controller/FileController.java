@@ -17,6 +17,7 @@ import org.sphic.Model.StructureSet;
 import org.sphic.Model.Structure;
 import org.sphic.Model.Contour;
 import org.sphic.Model.Slice;
+import org.sphic.Service.SliceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -39,11 +40,13 @@ import java.util.*;
 @RequestMapping("/file")
 public class FileController {
     private final MessageQueue messageQueue;
+	private SliceService sliceService;
 
-    @Autowired
-    public FileController(MessageQueue messageQueue) {
+	@Autowired
+    public FileController(MessageQueue messageQueue, SliceService sliceService) {
         this.messageQueue = messageQueue;
-    }
+		this.sliceService = sliceService;
+	}
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public @ResponseBody String download( final HttpServletResponse response) throws InterruptedException {
@@ -231,8 +234,11 @@ public class FileController {
 
 						nStructureSet.setStructures(structures);
 						structureSet.add(nStructureSet);
-						if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID)))
-							seriesMap.get(dcmObj.getString(Tag.SeriesInstanceUID)).setStructureSets(structureSet);
+						if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID))) {
+							Series series = seriesMap.get(dcmObj.getString(Tag.SeriesInstanceUID));
+							series.setStructureSets(structureSet);
+							sliceService.SortAndUpdateSlices(series.getSeriesId());
+						}
 						tx1.commit();
 						is.close();
 					}
