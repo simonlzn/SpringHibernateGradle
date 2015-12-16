@@ -1,11 +1,14 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="structure_set")
+@JsonIgnoreProperties(value={"series"})
 public class StructureSet {
 	@Id
 	@Column(name="id")

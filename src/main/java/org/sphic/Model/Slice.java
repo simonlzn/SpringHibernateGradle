@@ -1,14 +1,18 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="slice")
+@JsonIgnoreProperties(value={"series"})
 public class Slice {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int sliceId;
 
     @ManyToOne(targetEntity = Series.class)
@@ -21,17 +25,17 @@ public class Slice {
     @Column(name="number")
     private int number;
 
-    @Column(name="row")
+    @Column(name="rows")
     private int row;
 
-    @Column(name="column")
+    @Column(name="columns")
     private int column;
 
     @Column(name="rowspacing")
-    private int rowspacing;
+    private double rowspacing;
 
     @Column(name="columnspacing")
-    private int columnspacing;
+    private double columnspacing;
 
     @Column(name="sop_ins_uid")
     private String sop_ins_uid;
@@ -66,17 +70,27 @@ public class Slice {
     public Slice() {
     }
 
+<<<<<<< HEAD
     public Slice(String sop_ins_uid, int ins_number,  double slice_location, String image_pos_pat, Date created, Date updated, Date deleted, String comments, List<Contour> contours) {
 
         this.sop_ins_uid = sop_ins_uid;
         this.ins_number = ins_number;
         this.slice_location = slice_location;
         this.image_pos_pat = image_pos_pat;
+=======
+    public Slice(char view, int number, int row, int column, double rowspacing, double columnspacing, Date created, Date updated, Date deleted, String comments, String data) {
+        this.view = view;
+        this.number = number;
+        this.row = row;
+        this.column = column;
+        this.rowspacing = rowspacing;
+        this.columnspacing = columnspacing;
+>>>>>>> 67cf4694d6b2de79d8554afcb2cc6f819810e0e0
         this.created = created;
         this.updated = updated;
         this.deleted = deleted;
         this.comments = comments;
-        this.contours = contours;
+        this.data = data;
     }
 
     public int getSliceId() {
@@ -175,7 +189,7 @@ public class Slice {
         this.column = column;
     }
 
-    public int getRowspacing() {
+    public double getRowspacing() {
         return rowspacing;
     }
 
@@ -183,7 +197,7 @@ public class Slice {
         this.rowspacing = rowspacing;
     }
 
-    public int getColumnspacing() {
+    public double getColumnspacing() {
         return columnspacing;
     }
 
@@ -191,6 +205,7 @@ public class Slice {
         this.columnspacing = columnspacing;
     }
 
+<<<<<<< HEAD
     public String getSop_ins_uid() {
         return sop_ins_uid;
     }
@@ -221,5 +236,24 @@ public class Slice {
 
     public void setImage_pos_pat(String image_pos_pat) {
         this.image_pos_pat = image_pos_pat;
+=======
+    @Override
+    public String toString() {
+        return "{" +
+                "sliceId:" + sliceId +
+                ", view:" + view +
+                ", number:" + number +
+                ", row:" + row +
+                ", column:" + column +
+                ", rowspacing:" + rowspacing +
+                ", columnspacing:" + columnspacing +
+                ", created:" + created +
+                ", updated:" + updated +
+                ", deleted:" + deleted +
+                ", comments:'" + comments + '\'' +
+                ", data:'" + data + '\'' +
+                ", contours:" + contours +
+                '}';
+>>>>>>> 67cf4694d6b2de79d8554afcb2cc6f819810e0e0
     }
 }

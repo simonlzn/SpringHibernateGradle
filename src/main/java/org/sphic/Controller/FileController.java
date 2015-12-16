@@ -105,6 +105,7 @@ public class FileController {
 									dcmObj.getInt(Tag.SeriesNumber, 0),
 								/*new SimpleDateFormat("yyyyMMddhhmmss").parse(dcmObj.getString(Tag.SeriesDate)+
 								dcmObj.getString(Tag.SeriesTime))*/ new Date(),
+<<<<<<< HEAD
 									dcmObj.getString(Tag.SeriesDescription),
 									dcmObj.getString(Tag.Modality),
 									dcmObj.getString(Tag.Manufacturer),
@@ -156,11 +157,65 @@ public class FileController {
 							studies.add(nStudy);
 							p.setStudies(studies);
 							patientId = (String) session.save(p);
+=======
+								dcmObj.getString(Tag.SeriesDescription),
+								dcmObj.getString(Tag.Modality),
+								dcmObj.getString(Tag.Manufacturer),
+								dcmObj.getString(Tag.ManufacturerModelName),
+								dcmObj.getDate(Tag.StudyDateAndTime),
+								dcmObj.getDate(Tag.StudyDateAndTime), null,null);
+						SeriesID = nSeries.getSeriesId();
+
+						ImageSeries imageSeries = new ImageSeries(SeriesID,
+								dcmObj.getString(Tag.SeriesInstanceUID),
+								dcmObj.getDouble(Tag.SliceThickness, 0.0),
+								String.join(",", dcmObj.getStrings(Tag.ImageOrientationPatient)),
+								dcmObj.getInt(Tag.Rows, 512),
+								dcmObj.getInt(Tag.Columns, 512),
+								dcmObj.getString(Tag.PatientPosition),
+								String.join(",", dcmObj.getStrings(Tag.PixelSpacing)),
+								dcmObj.getDouble(Tag.RescaleSlope, 1.0),
+								dcmObj.getDouble(Tag.RescaleIntercept, 0.0),
+								String.join(",", dcmObj.getStrings(Tag.ImageType)),
+								dcmObj.getString(Tag.DerivationDescription),
+								dcmObj.getString(Tag.PatientOrientation),
+								dcmObj.getString(Tag.SpecificCharacterSet),
+								dcmObj.getString(Tag.SamplesPerPixel),
+								dcmObj.getString(Tag.PhotometricInterpretation),
+								dcmObj.getInt(Tag.BitsAllocated,0),
+								dcmObj.getInt(Tag.BitsStored,0),
+								dcmObj.getInt(Tag.HighBit,0),
+								dcmObj.getInt(Tag.PixelRepresentation,0),
+								dcmObj.getInt(Tag.SmallestImagePixelValue,0),
+								dcmObj.getInt(Tag.LargestImagePixelValue,0));
+
+						List<Images> Images = new ArrayList<Images>();
+						Images nImage = new Images(Integer.parseInt(dcmObj
+								.getString(Tag.InstanceNumber)),
+								dcmObj.getString(Tag.SOPInstanceUID), dcmObj
+										.getDouble(Tag.SliceLocation, 0.0),
+								Integer.parseInt(dcmObj
+										.getString(Tag.InstanceNumber)),
+								String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)));
+
+
+						session.saveOrUpdate(nImage);
+                        imageSeries.setSeries(nSeries);
+                        nSeries.setImageSeries(imageSeries);
+						nSeries.setStudy(nStudy);
+						series.add(nSeries);
+						nStudy.setSeries(series);
+						nStudy.setPatient(p);
+						studies.add(nStudy);
+						p.setStudies(studies);
+						patientId = (String) session.save(p);
+>>>>>>> 67cf4694d6b2de79d8554afcb2cc6f819810e0e0
 //						System.out.println(patientId);
 							tx1.commit();
 							is.close();
 						} else {
 
+<<<<<<< HEAD
 //								InputStream is = file.getInputStream();
 //								DicomInputStream dis = new DicomInputStream(is);
 //								Attributes dcmObj = dis.readDataset(-1, -1);
@@ -171,6 +226,20 @@ public class FileController {
 									dcmObj.getDouble(Tag.SliceLocation, 0.0),
 									String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
 									new Date(), null, null, null, null);
+=======
+						InputStream is = file.getInputStream();
+						DicomInputStream dis = new DicomInputStream(is);
+						Attributes dcmObj = dis.readDataset(-1, -1);
+						Session session = HibernateUtil.currentSession();
+						Transaction tx1 = session.beginTransaction();
+						Images nImage = new Images(Integer.parseInt(dcmObj
+								.getString(Tag.InstanceNumber)),
+								dcmObj.getString(Tag.SOPInstanceUID), dcmObj
+										.getDouble(Tag.SliceLocation, 0.0),
+								Integer.parseInt(dcmObj
+										.getString(Tag.InstanceNumber)),
+								String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)));
+>>>>>>> 67cf4694d6b2de79d8554afcb2cc6f819810e0e0
 //						nImage.setSeries(nSeries);
 							sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
 							nSlice.setSeries(nSeries);
