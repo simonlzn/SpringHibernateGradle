@@ -166,11 +166,11 @@ public class FileController {
 //								Attributes dcmObj = dis.readDataset(-1, -1);
 							Session session = HibernateUtil.currentSession();
 							Transaction tx1 = session.beginTransaction();
-							Slice nSlice = new Slice(dcmObj.getString(Tag.SOPInstanceUID),
+							Slice nSlice = new Slice('T',0,dcmObj.getInt(Tag.Rows,0),dcmObj.getInt(Tag.Columns,0),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[0]),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[1]),dcmObj.getString(Tag.SOPInstanceUID),
 									Integer.parseInt(dcmObj.getString(Tag.InstanceNumber)),
 									dcmObj.getDouble(Tag.SliceLocation, 0.0),
 									String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
-									new Date(), null, null, null, null);
+									new Date(), null, null, null, null, null);
 //						nImage.setSeries(nSeries);
 							sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
 							nSlice.setSeries(nSeries);
@@ -228,6 +228,7 @@ public class FileController {
 							}
 							structures.add(iStructure);
 						}
+
 						nStructureSet.setStructures(structures);
 						structureSet.add(nStructureSet);
 						if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID)))

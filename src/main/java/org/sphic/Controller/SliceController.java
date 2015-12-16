@@ -63,7 +63,7 @@ public class SliceController {
                 List<Map> userDatas = new ObjectMapper().readValue(ret, ArrayList.class);
                 for (Map userData : userDatas) {
                     if (userData.size() > 0) {
-                        Slice slice = new Slice('T', number, Integer.parseInt(userData.get("row").toString()),Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()), new Date(), new Date(), null, "", userData.get("data").toString());
+                        Slice slice = new Slice('T', number, Integer.parseInt(userData.get("row").toString()),Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()),null,0,0,null, new Date(), new Date(), null, "", userData.get("data").toString(), null);
                         System.out.println(userData);
                         Series series = dao.get(Series.class, seriesId);
                         slice.setSeries(series);

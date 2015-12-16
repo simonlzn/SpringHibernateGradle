@@ -21,17 +21,17 @@ public class Slice {
     @Column(name="number")
     private int number;
 
-    @Column(name="row")
+    @Column(name="rows")
     private int row;
 
-    @Column(name="column")
+    @Column(name="columns")
     private int column;
 
     @Column(name="rowspacing")
-    private int rowspacing;
+    private double rowspacing;
 
     @Column(name="columnspacing")
-    private int columnspacing;
+    private double columnspacing;
 
     @Column(name="sop_ins_uid")
     private String sop_ins_uid;
@@ -66,7 +66,13 @@ public class Slice {
     public Slice() {
     }
 
-    public Slice(String sop_ins_uid, int ins_number,  double slice_location, String image_pos_pat, Date created, Date updated, Date deleted, String comments, List<Contour> contours) {
+    public Slice(char view, int number, int row, int column, double rowspacing, double columnspacing, String sop_ins_uid, int ins_number,  double slice_location, String image_pos_pat, Date created, Date updated, Date deleted, String comments, String data, List<Contour> contours) {
+        this.view = view;
+        this.number = number;
+        this.row = row;
+        this.column = column;
+        this.rowspacing = rowspacing;
+        this.columnspacing = columnspacing;
 
         this.sop_ins_uid = sop_ins_uid;
         this.ins_number = ins_number;
@@ -76,6 +82,7 @@ public class Slice {
         this.updated = updated;
         this.deleted = deleted;
         this.comments = comments;
+        this.data = data;
         this.contours = contours;
     }
 
@@ -93,6 +100,86 @@ public class Slice {
 
     public void setSeries(Series series) {
         this.series = series;
+    }
+
+    public char getView() {
+        return view;
+    }
+
+    public void setView(char view) {
+        this.view = view;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public double getRowspacing() {
+        return rowspacing;
+    }
+
+    public void setRowspacing(double rowspacing) {
+        this.rowspacing = rowspacing;
+    }
+
+    public double getColumnspacing() {
+        return columnspacing;
+    }
+
+    public void setColumnspacing(double columnspacing) {
+        this.columnspacing = columnspacing;
+    }
+
+    public String getSop_ins_uid() {
+        return sop_ins_uid;
+    }
+
+    public void setSop_ins_uid(String sop_ins_uid) {
+        this.sop_ins_uid = sop_ins_uid;
+    }
+
+    public int getIns_number() {
+        return ins_number;
+    }
+
+    public void setIns_number(int ins_number) {
+        this.ins_number = ins_number;
+    }
+
+    public double getSlice_location() {
+        return slice_location;
+    }
+
+    public void setSlice_location(double slice_location) {
+        this.slice_location = slice_location;
+    }
+
+    public String getImage_pos_pat() {
+        return image_pos_pat;
+    }
+
+    public void setImage_pos_pat(String image_pos_pat) {
+        this.image_pos_pat = image_pos_pat;
     }
 
     public Date getCreated() {
@@ -127,30 +214,6 @@ public class Slice {
         this.comments = comments;
     }
 
-    public List<Contour> getContours() {
-        return contours;
-    }
-
-    public void setContours(List<Contour> contours) {
-        this.contours = contours;
-    }
-
-    public char getView() {
-        return view;
-    }
-
-    public void setView(char view) {
-        this.view = view;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public String getData() {
         return data;
     }
@@ -159,67 +222,11 @@ public class Slice {
         this.data = data;
     }
 
-    public int getRow() {
-        return row;
+    public List<Contour> getContours() {
+        return contours;
     }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
-    }
-
-    public int getRowspacing() {
-        return rowspacing;
-    }
-
-    public void setRowspacing(int rowspacing) {
-        this.rowspacing = rowspacing;
-    }
-
-    public int getColumnspacing() {
-        return columnspacing;
-    }
-
-    public void setColumnspacing(int columnspacing) {
-        this.columnspacing = columnspacing;
-    }
-
-    public String getSop_ins_uid() {
-        return sop_ins_uid;
-    }
-
-    public void setSop_ins_uid(String sop_ins_uid) {
-        this.sop_ins_uid = sop_ins_uid;
-    }
-
-    public double getIns_number() {
-        return ins_number;
-    }
-
-    public void setIns_number(int ins_number) {
-        this.ins_number = ins_number;
-    }
-
-    public double getSlice_location() {
-        return slice_location;
-    }
-
-    public void setSlice_location(int slice_location) {
-        this.slice_location = slice_location;
-    }
-
-    public String getImage_pos_pat() {
-        return image_pos_pat;
-    }
-
-    public void setImage_pos_pat(String image_pos_pat) {
-        this.image_pos_pat = image_pos_pat;
+    public void setContours(List<Contour> contours) {
+        this.contours = contours;
     }
 }
