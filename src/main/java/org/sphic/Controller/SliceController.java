@@ -52,8 +52,15 @@ public class SliceController {
         if (sliceList.isEmpty()) {
             try {
                 String views = "";
-                if (view == 'T')
-                    views += number + ",-1,-1";
+                switch (view)
+                {
+                    case  'T':
+                        views += number + ",-1,-1";
+                    case 'S':
+                        views += "-1,-1,"+number;
+                    case 'C':
+                        views += "-1," + number + ",-1";
+                }
 
                 String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" + seriesId;
                 String ret = getHTTPResponse(url).toString();
@@ -63,7 +70,7 @@ public class SliceController {
                 List<Map> userDatas = new ObjectMapper().readValue(ret, ArrayList.class);
                 for (Map userData : userDatas) {
                     if (userData.size() > 0) {
-                        Slice slice = new Slice('T', number, Integer.parseInt(userData.get("row").toString()), Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()), null, 0, 0, null, new Date(), new Date(), null, "", userData.get("data").toString(), null);
+                        Slice slice = new Slice(view, number, Integer.parseInt(userData.get("row").toString()), Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()), null, 0, 0, null, new Date(), new Date(), null, "", userData.get("data").toString(), null);
                         System.out.println(userData);
                         Series series = dao.get(Series.class, seriesId);
                         slice.setSeries(series);
@@ -80,8 +87,15 @@ public class SliceController {
             Slice slice = sliceList.get(0);
             try {
                 String views = "";
-                if (view == 'T')
-                    views += number + ",-1,-1";
+                switch (view)
+                {
+                    case  'T':
+                        views += number + ",-1,-1";
+                    case 'S':
+                        views += "-1,-1,"+number;
+                    case 'C':
+                        views += "-1," + number + ",-1";
+                }
 
                 String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" + seriesId;
                 String ret = getHTTPResponse(url).toString();

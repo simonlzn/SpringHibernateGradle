@@ -60,8 +60,8 @@ public class Series {
     @OneToOne(mappedBy = "series", targetEntity = ImageSeries.class, cascade = CascadeType.ALL)
     private ImageSeries imageSeries;
 
-//    @OneToMany(targetEntity = Images.class, mappedBy = "series", cascade = CascadeType.ALL)
-//    private List<Images> Images;
+    @OneToMany(targetEntity = Images.class, mappedBy = "series", cascade = CascadeType.ALL)
+    private List<Images> Images;
 
     public Series() {
 
@@ -221,11 +221,11 @@ public class Series {
         this.imageSeries = imageSeries;
     }
 
-//    public List<org.sphic.Model.Images> getImages() {
-//        return Images;
-//    }
-//
-//    public void setImages(List<org.sphic.Model.Images> images) {
-//        Images = images;
-//    }
+    public List<org.sphic.Model.Images> getImages() {
+        return Images;
+    }
+
+    public void setImages(List<org.sphic.Model.Images> images) {
+        Images = images;
+    }
 }

@@ -111,6 +111,7 @@ CREATE TABLE `slice` (
     `columns` INTEGER COMMENT 'Number of columns',
     `rowspacing` double COMMENT 'Spacing for rows',
     `columnspacing` double COMMENT 'Spacing for columns',
+    `slice_location` double,
     `data` MEDIUMTEXT COMMENT 'Slice data in density',
     `name` VARCHAR(100) COMMENT 'Name of structure set',
     `description` VARCHAR(200) COMMENT 'Description',

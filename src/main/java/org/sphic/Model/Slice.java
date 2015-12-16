@@ -9,6 +9,7 @@ import java.util.List;
 public class Slice {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int sliceId;
 
     @ManyToOne(targetEntity = Series.class)
