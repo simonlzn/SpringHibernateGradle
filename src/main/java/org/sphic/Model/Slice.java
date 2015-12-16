@@ -74,7 +74,6 @@ public class Slice {
         this.column = column;
         this.rowspacing = rowspacing;
         this.columnspacing = columnspacing;
-
         this.sop_ins_uid = sop_ins_uid;
         this.ins_number = ins_number;
         this.slice_location = slice_location;

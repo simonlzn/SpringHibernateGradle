@@ -51,7 +51,7 @@ public class Series {
     @JoinColumn(name ="study_id")
     private Study study;
 
-    @OneToMany(targetEntity = StructureSet.class, mappedBy = "series")
+    @OneToMany(targetEntity = StructureSet.class, mappedBy = "series", cascade = CascadeType.ALL)
     private List<StructureSet> structureSets;
 
     @OneToMany(targetEntity = Slice.class, mappedBy = "series")

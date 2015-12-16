@@ -17,6 +17,7 @@ import org.sphic.Model.StructureSet;
 import org.sphic.Model.Structure;
 import org.sphic.Model.Contour;
 import org.sphic.Model.Slice;
+import org.sphic.Service.SliceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -39,11 +40,13 @@ import java.util.*;
 @RequestMapping("/file")
 public class FileController {
     private final MessageQueue messageQueue;
+	private SliceService sliceService;
 
-    @Autowired
-    public FileController(MessageQueue messageQueue) {
+	@Autowired
+    public FileController(MessageQueue messageQueue, SliceService sliceService) {
         this.messageQueue = messageQueue;
-    }
+		this.sliceService = sliceService;
+	}
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public @ResponseBody String download( final HttpServletResponse response) throws InterruptedException {
@@ -221,18 +224,27 @@ public class FileController {
 									if (sliceMap.containsKey(ROIContourSequence.get(j).getString(Tag.ReferencedSOPInstanceUID)))
 										kContour.setSlice(sliceMap.get(ROIContourSequence.get(j).getString(Tag.ReferencedSOPInstanceUID)));
 									iContours.add(kContour);
+										kContour.setStructure(iStructure);
 									}
 									iStructure.setContours(iContours);
 									break;
 								}
 							}
 							structures.add(iStructure);
+//							iStructure.setStructureSet(nStructureSet);
+							iStructure.setStructureSet(nStructureSet);
 						}
+//						tx1.commit();
 
 						nStructureSet.setStructures(structures);
+						session.save(nStructureSet);
 						structureSet.add(nStructureSet);
-						if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID)))
-							seriesMap.get(dcmObj.getString(Tag.SeriesInstanceUID)).setStructureSets(structureSet);
+						if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID))) {
+							Series series = seriesMap.get(dcmObj.getString(Tag.SeriesInstanceUID));
+							series.setStructureSets(structureSet);
+							sliceService.SortAndUpdateSlices(series.getSeriesId());
+							nStructureSet.setSeries(series);
+						}
 						tx1.commit();
 						is.close();
 					}
@@ -245,7 +257,7 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
         }
-        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
+//        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
         return "You successfully uploaded !";
     }
 //	private List<Structure> getStructures(Attributes dcmObj){
