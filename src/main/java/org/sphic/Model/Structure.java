@@ -33,12 +33,17 @@ public class Structure {
     @Column(name="color_id")
     public int colorId;
 
+    @Column(name="roi_number")
+    private int ROINumber;
+
+    @Column(name="roi_color")
+    private String ROIcolor;
+
     @OneToMany(targetEntity = Contour.class, mappedBy = "structure")
     private List<Contour> contours;
 
-
-    public Structure(int structureId, int structureSetId, String name, Date created, Date updated, Date deleted, String description, List<Contour> contours) {
-        this.structureId = structureId;
+    public Structure(int ROINumber, int structureSetId, String name, Date created, Date updated, Date deleted, String description, List<Contour> contours) {
+        this.ROINumber = ROINumber;
         this.name = name;
         this.created = created;
         this.updated = updated;
@@ -120,5 +125,21 @@ public class Structure {
 
     public void setContours(List<Contour> contours) {
         this.contours = contours;
+    }
+
+    public int getROINumber() {
+        return ROINumber;
+    }
+
+    public void setROINumber(int ROINumber) {
+        this.ROINumber = ROINumber;
+    }
+
+    public String getROIcolor() {
+        return ROIcolor;
+    }
+
+    public void setROIcolor(String ROIcolor) {
+        this.ROIcolor = ROIcolor;
     }
 }

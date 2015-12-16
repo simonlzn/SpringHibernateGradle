@@ -90,7 +90,8 @@ CREATE TABLE `structure` (
     `structure_set_id` INTEGER COMMENT 'ID of Structure set',
     `name` VARCHAR(100) COMMENT 'Name of structure set',
     `description` VARCHAR(200) COMMENT 'Description',
-    `color` INTEGER COMMENT 'Color',
+    `roi_color` VARCHAR(50) COMMENT 'Color',
+    `roi_number` VARCHAR(50) COMMENT 'ROI Number',
     `created` DATETIME COMMENT 'Creation time',
     `updated` DATETIME COMMENT 'Update time',
     `deleted` DATETIME COMMENT 'Deletion time',
@@ -132,6 +133,7 @@ CREATE TABLE `contour` (
     `created` DATETIME COMMENT 'Creation time',
     `updated` DATETIME COMMENT 'Update time',
     `deleted` DATETIME COMMENT 'Deletion time',
+    `data` MEDIUMTEXT COMMENT 'Contour data',
     CONSTRAINT `PK_contour` PRIMARY KEY (`id`)
 );
 

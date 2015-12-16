@@ -106,15 +106,19 @@ public class Contour {
     private String description;
 
     @Column(name="data")
-    private String data;
+    private String contourData;
 
-    public Contour(int contourId, String name, Date created, Date updated, Date deleted, String description) {
-        this.contourId = contourId;
-        this.name = name;
+    private String SOPInstanceUID;
+
+    public Contour(String SOPInstanceUID, Date created, Date updated, Date deleted, String description,
+                   String contourData) {
+
+        this.SOPInstanceUID = SOPInstanceUID;
         this.created = created;
         this.updated = updated;
         this.deleted = deleted;
         this.description = description;
+        this.contourData = contourData;
     }
 
     public Contour() {
@@ -168,11 +172,19 @@ public class Contour {
         this.description = description;
     }
 
-    public String getData() {
-        return data;
+    public String getContourData() {
+        return contourData;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setContourData(String contourData) {
+        this.contourData = contourData;
+    }
+
+    public String getSOPInstanceUID() {
+        return SOPInstanceUID;
+    }
+
+    public void setSOPInstanceUID(String SOPInstanceUID) {
+        this.SOPInstanceUID = SOPInstanceUID;
     }
 }

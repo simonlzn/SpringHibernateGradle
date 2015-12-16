@@ -38,8 +38,7 @@ public class StructureSet {
 
 	}
 
-	public StructureSet(int structureSetId, int seriesId, String name, Date created, Date updated, Date deleted, String description, List<Structure> structures) {
-		this.structureSetId = structureSetId;
+	public StructureSet(int seriesId, String name, Date created, Date updated, Date deleted, String description, List<Structure> structures) {
 		this.name = name;
 		this.created = created;
 		this.updated = updated;
