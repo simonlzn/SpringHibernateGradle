@@ -51,19 +51,7 @@ public class SliceController {
 
         if (sliceList.isEmpty()) {
             try {
-                String views = "";
-                switch (view)
-                {
-                    case  'T':
-                        views += number + ",-1,-1";
-                        break;
-                    case 'S':
-                        views += "-1,-1,"+number;
-                        break;
-                    case 'C':
-                        views += "-1," + number + ",-1";
-                        break;
-                }
+                String views = constructViewsString(view, number);
 
                 String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" + seriesId;
                 String ret = getHTTPResponse(url).toString();
@@ -89,19 +77,7 @@ public class SliceController {
         } else if (sliceList.get(0).getData() == null) {
             Slice slice = sliceList.get(0);
             try {
-                String views = "";
-                switch (view)
-                {
-                    case  'T':
-                        views += number + ",-1,-1";
-                        break;
-                    case 'S':
-                        views += "-1,-1,"+number;
-                        break;
-                    case 'C':
-                        views += "-1," + number + ",-1";
-                        break;
-                }
+                String views = constructViewsString(view, number);
 
                 String url = "http://localhost:8080/itk/call?func=slicing&views=" + views + "&id=" + seriesId;
                 String ret = getHTTPResponse(url).toString();
@@ -126,6 +102,24 @@ public class SliceController {
         }
 
         return result;
+    }
+
+
+    private String constructViewsString(@PathVariable char view, @PathVariable int number) {
+        String views = "";
+        switch (view)
+        {
+            case  'T':
+                views += number + ",-1,-1";
+                break;
+            case 'S':
+                views += "-1,-1,"+number;
+                break;
+            case 'C':
+                views += "-1," + number + ",-1";
+                break;
+        }
+        return views;
     }
 
     private StringBuffer getHTTPResponse(String url) throws IOException {

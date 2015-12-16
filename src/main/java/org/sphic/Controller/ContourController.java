@@ -3,6 +3,7 @@ package org.sphic.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Model.Contour;
 import org.sphic.Model.Slice;
@@ -11,6 +12,7 @@ import org.sphic.Model.Study;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/contour")
@@ -24,6 +26,14 @@ public class ContourController {
 		Contour contour = (Contour)session.get(Contour.class, id);
 
 		return contour;
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public List<Contour> GetList(@RequestParam(name = "sliceId") int sliceId) {
+		Session session = HibernateUtil.currentSession();
+		List<Contour> contours = session.createCriteria(Contour.class).add(Restrictions.eq("slice.id", sliceId)).list();
+
+		return contours;
 	}
 
 	@RequestMapping(value = "/{id}/color/{colorId}", method = RequestMethod.POST)

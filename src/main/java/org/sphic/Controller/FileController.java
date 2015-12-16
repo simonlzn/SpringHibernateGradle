@@ -17,6 +17,7 @@ import org.sphic.Model.StructureSet;
 import org.sphic.Model.Structure;
 import org.sphic.Model.Contour;
 import org.sphic.Model.Slice;
+import org.sphic.Service.SliceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -39,17 +40,20 @@ import java.util.*;
 @RequestMapping("/file")
 public class FileController {
     private final MessageQueue messageQueue;
+	private SliceService sliceService;
 
-    @Autowired
-    public FileController(MessageQueue messageQueue) {
+	@Autowired
+    public FileController(MessageQueue messageQueue, SliceService sliceService) {
         this.messageQueue = messageQueue;
-    }
+		this.sliceService = sliceService;
+	}
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public @ResponseBody String download( final HttpServletResponse response) throws InterruptedException {
 //        response.setHeader("Cache-Control", "private, max-age=86400");
 //        response.setHeader("Expires", new Date(180,1,1).toGMTString());
 //        response.setHeader("Last-Modified", new Date(80,1,1).toGMTString());
+		sliceService.SortAndUpdateSlices(107205);
         Thread.sleep(5000);
         return "very weird string";
 	}
@@ -145,7 +149,9 @@ public class FileController {
 											.getString(Tag.InstanceNumber)),
 									String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)));
 
-							session.saveOrUpdate(nImage);
+							nImage.setSeries(nSeries);
+							nSeries.setImages(Images);
+//							session.save(nImage);
 							imageSeries.setSeries(nSeries);
 							nSeries.setImageSeries(imageSeries);
 							nSeries.setStudy(nStudy);
