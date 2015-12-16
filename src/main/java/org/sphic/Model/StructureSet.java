@@ -14,7 +14,7 @@ public class StructureSet {
 	@Column(name="id")
 	private int structureSetId;
 
-	@ManyToOne(targetEntity = Series.class)
+	@ManyToOne(targetEntity = Series.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "series_id")
 	private Series series;
 

@@ -3,6 +3,7 @@ package org.sphic.Model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 
 @Entity
@@ -34,7 +35,7 @@ public class Contour {
         this.slice = slice;
     }
 
-    @ManyToOne(targetEntity = Structure.class)
+    @ManyToOne(targetEntity = Structure.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "structure_id")
     private Structure structure;
 

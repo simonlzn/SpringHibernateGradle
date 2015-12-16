@@ -12,9 +12,10 @@ import java.util.List;
 public class Structure {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int structureId;
 
-    @ManyToOne(targetEntity = StructureSet.class)
+    @ManyToOne(targetEntity = StructureSet.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "structure_set_id")
     private StructureSet structureSet;
 
@@ -42,7 +43,7 @@ public class Structure {
     @Column(name="roi_color")
     private String ROIcolor;
 
-    @OneToMany(targetEntity = Contour.class, mappedBy = "structure")
+    @OneToMany(targetEntity = Contour.class, mappedBy = "structure", cascade = CascadeType.ALL)
     private List<Contour> contours;
 
     public Structure(int ROINumber, int structureSetId, String name, Date created, Date updated, Date deleted, String description, List<Contour> contours) {
