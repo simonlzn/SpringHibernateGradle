@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Message.MessageQueue;
-import org.sphic.Model.Images;
 import org.sphic.Model.ImageSeries;
 import org.sphic.Model.Patient;
 import org.sphic.Model.Series;
@@ -125,7 +124,6 @@ public class FileController {
 							List<Series> series = new ArrayList<Series>();
 							nSeries = new Series(Integer.parseInt(dcmObj
 									.getString(Tag.SeriesNumber)),
-									nStudy.getStudyId(),
 									dcmObj.getString(Tag.SeriesInstanceUID),
 									dcmObj.getInt(Tag.SeriesNumber, 0),
 								/*new SimpleDateFormat("yyyyMMddhhmmss").parse(dcmObj.getString(Tag.SeriesDate)+
@@ -138,7 +136,7 @@ public class FileController {
 									dcmObj.getDate(Tag.StudyDateAndTime), null, null);
 							SeriesID = nSeries.getSeriesId();
 							seriesMap.put(dcmObj.getString(Tag.SeriesInstanceUID),nSeries);
-							ImageSeries imageSeries = new ImageSeries(SeriesID,
+							ImageSeries imageSeries = new ImageSeries(
 									dcmObj.getString(Tag.SeriesInstanceUID),
 									dcmObj.getDouble(Tag.SliceThickness, 0.0),
 									String.join(",", dcmObj.getStrings(Tag.ImageOrientationPatient)),
@@ -244,12 +242,12 @@ public class FileController {
 			Session session = HibernateUtil.currentSession();
 			Transaction tx1 = session.beginTransaction();
 			List<StructureSet> structureSet = new ArrayList<StructureSet>();
-			StructureSet nStructureSet = new StructureSet(dcmObj.getInt(Tag.SeriesNumber, 0),
+			StructureSet nStructureSet = new StructureSet(
 					dcmObj.getString(Tag.StructureSetName), new Date(), null, null,dcmObj.getString(Tag.StructureSetDescription),null );
 			List<Structure> structures = new ArrayList<Structure>();
 			Sequence structureSequence = dcmObj.getSequence(Tag.StructureSetROISequence);
 			for(int i=0;i<structureSequence.size();++i ) {
-				Structure iStructure = new Structure(Integer.parseInt(structureSequence.get(i).getString(Tag.ROINumber)),nStructureSet.getStructureSetId(), structureSequence.get(i).getString(Tag.ROIName),
+				Structure iStructure = new Structure(Integer.parseInt(structureSequence.get(i).getString(Tag.ROINumber)), structureSequence.get(i).getString(Tag.ROIName),
 						new Date(), null, null, null, null );
 				List<Contour> iContours = new ArrayList<Contour>();
 				Sequence ROIContourSequence = dcmObj.getSequence(Tag.ROIContourSequence);

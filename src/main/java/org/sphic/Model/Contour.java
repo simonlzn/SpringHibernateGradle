@@ -10,7 +10,6 @@ import java.util.Date;
 @Table(name="contour")
 @JsonIgnoreProperties(value={"structure","slice"})
 public class Contour {
-
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,22 +17,6 @@ public class Contour {
 
     @Column(name="name")
     private String name;
-
-    public Structure getStructure() {
-        return structure;
-    }
-
-    public void setStructure(Structure structure) {
-        this.structure = structure;
-    }
-
-    public Slice getSlice() {
-        return slice;
-    }
-
-    public void setSlice(Slice slice) {
-        this.slice = slice;
-    }
 
     @ManyToOne(targetEntity = Structure.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "structure_id")
@@ -43,36 +26,14 @@ public class Contour {
     @JoinColumn(name = "slice_id")
     private Slice slice;
 
-
-    @Transient
+    @Column(name="view")
     private char view;
-    public char getView(){
-        return slice.getView();
-    }
 
-    public void setView(char view){
-        slice.setView(view);
-    }
-
-    @Transient
+    @Column(name="number")
     private int number;
-    public int getNumber(){
-        return slice.getNumber();
-    }
 
-    public void setNumber(int number){
-        slice.setNumber(number);
-    }
-
-    @Transient
+    @Column(name="color_id")
     private int colorId;
-    public int getColorId(){
-        return structure.colorId;
-    }
-
-    public void setColorId(int colorId){
-        structure.colorId = colorId;
-    }
 
     @Column(name="created")
     private Date created;
@@ -166,5 +127,45 @@ public class Contour {
 
     public void setSOPInstanceUID(String SOPInstanceUID) {
         this.SOPInstanceUID = SOPInstanceUID;
+    }
+
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+    }
+
+    public Slice getSlice() {
+        return slice;
+    }
+
+    public void setSlice(Slice slice) {
+        this.slice = slice;
+    }
+
+    public char getView() {
+        return view;
+    }
+
+    public void setView(char view) {
+        this.view = view;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(int colorId) {
+        this.colorId = colorId;
     }
 }

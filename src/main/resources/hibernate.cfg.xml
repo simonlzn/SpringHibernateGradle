@@ -29,6 +29,5 @@
 	<mapping class="org.sphic.Model.Contour" />
 	<mapping class="org.sphic.Model.Slice" />
 	<mapping class="org.sphic.Model.ImageSeries" />
-	<mapping class="org.sphic.Model.Images" />
 </session-factory>
 </hibernate-configuration>
