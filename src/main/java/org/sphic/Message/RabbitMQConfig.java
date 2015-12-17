@@ -19,17 +19,17 @@ public class RabbitMQConfig {
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory =
             new CachingConnectionFactory();
-        connectionFactory.setHost("10.11.12.33");
-//        connectionFactory.setHost("localhost");
-        connectionFactory.setUsername("sphic");
-        connectionFactory.setPassword("sphic");
+//        connectionFactory.setHost("10.11.12.33");
+        connectionFactory.setHost("localhost");
+//        connectionFactory.setUsername("sphic");
+//        connectionFactory.setPassword("sphic");
         return connectionFactory;
     }
 
     @Bean
     public AmqpAdmin amqpAdmin() {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
-        rabbitAdmin.deleteExchange("java");
+//        rabbitAdmin.deleteExchange("java");
         return rabbitAdmin;
     }
 
@@ -50,8 +50,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public DirectExchange javaExchange() {
-        return new DirectExchange("java", false, false);
+    public FanoutExchange javaExchange() {
+        return new FanoutExchange("java", false, false);
     }
 
 //    @Bean

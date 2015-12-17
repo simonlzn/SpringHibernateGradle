@@ -21,6 +21,15 @@ public class Dao {
         tx.commit();
     }
 
+    public <T> void saveOrUpdate(T o)
+    {
+        Session session = HibernateUtil.currentSession();
+        Transaction tx = session.beginTransaction();
+
+        session.saveOrUpdate(o);
+        tx.commit();
+    }
+
     public <T> T get(Class<T>c, Serializable id)
     {
         Session session = HibernateUtil.currentSession();
