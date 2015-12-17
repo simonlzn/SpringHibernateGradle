@@ -11,10 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Random;
+import java.util.UUID;
+
 @Configuration
 @ComponentScan("org.sphic")
 public class RabbitMQConfig {
-	
+
+    private String queueName = "queue"+ UUID.randomUUID().toString().replace("-","");
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory =
@@ -30,6 +34,8 @@ public class RabbitMQConfig {
     public AmqpAdmin amqpAdmin() {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
 //        rabbitAdmin.deleteExchange("java");
+        queueName = rabbitAdmin.declareQueue().getName();
+
         return rabbitAdmin;
     }
 
@@ -41,7 +47,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Binding binding() {
-        return new Binding("queue1", Binding.DestinationType.QUEUE, "java", "queue1",null);
+        return new Binding(queueName, Binding.DestinationType.QUEUE, "java", "queue1",null);
     }
 
     @Bean
@@ -54,16 +60,12 @@ public class RabbitMQConfig {
         return new FanoutExchange("java", false, false);
     }
 
-//    @Bean
-//    public Queue queue1(){
-//        return new Queue("queue1");
-//    }
 
     @Bean
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames("queue1", "queue2");
+		container.setQueueNames(queueName);
 		container.setMessageListener(listenerAdapter);
 		return container;
 	}
