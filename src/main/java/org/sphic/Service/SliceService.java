@@ -1,6 +1,6 @@
 package org.sphic.Service;
 
-import org.sphic.Model.DAO.SliceDao;
+import org.sphic.Service.DAO.SliceDao;
 import org.sphic.Model.Slice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class SliceService {
     }
 
     public void SortAndUpdateSlices(int id){
-        List<Slice> slices = sliceDao.getByStructureId(id);
+        List<Slice> slices = sliceDao.getBySeriesId(id);
         slices.sort(new Comparator<Slice>() {
             @Override
             public int compare(Slice o1, Slice o2) {

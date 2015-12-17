@@ -27,9 +27,9 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin(TopicExchange exchange) {
+    public AmqpAdmin amqpAdmin() {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
-//        rabbitAdmin.declareExchange(exchange);
+        rabbitAdmin.deleteExchange("java");
         return rabbitAdmin;
     }
 

@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Model.*;
-import org.sphic.Model.DAO.Dao;
+import org.sphic.Service.DAO.Dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;

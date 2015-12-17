@@ -17,6 +17,7 @@ import org.sphic.Model.StructureSet;
 import org.sphic.Model.Structure;
 import org.sphic.Model.Contour;
 import org.sphic.Model.Slice;
+import org.sphic.Service.ContourService;
 import org.sphic.Service.SliceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,8 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.awt.Image;
 import java.io.*;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -41,20 +40,22 @@ import java.util.*;
 public class FileController {
     private final MessageQueue messageQueue;
 	private SliceService sliceService;
+	private ContourService contourService;
 
 	@Autowired
-    public FileController(MessageQueue messageQueue, SliceService sliceService) {
+    public FileController(MessageQueue messageQueue, SliceService sliceService, ContourService contourService) {
         this.messageQueue = messageQueue;
 		this.sliceService = sliceService;
+		this.contourService = contourService;
 	}
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public @ResponseBody String download( final HttpServletResponse response) throws InterruptedException {
-//        response.setHeader("Cache-Control", "private, max-age=86400");
-//        response.setHeader("Expires", new Date(180,1,1).toGMTString());
-//        response.setHeader("Last-Modified", new Date(80,1,1).toGMTString());
-		sliceService.SortAndUpdateSlices(107205);
-        Thread.sleep(5000);
+//		sliceService.SortAndUpdateSlices(107205);
+//		String message = contourService.ConstructDataByStructureId(3);
+//		System.out.println(new Date().getTime());
+//		messageQueue.Send("{\"func\": \"contourReconstruct\", \"id\": \"1\",\"key\": \"test\",\"contours\": " +"\"" + "" + "\"" + "}", "1");
+		Thread.sleep(5000);
         return "very weird string";
 	}
 
