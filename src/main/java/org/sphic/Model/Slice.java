@@ -12,7 +12,7 @@ public class Slice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int sliceId;
 
-    @ManyToOne(targetEntity = Series.class)
+    @ManyToOne(targetEntity = Series.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "series_id")
     private Series series;
 

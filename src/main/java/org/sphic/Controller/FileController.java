@@ -67,7 +67,28 @@ public class FileController {
 		Series nSeries = null;
 		Map<String, Slice> sliceMap = new HashMap<String, Slice>();
 		Map<String, Series> seriesMap = new HashMap<String, Series>();
+		List<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
+		List<MultipartFile> structureFiles = new ArrayList<MultipartFile>();
 		for (MultipartFile file : files) {
+
+			if (!file.isEmpty()) {
+				try {
+					InputStream is = file.getInputStream();
+					DicomInputStream dis = new DicomInputStream(is);
+					Attributes dcmObj = dis.readDataset(-1, -1);
+					if (dcmObj.getString(Tag.Modality).equals("CT"))
+						imageFiles.add(file);
+					else if (dcmObj.getString(Tag.Modality).equals("RTSTRUCT"))
+						structureFiles.add(file);
+				} catch (Exception e) {
+					return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
+				}
+
+			} else {
+				return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
+			}
+		}
+		for (MultipartFile file : imageFiles) {
 
 			if (!file.isEmpty()) {
 				try {
@@ -76,7 +97,6 @@ public class FileController {
 					DicomInputStream dis = new DicomInputStream(is);
 
 					Attributes dcmObj = dis.readDataset(-1, -1);
-					if (dcmObj.getString(Tag.Modality).equals("CT")) {
 
 						if (!HasBeenSavedToDatabase) {
 							HasBeenSavedToDatabase = true;
@@ -139,16 +159,18 @@ public class FileController {
 									dcmObj.getInt(Tag.SmallestImagePixelValue, 0),
 									dcmObj.getInt(Tag.LargestImagePixelValue, 0));
 
-							List<Images> Images = new ArrayList<Images>();
-							Images nImage = new Images(Integer.parseInt(dcmObj
-									.getString(Tag.InstanceNumber)),
-									dcmObj.getString(Tag.SOPInstanceUID), dcmObj
-									.getDouble(Tag.SliceLocation, 0.0),
-									Integer.parseInt(dcmObj
-											.getString(Tag.InstanceNumber)),
-									String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)));
-
-							session.saveOrUpdate(nImage);
+							List<Slice> Slices= new ArrayList<Slice>();
+							Slice nSlice = new Slice('T',0,dcmObj.getInt(Tag.Rows,0),dcmObj.getInt(Tag.Columns,0),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[0]),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[1]),dcmObj.getString(Tag.SOPInstanceUID),
+									Integer.parseInt(dcmObj.getString(Tag.InstanceNumber)),
+									dcmObj.getDouble(Tag.SliceLocation, 0.0),
+									String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
+									new Date(), null, null, null, null, null);
+//						nImage.setSeries(nSeries);
+							sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
+							Slices.add(nSlice);
+							nSlice.setSeries(nSeries);
+							nSeries.setSlices(Slices);
+//							session.saveOrUpdate(nImage);
 							imageSeries.setSeries(nSeries);
 							nSeries.setImageSeries(imageSeries);
 							nSeries.setStudy(nStudy);
@@ -197,57 +219,6 @@ public class FileController {
 
 							System.out.println(name + " is uploaded!");
 						}
-					}
-					else if (dcmObj.getString(Tag.Modality).equals("RTSTRUCT") )
-					{
-						Session session = HibernateUtil.currentSession();
-						Transaction tx1 = session.beginTransaction();
-						List<StructureSet> structureSet = new ArrayList<StructureSet>();
-						StructureSet nStructureSet = new StructureSet(dcmObj.getInt(Tag.SeriesNumber, 0),
-								dcmObj.getString(Tag.StructureSetName), new Date(), null, null,dcmObj.getString(Tag.StructureSetDescription),null );
-						List<Structure> structures = new ArrayList<Structure>();
-						Sequence structureSequence = dcmObj.getSequence(Tag.StructureSetROISequence);
-						for(int i=0;i<structureSequence.size();++i ) {
-							Structure iStructure = new Structure(Integer.parseInt(structureSequence.get(i).getString(Tag.ROINumber)),nStructureSet.getStructureSetId(), structureSequence.get(i).getString(Tag.ROIName),
-									new Date(), null, null, null, null );
-							List<Contour> iContours = new ArrayList<Contour>();
-							Sequence ROIContourSequence = dcmObj.getSequence(Tag.ROIContourSequence);
-							for(int j=0;j<ROIContourSequence.size();++j){
-								if (Integer.parseInt(ROIContourSequence.get(j).getString(Tag.ReferencedROINumber))==(iStructure.getROINumber()))
-								{
-									iStructure.setROIcolor(String.join(",",ROIContourSequence.get(j).getStrings(Tag.ROIDisplayColor)));
-									Sequence ContourSequence = ROIContourSequence.get(j).getSequence(Tag.ContourSequence);
-									for(int k=0;k<ContourSequence.size();++k)
-									{
-										Sequence ContourImageSequence = ContourSequence.get(k).getSequence(Tag.ContourImageSequence);
-									    Contour kContour = new Contour(ContourImageSequence.get(0).getString(Tag.ReferencedSOPInstanceUID), new Date(), null, null, null,String.join(",", ContourSequence.get(k).getStrings(Tag.ContourData)) );
-									if (sliceMap.containsKey(ROIContourSequence.get(j).getString(Tag.ReferencedSOPInstanceUID)))
-										kContour.setSlice(sliceMap.get(ROIContourSequence.get(j).getString(Tag.ReferencedSOPInstanceUID)));
-									iContours.add(kContour);
-										kContour.setStructure(iStructure);
-									}
-									iStructure.setContours(iContours);
-									break;
-								}
-							}
-							structures.add(iStructure);
-//							iStructure.setStructureSet(nStructureSet);
-							iStructure.setStructureSet(nStructureSet);
-						}
-//						tx1.commit();
-
-						nStructureSet.setStructures(structures);
-						session.save(nStructureSet);
-						structureSet.add(nStructureSet);
-						if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID))) {
-							Series series = seriesMap.get(dcmObj.getString(Tag.SeriesInstanceUID));
-							series.setStructureSets(structureSet);
-							sliceService.SortAndUpdateSlices(series.getSeriesId());
-							nStructureSet.setSeries(series);
-						}
-						tx1.commit();
-						is.close();
-					}
 
                 } catch (Exception e) {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
@@ -257,6 +228,70 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
         }
+		for (MultipartFile file : structureFiles)
+		{
+			if (!file.isEmpty()) {
+				try {
+
+					InputStream is = file.getInputStream();
+					DicomInputStream dis = new DicomInputStream(is);
+
+					Attributes dcmObj = dis.readDataset(-1, -1);
+
+			Session session = HibernateUtil.currentSession();
+			Transaction tx1 = session.beginTransaction();
+			List<StructureSet> structureSet = new ArrayList<StructureSet>();
+			StructureSet nStructureSet = new StructureSet(dcmObj.getInt(Tag.SeriesNumber, 0),
+					dcmObj.getString(Tag.StructureSetName), new Date(), null, null,dcmObj.getString(Tag.StructureSetDescription),null );
+			List<Structure> structures = new ArrayList<Structure>();
+			Sequence structureSequence = dcmObj.getSequence(Tag.StructureSetROISequence);
+			for(int i=0;i<structureSequence.size();++i ) {
+				Structure iStructure = new Structure(Integer.parseInt(structureSequence.get(i).getString(Tag.ROINumber)),nStructureSet.getStructureSetId(), structureSequence.get(i).getString(Tag.ROIName),
+						new Date(), null, null, null, null );
+				List<Contour> iContours = new ArrayList<Contour>();
+				Sequence ROIContourSequence = dcmObj.getSequence(Tag.ROIContourSequence);
+				for(int j=0;j<ROIContourSequence.size();++j){
+					if (Integer.parseInt(ROIContourSequence.get(j).getString(Tag.ReferencedROINumber))==(iStructure.getROINumber()))
+					{
+						iStructure.setROIcolor(String.join(",",ROIContourSequence.get(j).getStrings(Tag.ROIDisplayColor)));
+						Sequence ContourSequence = ROIContourSequence.get(j).getSequence(Tag.ContourSequence);
+						for(int k=0;k<ContourSequence.size();++k)
+						{
+							Sequence ContourImageSequence = ContourSequence.get(k).getSequence(Tag.ContourImageSequence);
+							Contour kContour = new Contour(ContourImageSequence.get(0).getString(Tag.ReferencedSOPInstanceUID), new Date(), null, null, null,String.join(",", ContourSequence.get(k).getStrings(Tag.ContourData)) );
+							if (sliceMap.containsKey(ContourImageSequence.get(0).getString(Tag.ReferencedSOPInstanceUID)))
+								kContour.setSlice(sliceMap.get(ContourImageSequence.get(0).getString(Tag.ReferencedSOPInstanceUID)));
+							iContours.add(kContour);
+							kContour.setStructure(iStructure);
+						}
+						iStructure.setContours(iContours);
+						break;
+					}
+				}
+				structures.add(iStructure);
+//							iStructure.setStructureSet(nStructureSet);
+				iStructure.setStructureSet(nStructureSet);
+			}
+//						tx1.commit();
+
+			nStructureSet.setStructures(structures);
+			session.save(nStructureSet);
+			structureSet.add(nStructureSet);
+			if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID))) {
+				Series series = seriesMap.get(dcmObj.getString(Tag.SeriesInstanceUID));
+				series.setStructureSets(structureSet);
+				sliceService.SortAndUpdateSlices(series.getSeriesId());
+				nStructureSet.setSeries(series);
+			}
+			tx1.commit();
+			is.close();
+			} catch (Exception e) {
+			return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
+		}
+		} else {
+			return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
+		}
+	}
 //        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
         return "You successfully uploaded !";
     }

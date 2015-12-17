@@ -54,8 +54,8 @@ public class Series {
     @OneToMany(targetEntity = StructureSet.class, mappedBy = "series", cascade = CascadeType.ALL)
     private List<StructureSet> structureSets;
 
-    @OneToMany(targetEntity = Slice.class, mappedBy = "series")
-    private List<StructureSet> slices;
+    @OneToMany(targetEntity = Slice.class, mappedBy = "series",cascade = CascadeType.ALL)
+    private List<Slice> slices;
 
     @OneToOne(mappedBy = "series", targetEntity = ImageSeries.class, cascade = CascadeType.ALL)
     private ImageSeries imageSeries;
@@ -205,11 +205,11 @@ public class Series {
         this.structureSets = structureSets;
     }
 
-    public List<StructureSet> getSlices() {
+    public List<Slice> getSlices() {
         return slices;
     }
 
-    public void setSlices(List<StructureSet> slices) {
+    public void setSlices(List<Slice> slices) {
         this.slices = slices;
     }
 
