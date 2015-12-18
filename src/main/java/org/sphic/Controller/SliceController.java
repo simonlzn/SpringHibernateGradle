@@ -48,7 +48,6 @@ public class SliceController {
         DeferredResult result = new DeferredResult();
 
         if (sliceList.isEmpty()) {
-
             String views = constructViewsString(view, number);
             result = itkService.Slicing(channel, String.valueOf(seriesId), views);
 

@@ -18,6 +18,7 @@ public class Dao {
         Transaction tx = session.beginTransaction();
 
         session.save(o);
+        session.flush();
         tx.commit();
     }
 
@@ -27,6 +28,7 @@ public class Dao {
         Transaction tx = session.beginTransaction();
 
         session.saveOrUpdate(o);
+        session.flush();
         tx.commit();
     }
 

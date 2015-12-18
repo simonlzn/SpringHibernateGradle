@@ -22,18 +22,18 @@ public class Contour {
     @JoinColumn(name = "structure_id")
     private Structure structure;
 
-    @ManyToOne(targetEntity = Slice.class)
+    @ManyToOne(targetEntity = Slice.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "slice_id")
     private Slice slice;
 
     @Column(name="view")
-    private char view;
+    private Character view;
 
     @Column(name="number")
-    private int number;
+    private Integer number;
 
     @Column(name="color_id")
-    private int colorId;
+    private Integer colorId;
 
     @Column(name="created")
     private Date created;

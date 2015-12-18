@@ -23,6 +23,7 @@ public class ContourService {
         StringBuffer stringBuffer = new StringBuffer();
         for (Contour contour : contours) {
             stringBuffer.append(contour.getContourData());
+            stringBuffer.append(",");
         }
 
         return stringBuffer.toString();

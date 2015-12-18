@@ -45,8 +45,7 @@ public class ImageExtractService {
                 null, null);
 
         List<Study> studies = new ArrayList<Study>();
-        Study nStudy = new Study(Integer.parseInt(dcmObj
-                .getString(Tag.StudyID)),
+        Study nStudy = new Study(dcmObj.getString(Tag.StudyID),
                 dcmObj.getString(Tag.StudyInstanceUID),
                 dcmObj.getDate(Tag.StudyDateAndTime),
                 dcmObj.getDate(Tag.StudyDateAndTime), null, null,
@@ -89,18 +88,6 @@ public class ImageExtractService {
                 dcmObj.getInt(Tag.PixelRepresentation, 0),
                 dcmObj.getInt(Tag.SmallestImagePixelValue, 0),
                 dcmObj.getInt(Tag.LargestImagePixelValue, 0));
-
-//        List<Slice> Slices = new ArrayList<Slice>();
-//        Slice nSlice = new Slice('T', 0, dcmObj.getInt(Tag.Rows, 0), dcmObj.getInt(Tag.Columns, 0), Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[0]), Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[1]), dcmObj.getString(Tag.SOPInstanceUID),
-//                Integer.parseInt(dcmObj.getString(Tag.InstanceNumber)),
-//                dcmObj.getDouble(Tag.SliceLocation, 0.0),
-//                String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
-//                new Date(), null, null, null, null, null);
-//
-//        sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
-//        Slices.add(nSlice);
-//        nSlice.setSeries(nSeries);
-//        nSeries.setSlices(Slices);
 
         imageSeries.setSeries(nSeries);
         nSeries.setImageSeries(imageSeries);
