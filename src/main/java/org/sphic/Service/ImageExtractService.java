@@ -48,8 +48,8 @@ public class ImageExtractService {
                             null, null);
 
                     List<Study> studies = new ArrayList<Study>();
-                    Study nStudy = new Study(Integer.parseInt(dcmObj
-                            .getString(Tag.StudyID)),
+                    Study nStudy = new Study(dcmObj
+                            .getString(Tag.StudyID),
                             dcmObj.getString(Tag.StudyInstanceUID),
                             dcmObj.getDate(Tag.StudyDateAndTime),
                             dcmObj.getDate(Tag.StudyDateAndTime), null, null,

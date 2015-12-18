@@ -12,7 +12,7 @@ import java.util.List;
 public class Study {
 	@Id
 	@Column(name="id")
-	private int studyId;
+	private String studyId;
 
 	@ManyToOne(targetEntity = Patient.class)
 	@JoinColumn(name = "patient_id")
@@ -52,7 +52,7 @@ public class Study {
 		
 	}
 
-	public Study(int studyId, String studyInstantUID, Date created, Date updated, Date deleted, String name, String description, String physician, String accessionNumber, String institutionName, List<Series> series) {
+	public Study(String studyId, String studyInstantUID, Date created, Date updated, Date deleted, String name, String description, String physician, String accessionNumber, String institutionName, List<Series> series) {
 		this.studyId = studyId;
 		this.study_ins_uid = studyInstantUID;
 		this.created = created;
@@ -98,11 +98,11 @@ public class Study {
 		this.accession_number = accession_number;
 	}
 
-	public int getStudyId() {
+	public String getStudyId() {
 		return studyId;
 	}
 
-	public void setStudyId(int studyId) {
+	public void setStudyId(String studyId) {
 		this.studyId = studyId;
 	}
 
