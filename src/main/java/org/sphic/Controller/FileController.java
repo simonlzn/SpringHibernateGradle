@@ -86,11 +86,16 @@ public class FileController {
 				return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
 			}
 		}
+		boolean bWritePatient = true;
 		for (MultipartFile file : imageFiles) {
 
 			if (!file.isEmpty()) {
 				try {
-					imageExtractService.writeImage(file,sliceMap,seriesMap);
+					if(bWritePatient) {
+						imageExtractService.writePatient(file, seriesMap);
+						bWritePatient = false;
+					}
+					imageExtractService.writeImage(file, sliceMap);
                 } catch (Exception e) {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
                 }
