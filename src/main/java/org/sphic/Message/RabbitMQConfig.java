@@ -23,10 +23,10 @@ public class RabbitMQConfig {
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory =
             new CachingConnectionFactory();
-        connectionFactory.setHost("10.11.12.33");
-//        connectionFactory.setHost("localhost");
-        connectionFactory.setUsername("sphic");
-        connectionFactory.setPassword("sphic");
+//        connectionFactory.setHost("10.11.12.33");
+        connectionFactory.setHost("localhost");
+//        connectionFactory.setUsername("sphic");
+//        connectionFactory.setPassword("sphic");
         return connectionFactory;
     }
 
@@ -35,6 +35,7 @@ public class RabbitMQConfig {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
 //        rabbitAdmin.deleteExchange("java");
         queueName = rabbitAdmin.declareQueue().getName();
+
         return rabbitAdmin;
     }
 

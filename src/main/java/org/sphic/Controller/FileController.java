@@ -1,23 +1,15 @@
 package org.sphic.Controller;
 
 import org.dcm4che3.data.Attributes;
-import org.dcm4che3.data.Sequence;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Message.MessageQueue;
-import org.sphic.Model.ImageSeries;
-import org.sphic.Model.Patient;
 import org.sphic.Model.Series;
-import org.sphic.Model.Study;
-import org.sphic.Model.StructureSet;
-import org.sphic.Model.Structure;
-import org.sphic.Model.Contour;
 import org.sphic.Model.Slice;
 import org.sphic.Service.ContourService;
+import org.sphic.Service.ImageExtractService;
 import org.sphic.Service.SliceService;
+import org.sphic.Service.StructureExtractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -40,12 +32,17 @@ public class FileController {
     private final MessageQueue messageQueue;
 	private SliceService sliceService;
 	private ContourService contourService;
+	private StructureExtractService structureExtractService;
+	private ImageExtractService imageExtractService;
 
 	@Autowired
-    public FileController(MessageQueue messageQueue, SliceService sliceService, ContourService contourService) {
+    public FileController(MessageQueue messageQueue, SliceService sliceService, ContourService contourService, StructureExtractService structureExtractService,
+						  ImageExtractService imageExtractService) {
         this.messageQueue = messageQueue;
 		this.sliceService = sliceService;
 		this.contourService = contourService;
+		this.structureExtractService = structureExtractService;
+		this.imageExtractService = imageExtractService;
 	}
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
@@ -93,134 +90,7 @@ public class FileController {
 
 			if (!file.isEmpty()) {
 				try {
-
-					InputStream is = file.getInputStream();
-					DicomInputStream dis = new DicomInputStream(is);
-
-					Attributes dcmObj = dis.readDataset(-1, -1);
-
-						if (!HasBeenSavedToDatabase) {
-							HasBeenSavedToDatabase = true;
-							Session session = HibernateUtil.currentSession();
-							Transaction tx1 = session.beginTransaction();
-							Patient p = new Patient(Integer.getInteger(
-									dcmObj.getString(Tag.PatientID), 0),
-									dcmObj.getString(Tag.PatientName), "",
-									dcmObj.getString(Tag.PatientAddress), "",
-									Integer.getInteger(
-											dcmObj.getString(Tag.PatientAge), 0),
-									null, null);
-
-
-							List<Study> studies = new ArrayList<Study>();
-							Study nStudy = new Study(Integer.parseInt(dcmObj
-									.getString(Tag.StudyID)),
-									dcmObj.getString(Tag.StudyInstanceUID),
-									dcmObj.getDate(Tag.StudyDateAndTime),
-									dcmObj.getDate(Tag.StudyDateAndTime), null, null,
-									dcmObj.getString(Tag.StudyDescription), dcmObj.getString(Tag.ReferringPhysicianName),
-									dcmObj.getString(Tag.AccessionNumber), dcmObj.getString(Tag.InstitutionName), null);
-
-							List<Series> series = new ArrayList<Series>();
-							nSeries = new Series(Integer.parseInt(dcmObj
-									.getString(Tag.SeriesNumber)),
-									dcmObj.getString(Tag.SeriesInstanceUID),
-									dcmObj.getInt(Tag.SeriesNumber, 0),
-								/*new SimpleDateFormat("yyyyMMddhhmmss").parse(dcmObj.getString(Tag.SeriesDate)+
-								dcmObj.getString(Tag.SeriesTime))*/ new Date(),
-									dcmObj.getString(Tag.SeriesDescription),
-									dcmObj.getString(Tag.Modality),
-									dcmObj.getString(Tag.Manufacturer),
-									dcmObj.getString(Tag.ManufacturerModelName),
-									dcmObj.getDate(Tag.StudyDateAndTime),
-									dcmObj.getDate(Tag.StudyDateAndTime), null, null);
-							SeriesID = nSeries.getSeriesId();
-							seriesMap.put(dcmObj.getString(Tag.SeriesInstanceUID),nSeries);
-							ImageSeries imageSeries = new ImageSeries(
-									dcmObj.getString(Tag.SeriesInstanceUID),
-									dcmObj.getDouble(Tag.SliceThickness, 0.0),
-									String.join(",", dcmObj.getStrings(Tag.ImageOrientationPatient)),
-									dcmObj.getInt(Tag.Rows, 512),
-									dcmObj.getInt(Tag.Columns, 512),
-									dcmObj.getString(Tag.PatientPosition),
-									String.join(",", dcmObj.getStrings(Tag.PixelSpacing)),
-									dcmObj.getDouble(Tag.RescaleSlope, 1.0),
-									dcmObj.getDouble(Tag.RescaleIntercept, 0.0),
-									String.join(",", dcmObj.getStrings(Tag.ImageType)),
-									dcmObj.getString(Tag.DerivationDescription),
-									dcmObj.getString(Tag.PatientOrientation),
-									dcmObj.getString(Tag.SpecificCharacterSet),
-									dcmObj.getString(Tag.SamplesPerPixel),
-									dcmObj.getString(Tag.PhotometricInterpretation),
-									dcmObj.getInt(Tag.BitsAllocated, 0),
-									dcmObj.getInt(Tag.BitsStored, 0),
-									dcmObj.getInt(Tag.HighBit, 0),
-									dcmObj.getInt(Tag.PixelRepresentation, 0),
-									dcmObj.getInt(Tag.SmallestImagePixelValue, 0),
-									dcmObj.getInt(Tag.LargestImagePixelValue, 0));
-
-							List<Slice> Slices= new ArrayList<Slice>();
-							Slice nSlice = new Slice('T',0,dcmObj.getInt(Tag.Rows,0),dcmObj.getInt(Tag.Columns,0),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[0]),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[1]),dcmObj.getString(Tag.SOPInstanceUID),
-									Integer.parseInt(dcmObj.getString(Tag.InstanceNumber)),
-									dcmObj.getDouble(Tag.SliceLocation, 0.0),
-									String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
-									new Date(), null, null, null, null, null);
-//						nImage.setSeries(nSeries);
-							sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
-							Slices.add(nSlice);
-							nSlice.setSeries(nSeries);
-							nSeries.setSlices(Slices);
-//							session.saveOrUpdate(nImage);
-
-							imageSeries.setSeries(nSeries);
-							nSeries.setImageSeries(imageSeries);
-							nSeries.setStudy(nStudy);
-//                        session.saveOrUpdate(nSeries);
-							series.add(nSeries);
-							nStudy.setSeries(series);
-							nStudy.setPatient(p);
-							studies.add(nStudy);
-							p.setStudies(studies);
-							patientId = (String) session.save(p);
-//						System.out.println(patientId);
-							tx1.commit();
-							is.close();
-						} else {
-
-//								InputStream is = file.getInputStream();
-//								DicomInputStream dis = new DicomInputStream(is);
-//								Attributes dcmObj = dis.readDataset(-1, -1);
-							Session session = HibernateUtil.currentSession();
-							Transaction tx1 = session.beginTransaction();
-							Slice nSlice = new Slice('T',0,dcmObj.getInt(Tag.Rows,0),dcmObj.getInt(Tag.Columns,0),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[0]),Double.parseDouble(dcmObj.getStrings(Tag.PixelSpacing)[1]),dcmObj.getString(Tag.SOPInstanceUID),
-									Integer.parseInt(dcmObj.getString(Tag.InstanceNumber)),
-									dcmObj.getDouble(Tag.SliceLocation, 0.0),
-									String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
-									new Date(), null, null, null, null, null);
-//						nImage.setSeries(nSeries);
-							sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
-							nSlice.setSeries(nSeries);
-							session.saveOrUpdate(nSlice);
-							tx1.commit();
-							is.close();
-						}
-
-						byte[] bytes = file.getBytes();
-						if (patientId == null)
-							throw new Exception("patient ID can not be retrieved");
-
-						String name = "~/data/" + patientId.toString() + "/" + file.getOriginalFilename();
-
-						File dataFolder = new File("~/data/" + patientId.toString() + "/" );
-						if (dataFolder.exists() || dataFolder.mkdirs()) {
-							BufferedOutputStream stream =
-									new BufferedOutputStream(new FileOutputStream(new File(name)));
-							stream.write(bytes);
-							stream.close();
-
-							System.out.println(name + " is uploaded!");
-						}
-
+					imageExtractService.writeImage(file,sliceMap,seriesMap);
                 } catch (Exception e) {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
                 }
@@ -232,60 +102,9 @@ public class FileController {
 		for (MultipartFile file : structureFiles)
 		{
 			if (!file.isEmpty()) {
-				try {
-
-					InputStream is = file.getInputStream();
-					DicomInputStream dis = new DicomInputStream(is);
-
-					Attributes dcmObj = dis.readDataset(-1, -1);
-
-			Session session = HibernateUtil.currentSession();
-			Transaction tx1 = session.beginTransaction();
-			List<StructureSet> structureSet = new ArrayList<StructureSet>();
-			StructureSet nStructureSet = new StructureSet(
-					dcmObj.getString(Tag.StructureSetName), new Date(), null, null,dcmObj.getString(Tag.StructureSetDescription),null );
-			List<Structure> structures = new ArrayList<Structure>();
-			Sequence structureSequence = dcmObj.getSequence(Tag.StructureSetROISequence);
-			for(int i=0;i<structureSequence.size();++i ) {
-				Structure iStructure = new Structure(Integer.parseInt(structureSequence.get(i).getString(Tag.ROINumber)), structureSequence.get(i).getString(Tag.ROIName),
-						new Date(), null, null, null, null );
-				List<Contour> iContours = new ArrayList<Contour>();
-				Sequence ROIContourSequence = dcmObj.getSequence(Tag.ROIContourSequence);
-				for(int j=0;j<ROIContourSequence.size();++j){
-					if (Integer.parseInt(ROIContourSequence.get(j).getString(Tag.ReferencedROINumber))==(iStructure.getROINumber()))
-					{
-						iStructure.setROIcolor(String.join(",",ROIContourSequence.get(j).getStrings(Tag.ROIDisplayColor)));
-						Sequence ContourSequence = ROIContourSequence.get(j).getSequence(Tag.ContourSequence);
-						for(int k=0;k<ContourSequence.size();++k)
-						{
-							Sequence ContourImageSequence = ContourSequence.get(k).getSequence(Tag.ContourImageSequence);
-							Contour kContour = new Contour(ContourImageSequence.get(0).getString(Tag.ReferencedSOPInstanceUID), new Date(), null, null, null,String.join(",", ContourSequence.get(k).getStrings(Tag.ContourData)) );
-							if (sliceMap.containsKey(ContourImageSequence.get(0).getString(Tag.ReferencedSOPInstanceUID)))
-								kContour.setSlice(sliceMap.get(ContourImageSequence.get(0).getString(Tag.ReferencedSOPInstanceUID)));
-							iContours.add(kContour);
-							kContour.setStructure(iStructure);
-						}
-						iStructure.setContours(iContours);
-						break;
-					}
-				}
-				structures.add(iStructure);
-//							iStructure.setStructureSet(nStructureSet);
-				iStructure.setStructureSet(nStructureSet);
-			}
-//						tx1.commit();
-
-			nStructureSet.setStructures(structures);
-			session.save(nStructureSet);
-			structureSet.add(nStructureSet);
-			if(seriesMap.containsKey(dcmObj.getString(Tag.SeriesInstanceUID))) {
-				Series series = seriesMap.get(dcmObj.getString(Tag.SeriesInstanceUID));
-				series.setStructureSets(structureSet);
-				sliceService.SortAndUpdateSlices(series.getSeriesId());
-				nStructureSet.setSeries(series);
-			}
-			tx1.commit();
-			is.close();
+				try{
+				structureExtractService.writeStructure(file,sliceMap,seriesMap);
+				sliceService.SortAndUpdateSlices(structureExtractService.getSeriesID());
 			} catch (Exception e) {
 			return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
 		}
