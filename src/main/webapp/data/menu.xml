@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<menu>
+    <item id="patientInfo" text="View Patient Information"/>
+
+	<item id="segmentation" text="Segmentation" enabled="false"/>
+</menu>

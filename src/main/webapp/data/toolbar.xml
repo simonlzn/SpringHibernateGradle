@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<toolbar>
+	<item id="welcome" type="text"  text="Welcom to TIMPS"/>
+	<item id="username" type="text" text="Administrtor"/>
+	<item id="spc01" type="spacer"/>         
+	<item id="logout" type="button" text="Logout"/>
+</toolbar>

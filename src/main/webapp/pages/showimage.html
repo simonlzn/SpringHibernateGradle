@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- cornerstone css - provides some useful css classes -->
+    <style>
+	.cornerstone-enabled-image{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default}
+    </style>
+
+</head>
+<body>
+<div class="container">
+
+    <h1>
+		This is an example for adjust window level/center images and interactive window/level
+    </h1>
+    <br>
+
+	<button id="hFlip" type="button" class="btn btn-default">HFlip</button>
+    <button id="vFlip" type="button" class="btn btn-default">VFlip</button>
+    <button id="lRotate" type="button" class="btn btn-default">Rotate Left</button>
+    <button id="rRotate" type="button" class="btn btn-default">Rotate Right</button>
+    <button id="reset" type="button" class="btn btn-default">Reset</button>
+	<br>
+	
+    <div style="width:512px;height:512px;position:relative;color: white;"
+         class="cornerstone-enabled-image"
+         oncontextmenu="return false"
+         unselectable='on'
+         onselectstart='return false;'
+         onmousedown='return false;'>
+
+		<div id="dicomImage"
+             style="width:512px;height:512px;top:0px;left:0px; position:absolute">
+        </div>
+        <div id="topleft" style="position: absolute;top:0px; left:0px">
+            Patient Name
+        </div>
+        <div id="topright" style="position: absolute;top:0px; right:0px">
+            Hospital
+        </div>
+        <div id="bottomright" style="position: absolute;bottom:0px; right:0px">
+            Zoom:
+        </div>
+        <div id="bottomleft" style="position: absolute;bottom:0px; left:0px">
+            WW/WL:
+        </div>
+	
+	</div>
+			
+    <label>Window Width</label>
+    <input id="ww" type="text" placeholder="e.g. 1000" value="256">
+    <label>Window Level</label>
+    <input id="wc" type="text" placeholder="e.g. 500" value="128">
+    <button id="apply" class="btn">Apply</button>
+    <button id="invert" class="btn">Invert</button>
+
+	<BR>
+	<button id="softTissue" class="btn">Soft Tissue</button>
+    <button id="lung" class="btn">Lung</button>
+    <button id="bone" class="btn">Bone</button>
+
+	<br>
+	<div><span id="coords"></span></div>
+	
+</div>
+</body>
+
+<!-- cornerstone depends on jQuery so it must be loaded first-->
+<script src="/js/jquery/jquery-2.1.4.min.js"></script>
+
+<!-- include the cornerstone library -->
+<script src="/js/cornerstone/cornerstone.js"></script>
+
+<script>
+var pixelDataAsString = ""; 
+(function (cs) {
+
+    "use strict";
+
+	/*
+    function str2ab(str) {
+        var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+        var bufView = new Uint16Array(buf);
+        var index = 0;
+        for (var i=0, strLen=str.length; i<strLen; i+=2) {
+            var lower = str.charCodeAt(i);
+            var upper = str.charCodeAt(i+1);
+            bufView[index] = lower + (upper <<8);
+            index++;
+        }
+        return bufView;
+    }
+*/
+	
+	// Converts a comma-separated ASCII ordinal string list
+	//  back to an ArrayBuffer (see note for bufferToString())
+    function getPixelData(pixelDataAsString)
+    {
+		var arr = pixelDataAsString.split(","), pixelData = new Int16Array( arr );
+        return pixelData;
+    }
+
+    var image1PixelData = getPixelData(pixelDataAsString);
+	/*
+	//Compute max and min value 
+	function getMinMax(imagePixelData)
+	{
+		var min = 32768; 
+		var max = -32768; 
+        for (var i=0, len=imagePixelData.length; i<len; i++) {
+            if(imagePixelData[i] < min )
+			{
+				min = imagePixelData[i];
+			}
+			if (imagePixelData[i] > max )
+			{
+				max = imagePixelData[i];
+			}
+        }		
+	    return {min: min, max: max}	;
+	}
+
+	function getDisPixelData(pixelData)
+	{
+		var dispPixelData = new Uint16Array(pixelData.length);
+		var minmax = getMinMax(pixelData); 
+		for (var i=0, len=imagePixelData.length; i<len; i++)   
+		{
+            dispPixelData[i]   =   (imagePixelData[i]   -   minmax.min)*255.0/(minmax.max   -   minmax.min);
+		}
+		return dispPixelData;
+	}
+
+
+	function getDisPixelData2(pixelData)
+	{
+		var window_center = 127; 
+		var window_width = 256; 
+	    var min   =   (2*window_center   -   window_width)/2.0   +   0.5;   
+		var max   =   (2*window_center   +   window_width)/2.0   +   0.5;  
+	  
+	  
+		var dispPixelData = new Uint16Array(pixelData.length);
+
+		for (var i=0, len=imagePixelData.length; i<len; i++)   
+		{
+          dispPixelData[i]  = (imagePixelData[i] - min)*255.0/(max - min);
+		}
+		return dispPixelData;
+	}
+	*/
+	
+	
+    function getExampleImage(imageId) {
+
+        var width = 512;
+        var height = 512;
+
+        function getPixelData()
+        {
+            if(imageId == 'example://1')
+            {
+                return image1PixelData;
+            }
+            throw "unknown imageId";
+        }
+
+        var image = {
+            imageId: imageId,
+            minPixelValue : -32767,
+            maxPixelValue : 32767,
+            slope: 1.0,
+            intercept: 0,
+            windowCenter : 40,
+            windowWidth : 400,
+            render: cornerstone.renderGrayscaleImage,
+            getPixelData: getPixelData,
+            rows: height,
+            columns: width,
+            height: height,
+            width: width,
+            color: false,
+            columnPixelSpacing:1.0,
+            rowPixelSpacing: .6640625,
+            sizeInBytes: width * height * 2
+        };
+
+        var deferred = $.Deferred();
+        deferred.resolve(image);
+        return deferred;
+    }
+
+
+    // register our imageLoader plugin with cornerstone
+    cs.registerImageLoader('example', getExampleImage);
+
+}(cornerstone));
+
+$(document).ready(function() {
+    
+		//load the data from http://10.11.12.33:8080/slice/107205/T/221
+    	$.when($.ajax("/slice/107205/T/221"))
+    	.done( function(json) 
+    	{ 
+    	
+    		console.log(json);
+    		pixelDataAsString = json.data; 
+			    	
+	        // image enable the element
+	        var element = $('#dicomImage').get(0);
+	        cornerstone.enable(element);
+	
+	        // load the image and display it
+	        var imageId = 'example://1';
+	        cornerstone.loadImage(imageId).then(function(image) {
+	           cornerstone.displayImage(element, image);
+			   
+	           var viewport = cornerstone.getViewport(element);
+	           $('#bottomright').text("Zoom: " + viewport.scale + "x");
+	           $('#bottomleft').text("WW/WL:" + Math.round(viewport.voi.windowWidth) + "/" + Math.round(viewport.voi.windowCenter));
+			   
+	        });
+
+	        // Add event handler to the ww/wc apply button
+	        $('#apply').click(function (e) {
+	            var viewport = cornerstone.getViewport(element);
+	            viewport.voi.windowWidth = parseFloat($('#ww').val());
+	            viewport.voi.windowCenter = parseFloat($('#wc').val());
+	            cornerstone.setViewport(element, viewport);
+	
+	            $('#bottomleft').text("WW/WL:" + Math.round(viewport.voi.windowWidth) + "/" + Math.round(viewport.voi.windowCenter));
+	        });
+	
+	        $('#invert').click(function (e) {
+	            var viewport = cornerstone.getViewport(element);
+	            if (viewport.invert === true) {
+	                viewport.invert = false;
+	            } else {
+	                viewport.invert = true;
+	            }
+	            cornerstone.setViewport(element, viewport);
+	
+				$('#bottomleft').text("WW/WL:" + Math.round(viewport.voi.windowWidth) + "/" + Math.round(viewport.voi.windowCenter));
+				
+	        });
+	
+	        // add event handlers to mouse move to adjust window/center
+	        $('#dicomImage').mousedown(function (e) {
+	            var lastX = e.pageX;
+	            var lastY = e.pageY;
+	
+	            $(document).mousemove(function (e) {
+	                var deltaX = e.pageX - lastX,
+	                        deltaY = e.pageY - lastY;
+	                lastX = e.pageX;
+	                lastY = e.pageY;
+	
+	                var viewport = cornerstone.getViewport(element);
+	                viewport.voi.windowWidth += (deltaX / viewport.scale);
+	                viewport.voi.windowCenter += (deltaY / viewport.scale);
+	                cornerstone.setViewport(element, viewport);
+					
+	                $('#bottomleft').text("WW/WL:" + Math.round(viewport.voi.windowWidth) + "/" + Math.round(viewport.voi.windowCenter));
+					
+	            });
+	
+	            $(document).mouseup(function (e) {
+	                $(document).unbind('mousemove');
+	                $(document).unbind('mouseup');
+	            });
+	        });
+			
+	       // Add event handlers to flip or rotate the image
+	        $('#hFlip').click(function (e) {
+	            var viewport = cornerstone.getViewport(element);
+	            viewport.hflip = !viewport.hflip;
+	            cornerstone.setViewport(element, viewport);
+	        });
+	
+	        $('#vFlip').click(function (e) {
+	            var viewport = cornerstone.getViewport(element);
+	            viewport.vflip = !viewport.vflip;
+	            cornerstone.setViewport(element, viewport);
+	        });
+	
+	        $('#lRotate').click(function (e) {
+	            var viewport = cornerstone.getViewport(element);
+	            viewport.rotation-=90;
+	            cornerstone.setViewport(element, viewport);
+	        });
+	
+	        $('#rRotate').click(function (e) {
+	            var viewport = cornerstone.getViewport(element);
+	            viewport.rotation+=90;
+	            cornerstone.setViewport(element, viewport);
+	        });
+	        
+	        $('#reset').click(function (e) {
+	            cornerstone.reset(element);
+	        });
+			
+	            // Add event handler for the ww/wc presets
+	            $('#softTissue').click(function(e) {
+	                var viewport = cornerstone.getViewport(element);
+	                viewport.voi.windowWidth = 400;
+	                viewport.voi.windowCenter = 20;
+	                cornerstone.setViewport(element, viewport);
+	                $('#bottomleft').text("WW/WL:" + Math.round(viewport.voi.windowWidth) + "/" + Math.round(viewport.voi.windowCenter));
+	
+				});
+	
+	            $('#lung').click(function(e) {
+	                var viewport = cornerstone.getViewport(element);
+	                viewport.voi.windowWidth = 1600;
+	                viewport.voi.windowCenter = -600;
+	                cornerstone.setViewport(element, viewport);
+					
+	                $('#bottomleft').text("WW/WL:" + Math.round(viewport.voi.windowWidth) + "/" + Math.round(viewport.voi.windowCenter));
+					
+	            });
+	
+	            $('#bone').click(function(e) {
+	                var viewport = cornerstone.getViewport(element);
+	                viewport.voi.windowWidth = 2000;
+	                viewport.voi.windowCenter = 300;
+	                cornerstone.setViewport(element, viewport);
+					
+	                $('#bottomleft').text("WW/WL:" + Math.round(viewport.voi.windowWidth) + "/" + Math.round(viewport.voi.windowCenter));
+					
+	           });
+				
+	        $(element).mousemove(function(event)
+	        {
+	            var pixelCoords = cornerstone.pageToPixel(element, event.pageX, event.pageY);
+	            var x = event.pageX;
+	            var y = event.pageY;
+	            $('#coords').text("pageX=" + event.pageX + ", pageY=" + event.pageY + ", pixelX=" + pixelCoords.x + ", pixelY=" + pixelCoords.y);
+	        });		
+	        
+	    }); //when done
+
+});//document ready
+
+</script>
+</html>

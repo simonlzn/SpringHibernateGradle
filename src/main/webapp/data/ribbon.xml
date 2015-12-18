@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ribbon>
+    <item type="block" text="Patient" mode="rows" text_pos="top">
+      <item type="button" img="18/new.gif" isbig="true"/>
+      <item type="button" img="18/open.gif" isbig="true"/>
+      <item type="button" img="18/paste.gif" isbig="true"/>
+      <item type="button" img="18/print.gif" isbig="true"/>
+      <item type="buttonTwoState" img="48/save.gif" isbig="true"/>
+    </item>
+    
+    <item type="block" text="Segment" mode="columns" text_pos="top">
+      <item type="button" img="18/new.gif" isbig="true"/>
+      <item type="button" img="18/open.gif" isbig="true"/>
+      <item type="button" img="18/paste.gif" isbig="true"/>
+      <item type="button" img="18/print.gif" isbig="true"/>
+      <item type="buttonTwoState" img="48/save.gif" isbig="true"/>
+    </item>    
+</ribbon>
