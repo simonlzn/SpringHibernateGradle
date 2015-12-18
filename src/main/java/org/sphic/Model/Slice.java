@@ -1,18 +1,21 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="slice")
+@JsonIgnoreProperties("series")
 public class Slice {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int sliceId;
 
-    @ManyToOne(targetEntity = Series.class)
+    @ManyToOne(targetEntity = Series.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "series_id")
     private Series series;
 

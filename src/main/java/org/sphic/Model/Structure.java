@@ -46,7 +46,7 @@ public class Structure {
     @OneToMany(targetEntity = Contour.class, mappedBy = "structure", cascade = CascadeType.ALL)
     private List<Contour> contours;
 
-    public Structure(int ROINumber, int structureSetId, String name, Date created, Date updated, Date deleted, String description, List<Contour> contours) {
+    public Structure(int ROINumber, String name, Date created, Date updated, Date deleted, String description, List<Contour> contours) {
         this.ROINumber = ROINumber;
         this.name = name;
         this.created = created;

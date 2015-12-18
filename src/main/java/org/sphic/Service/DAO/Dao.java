@@ -1,10 +1,8 @@
-package org.sphic.Model.DAO;
+package org.sphic.Service.DAO;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sphic.HibernateConfig.HibernateUtil;
-import org.sphic.Model.Series;
-import org.sphic.Model.Slice;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +18,15 @@ public class Dao {
         Transaction tx = session.beginTransaction();
 
         session.save(o);
+        tx.commit();
+    }
+
+    public <T> void saveOrUpdate(T o)
+    {
+        Session session = HibernateUtil.currentSession();
+        Transaction tx = session.beginTransaction();
+
+        session.saveOrUpdate(o);
         tx.commit();
     }
 

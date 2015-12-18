@@ -11,6 +11,7 @@ import java.util.List;
 public class ImageSeries {
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -92,12 +93,11 @@ public class ImageSeries {
 		
 	}
 
-	public ImageSeries(int seriesId, String sop_cls_uid, double slice_thick, String image_orient_pat, int rows, int columns,
+	public ImageSeries(String sop_cls_uid, double slice_thick, String image_orient_pat, int rows, int columns,
 					   String patient_position, String pixel_spacing, double slope, double intercept, String image_type,
 					   String derivation_descrpt, String patient_orient, String specific_character_set, String sample_per_pixel,
 					   String photometric_interpretation, int bits_allocated, int bits_stored, int high_bit, int pixel_representation,
 					   int smallest_image_pixel_value, int largest_image_pixel_value) {
-		this.id = seriesId;
 		this.sop_cls_uid = sop_cls_uid;
 		this.slice_thick = slice_thick;
 		this.image_orient_pat = image_orient_pat;

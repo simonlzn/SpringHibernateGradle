@@ -54,21 +54,18 @@ public class Series {
     @OneToMany(targetEntity = StructureSet.class, mappedBy = "series", cascade = CascadeType.ALL)
     private List<StructureSet> structureSets;
 
-    @OneToMany(targetEntity = Slice.class, mappedBy = "series")
-    private List<StructureSet> slices;
+    @OneToMany(targetEntity = Slice.class, mappedBy = "series",cascade = CascadeType.ALL)
+    private List<Slice> slices;
 
     @OneToOne(mappedBy = "series", targetEntity = ImageSeries.class, cascade = CascadeType.ALL)
     private ImageSeries imageSeries;
-
-    @OneToMany(targetEntity = Images.class, mappedBy = "series", cascade = CascadeType.ALL)
-    private List<Images> Images;
 
     public Series() {
 
     }
 
-    public Series(int seriesId, int studyId, String seriesInsUID, int seriesNumber, Date seriesDateTime, String description,
-                  String modality, String manufacturer, String manufctModel,Date created, Date updated, Date deleted, String name) {
+    public Series(int seriesId, String seriesInsUID, int seriesNumber, Date seriesDateTime, String description,
+                  String modality, String manufacturer, String manufctModel, Date created, Date updated, Date deleted, String name) {
 
         this.seriesId = seriesId;
         this.seriesInsUID = seriesInsUID;
@@ -205,11 +202,11 @@ public class Series {
         this.structureSets = structureSets;
     }
 
-    public List<StructureSet> getSlices() {
+    public List<Slice> getSlices() {
         return slices;
     }
 
-    public void setSlices(List<StructureSet> slices) {
+    public void setSlices(List<Slice> slices) {
         this.slices = slices;
     }
 
@@ -219,13 +216,5 @@ public class Series {
 
     public void setImageSeries(ImageSeries imageSeries) {
         this.imageSeries = imageSeries;
-    }
-
-    public List<org.sphic.Model.Images> getImages() {
-        return Images;
-    }
-
-    public void setImages(List<org.sphic.Model.Images> images) {
-        Images = images;
     }
 }

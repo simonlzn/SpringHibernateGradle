@@ -3,6 +3,7 @@ package org.sphic.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sphic.Message.MessageQueue;
+import org.sphic.Service.ITKService;
 import org.sphic.util.PubSub;
 import org.sphic.util.Subscriber;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,61 +25,17 @@ import java.util.Map;
 @RequestMapping("/itk")
 @Component
 public class ITKCommunicationController {
-	private Subscriber subscriber;
-	private MessageQueue messageQueue;
+	private ITKService itkService;
 
 	@Autowired
-	public ITKCommunicationController(MessageQueue messageQueue) {
-		this.messageQueue = messageQueue;
+	public ITKCommunicationController(ITKService itkService) {
+		this.itkService = itkService;
 	}
 
-//	@RequestMapping(value = "/call", method = RequestMethod.GET)
-//	public DeferredResult<String> Info(@RequestParam(value = "func" , defaultValue = "" ) String func) throws JsonProcessingException {
-//		messageQueue.Send(new ObjectMapper().writeValueAsString(func));
-//		DeferredResult<String> result = new DeferredResult<String>();
-//		subscriber =
-//		new Subscriber(){
-//			@Override
-//			public void Callback(String message){
-//				result.setResult(message);
-//				PubSub.Unsubscribe("rabbitmq", subscriber);
-//			}
-//		};
-//		PubSub.Subscribe("rabbitmq", subscriber);
-//		return result;
-//	}
-
 	@RequestMapping(value = "/call", method = RequestMethod.GET)
-	public DeferredResult<Object> Info(@RequestParam Map func, final HttpServletRequest request, final HttpServletResponse response) throws JsonProcessingException {
-
+	public DeferredResult Info(@RequestParam Map func, final HttpServletRequest request) throws JsonProcessingException {
 		String channel = request.getRequestURI()+"?"+request.getQueryString();
-		func.put("key", channel);
-		System.out.println(func);
-		messageQueue.Send(new ObjectMapper().writeValueAsString(func), func.get("id").toString());
-
-		final DeferredResult<Object> result = new DeferredResult<Object>();
-		result.onTimeout(new Runnable() {
-			@Override
-			public void run() {
-				result.setErrorResult("Time out");
-			}
-		});
-
-		subscriber =
-			new Subscriber(channel){
-				@Override
-				public void Callback(Object message){
-					try {
-						result.setResult(message);
-					}catch (Exception e){
-						result.setErrorResult(e);
-					}finally {
-						PubSub.Unsubscribe(this.channel, subscriber);
-					}
-				}
-			};
-		PubSub.Subscribe(channel, subscriber);
-		return result;
+		return itkService.Reconstruct(channel, func.get("id").toString(), func.get("folderPath").toString());
 	}
 
 	// $.ajax({url: 'http://localhost:8080/itk/call?func=render', type:'POST', data:  {seeds : ["(1,1,1)","(2,2,2)","(3,3,3)"]}, success:function(ret){console.log(ret)}})
