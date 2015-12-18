@@ -28,21 +28,21 @@ public class ContourController {
 		return contour;
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public List<Contour> GetListBySlice(@RequestParam(name = "sliceId") int sliceId) {
+	@RequestMapping(value = "/", method = RequestMethod.GET, params = "sliceId")
+	public List<Contour> GetListBySlice(@RequestParam("sliceId") int sliceId) {
 		Session session = HibernateUtil.currentSession();
 		List<Contour> contours = session.createCriteria(Contour.class).add(Restrictions.eq("slice.id", sliceId)).list();
 
 		return contours;
 	}
 
-//	@RequestMapping(value = "/", method = RequestMethod.GET)
-//	public List<Contour> GetListByStructure(@RequestParam(name = "structureId") int structureId) {
-//		Session session = HibernateUtil.currentSession();
-//		List<Contour> contours = session.createCriteria(Contour.class).add(Restrictions.eq("structure.id", structureId)).list();
-//
-//		return contours;
-//	}
+	@RequestMapping(value = "/", method = RequestMethod.GET, params = "structureId")
+	public List<Contour> GetListByStructure(@RequestParam("structureId") int structureId) {
+		Session session = HibernateUtil.currentSession();
+		List<Contour> contours = session.createCriteria(Contour.class).add(Restrictions.eq("structure.id", structureId)).list();
+
+		return contours;
+	}
 
 	@RequestMapping(value = "/{id}/color/{colorId}", method = RequestMethod.POST)
 	public void Post(@PathVariable int id, @PathVariable int colorId) {

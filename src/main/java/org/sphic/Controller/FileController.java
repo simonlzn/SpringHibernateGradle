@@ -51,11 +51,11 @@ public class FileController {
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public @ResponseBody String download( final HttpServletResponse response) throws InterruptedException {
 //		sliceService.SortAndUpdateSlices(107205);
-//		String message = contourService.ConstructDataByStructureId(3);
-//		System.out.println(new Date().getTime());
+		String message = contourService.ConstructDataByStructureId(29);
+		System.out.println(new Date().getTime());
 //		messageQueue.Send("{\"func\": \"contourReconstruct\", \"id\": \"1\",\"key\": \"test\",\"contours\": " +"\"" + "" + "\"" + "}", "1");
 		Thread.sleep(5000);
-        return "very weird string";
+        return message;
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
