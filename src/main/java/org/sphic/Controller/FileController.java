@@ -69,6 +69,7 @@ public class FileController {
         Map<String, Series> seriesMap = new HashMap<String, Series>();
         List<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
         List<MultipartFile> structureFiles = new ArrayList<MultipartFile>();
+        int SeriesId = 0;
         for (MultipartFile file : files) {
 
             if (!file.isEmpty()) {
@@ -94,7 +95,7 @@ public class FileController {
 			if (!file.isEmpty()) {
 				try {
 					if(bWritePatient) {
-						imageExtractService.writePatient(file, seriesMap);
+                        SeriesId = imageExtractService.writePatient(file, seriesMap);
 						bWritePatient = false;
 					}
 					imageExtractService.writeImage(file, sliceMap);
@@ -118,7 +119,8 @@ public class FileController {
             }
 
             String seriesUID = seriesMap.keySet().toArray()[0].toString();
-            sliceService.SortAndUpdateSlices(seriesDao.getBySeriesUID(seriesUID).getSeriesId());
+//            sliceService.SortAndUpdateSlices(seriesDao.getBySeriesUID(seriesUID).getSeriesId());
+            sliceService.SortAndUpdateSlices(SeriesId);
         }
 //        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
         HibernateUtil.closeSession();

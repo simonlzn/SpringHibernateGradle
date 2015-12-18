@@ -29,7 +29,7 @@ public class ImageExtractService {
         this.patientDao = patientDao;
     }
 
-    public void writePatient(MultipartFile file, Map<String, Series> seriesMap) throws Exception {
+    public int writePatient(MultipartFile file, Map<String, Series> seriesMap) throws Exception {
 
         InputStream is = file.getInputStream();
         DicomInputStream dis = new DicomInputStream(is);
@@ -101,6 +101,7 @@ public class ImageExtractService {
         patientId = patientDao.save(p);
 
         is.close();
+        return nSeries.getSeriesId();
     }
 
     public void writeImage(MultipartFile file, Map<String, Slice> sliceMap) throws Exception {
