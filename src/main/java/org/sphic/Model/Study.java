@@ -12,6 +12,7 @@ import java.util.List;
 public class Study {
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String studyId;
 
 	@ManyToOne(targetEntity = Patient.class)
@@ -20,6 +21,9 @@ public class Study {
 
 	@Column(name="study_ins_uid")
 	private String study_ins_uid;
+
+	@Column(name="study_ins_id")
+	private String study_ins_id;
 
 	@Column(name="created")
 	private Date created;
@@ -52,8 +56,8 @@ public class Study {
 		
 	}
 
-	public Study(String studyId, String studyInstantUID, Date created, Date updated, Date deleted, String name, String description, String physician, String accessionNumber, String institutionName, List<Series> series) {
-		this.studyId = studyId;
+	public Study(String study_ins_id, String studyInstantUID, Date created, Date updated, Date deleted, String name, String description, String physician, String accessionNumber, String institutionName, List<Series> series) {
+		this.study_ins_id = study_ins_id;
 		this.study_ins_uid = studyInstantUID;
 		this.created = created;
 		this.updated = updated;
@@ -161,4 +165,12 @@ public class Study {
 	public String getStudyInstantUID() { return this.study_ins_uid; }
 
 	public void getStudyInstantUID(String studyInstantUID) { this.study_ins_uid = studyInstantUID;}
+
+	public String getStudy_ins_id() {
+		return study_ins_id;
+	}
+
+	public void setStudy_ins_id(String study_ins_id) {
+		this.study_ins_id = study_ins_id;
+	}
 }

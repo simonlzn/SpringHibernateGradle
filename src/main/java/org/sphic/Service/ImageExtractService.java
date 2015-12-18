@@ -53,8 +53,8 @@ public class ImageExtractService {
                 dcmObj.getString(Tag.AccessionNumber), dcmObj.getString(Tag.InstitutionName), null);
 
         List<Series> series = new ArrayList<Series>();
-        nSeries = new Series(Integer.parseInt(dcmObj
-                .getString(Tag.SeriesNumber)),
+        nSeries = new Series(dcmObj
+                .getString(Tag.SeriesNumber),
                 dcmObj.getString(Tag.SeriesInstanceUID),
                 dcmObj.getInt(Tag.SeriesNumber, 0),
                 new Date(),

@@ -3,6 +3,7 @@ package org.sphic.Controller;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
+import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Message.MessageQueue;
 import org.sphic.Model.Series;
 import org.sphic.Model.Slice;
@@ -64,10 +65,6 @@ public class FileController {
     public
     @ResponseBody
     String Upload(@RequestParam("file") MultipartFile[] files) {
-        Boolean HasBeenSavedToDatabase = false;
-        String patientId = null;
-        int SeriesID = 0;
-        Series nSeries = null;
         Map<String, Slice> sliceMap = new HashMap<String, Slice>();
         Map<String, Series> seriesMap = new HashMap<String, Series>();
         List<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
@@ -113,7 +110,6 @@ public class FileController {
             if (!file.isEmpty()) {
                 try {
                     structureExtractService.writeStructure(file, sliceMap, seriesMap);
-                    SeriesID = structureExtractService.getSeriesID();
                 } catch (Exception e) {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
                 }
@@ -125,7 +121,8 @@ public class FileController {
             sliceService.SortAndUpdateSlices(seriesDao.getBySeriesUID(seriesUID).getSeriesId());
         }
 //        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
-        return "You successfully uploaded !";
+        HibernateUtil.closeSession();
+        return "You successfully uploaded DICOM files!";
     }
 
     //	private List<Structure> getStructures(Attributes dcmObj){
