@@ -33,6 +33,29 @@ public class HomeController {
 		mav.setViewName("showimage");
 		return mav;
     }	
+
+	@RequestMapping(value = "/dashboard",  method = RequestMethod.GET)
+    public ModelAndView dashboard() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("dashboardh");
+		return mav;
+    }	
+
+	@RequestMapping(value = "/ftltest",  method = RequestMethod.GET)
+    public ModelAndView ftltest() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("ftltest");
+		
+
+	     mav.addObject("title", "Dashboard");
+	     Map <String, String> map = new HashMap<String, String>();
+	     map.put("name", "Jie Li");
+	     map.put("developer", "Jieli");
+	     
+	     mav.addObject("exampleObject", map);
+	     
+		return mav;
+    }	
 	
 	/*
 	 @RequestMapping(value="/dashboard", method= RequestMethod.GET) 
