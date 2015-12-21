@@ -37,6 +37,9 @@
 	
 	<script src="/js/fabric/fabricjs_viewport.js"></script>
 
+	<script src="/js/close-pencil-brush.js"></script>
+
+
     <style>
         /*these styles allow dhtmlxLayout to work in fullscreen mode in different browsers correctly*/
         html, body {
@@ -65,8 +68,6 @@
     </style>  
 
    <script type="text/javascript">
-   		var ID = 107205; 
-   		var url = ""/itk/call?func=reconstruct&folderPath=/home/mpit/Server/20151202/107205&id=107205;
    		 
         var layout,menu,toolbar,contactsGrid,contactForm;
 		var segemationLayout;
@@ -371,9 +372,32 @@
 			var canvasCC = this.__canvasCC = new fabric.CanvasWithViewport("CC", {isDrawingMode: false});
   
   
+
+			  fabric.Object.prototype.transparentCorners = false;
+			  
+			
+			  //canvasTC.freeDrawingBrush = new fabric.PencilBrush(canvas);
+			  //canvasTC.freeDrawingBrush = new fabric.ClosePencilBrush(canvas);
+			  canvasTC.freeDrawingBrush.color = "#FFFFFF";
+			  canvasTC.freeDrawingBrush.width = 1;
+			  canvasTC.freeDrawingBrush.shadowBlur = 0;
+			
+			
+			/*
+			canvasTC.on("path:created", function(e){
+			    var your_path = e.path;
+			    //console.log("the path are:" + e.path);
+			    
+			    console.log("Total points number is :" + e.points.length);
+			    console.log("the points are:" + e.points);
+			    
+			    //canvasTC.isDrawingMode = false; 
+			    // ... do something with your path
+			});
+  */
     		
-    		fabric.Object.prototype.transparentCorners = false;
-    		canvasTC.hoverCursor = 'arrow';
+    		//fabric.Object.prototype.transparentCorners = false;
+    		//canvasTC.hoverCursor = 'arrow';
 			//canvasSC.hoverCursor = 'arrow';
 			//canvasCC.hoverCursor = 'arrow';
 			
@@ -404,7 +428,7 @@
         	
     	}			
 
-        var DICOM_ROOT = "DICOM_Images/";
+        var DICOM_ROOT = "/DICOM_Images/";
         var PatientID = "PID0001";
         var StudyID = "2_16_840_1_113669_632_20_1211_10000330985";
         var SeriesID = "1_2_840_113704_1_111_4848_1161868385_1";

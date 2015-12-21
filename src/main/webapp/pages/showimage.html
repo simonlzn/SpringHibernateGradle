@@ -72,7 +72,43 @@
 <script src="/js/cornerstone/cornerstone.js"></script>
 
 <script>
-var pixelDataAsString = ""; 
+
+$(document).ready(function() {
+    
+		//load the data from http://10.11.12.33:8080/slice/107205/T/221
+    	$.when($.getJSON("/slice/107205/T/221"))
+    	.done( function(json) 
+    	{ 
+    	
+			var pixelDataAsString = ""; 
+    	
+    		pixelDataAsString = json[0].data;
+    		 
+			console.log(pixelDataAsString);
+			
+			console.log(json[0].view);
+
+			console.log(json[0].row);
+
+			console.log(json[0].column);
+
+			console.log(json[0].rowspacing);
+
+			console.log(json[0].columnspacing);
+						
+			var width = json[0].row;
+        	var height = json[0].column;
+
+			//var width = json[0].colum;
+        	//var height = json[0].row;
+
+			
+			var rowPixelSpacing = json[0].rowspacing;
+            var columnPixelSpacing = json[0].columnspacing;
+            
+			//"view":"coronal","row":512,"column":394,"rowspacing":0.6640625,"columnspacing":1.0,
+
+			    	
 (function (cs) {
 
     "use strict";
@@ -153,8 +189,7 @@ var pixelDataAsString = "";
 	
     function getExampleImage(imageId) {
 
-        var width = 512;
-        var height = 512;
+
 
         function getPixelData()
         {
@@ -180,8 +215,8 @@ var pixelDataAsString = "";
             height: height,
             width: width,
             color: false,
-            columnPixelSpacing:1.0,
-            rowPixelSpacing: .6640625,
+            columnPixelSpacing:columnPixelSpacing,
+            rowPixelSpacing:rowPixelSpacing,
             sizeInBytes: width * height * 2
         };
 
@@ -196,16 +231,7 @@ var pixelDataAsString = "";
 
 }(cornerstone));
 
-$(document).ready(function() {
-    
-		//load the data from http://10.11.12.33:8080/slice/107205/T/221
-    	$.when($.ajax("/slice/107205/T/221"))
-    	.done( function(json) 
-    	{ 
-    	
-    		console.log(json);
-    		pixelDataAsString = json.data; 
-			    	
+
 	        // image enable the element
 	        var element = $('#dicomImage').get(0);
 	        cornerstone.enable(element);

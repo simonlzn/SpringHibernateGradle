@@ -12,12 +12,12 @@ rows:[
       ] },
    { id:1003, 
  data:[
-      "-200",
+      "2200",
       "John Grisham"
       ] },
    { id:1004, 
  data:[
-      "350",
+      "1350",
       "John Grisham"
       ] },
    { id:1005, 
@@ -27,7 +27,7 @@ rows:[
       ] },
    { id:1006, 
  data:[
-      "-1200",
+      "1200",
       "John Grisham"
       ] },
    { id:1007, 
@@ -37,7 +37,7 @@ rows:[
       ] },
    { id:1008, 
  data:[
-      "500",
+      "1600",
       "John Grisham"
       ] },
    { id:1009, 
