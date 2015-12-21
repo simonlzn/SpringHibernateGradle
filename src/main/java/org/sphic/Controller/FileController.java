@@ -3,6 +3,7 @@ package org.sphic.Controller;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
+import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Message.MessageQueue;
 import org.sphic.Model.Series;
 import org.sphic.Model.Slice;
@@ -64,14 +65,11 @@ public class FileController {
     public
     @ResponseBody
     String Upload(@RequestParam("file") MultipartFile[] files) {
-        Boolean HasBeenSavedToDatabase = false;
-        String patientId = null;
-        int SeriesID = 0;
-        Series nSeries = null;
         Map<String, Slice> sliceMap = new HashMap<String, Slice>();
         Map<String, Series> seriesMap = new HashMap<String, Series>();
         List<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
         List<MultipartFile> structureFiles = new ArrayList<MultipartFile>();
+        int SeriesId = 0;
         for (MultipartFile file : files) {
 
             if (!file.isEmpty()) {
@@ -87,15 +85,20 @@ public class FileController {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
                 }
 
-            } else {
-                return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
-            }
-        }
-        for (MultipartFile file : imageFiles) {
+			} else {
+				return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
+			}
+		}
+		boolean bWritePatient = true;
+		for (MultipartFile file : imageFiles) {
 
-            if (!file.isEmpty()) {
-                try {
-                    imageExtractService.writeImage(file, sliceMap, seriesMap);
+			if (!file.isEmpty()) {
+				try {
+					if(bWritePatient) {
+                        SeriesId = imageExtractService.writePatient(file, seriesMap);
+						bWritePatient = false;
+					}
+					imageExtractService.writeImage(file, sliceMap);
                 } catch (Exception e) {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
                 }
@@ -108,7 +111,6 @@ public class FileController {
             if (!file.isEmpty()) {
                 try {
                     structureExtractService.writeStructure(file, sliceMap, seriesMap);
-                    SeriesID = structureExtractService.getSeriesID();
                 } catch (Exception e) {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
                 }
@@ -117,10 +119,12 @@ public class FileController {
             }
 
             String seriesUID = seriesMap.keySet().toArray()[0].toString();
-            sliceService.SortAndUpdateSlices(seriesDao.getBySeriesUID(seriesUID).getSeriesId());
+//            sliceService.SortAndUpdateSlices(seriesDao.getBySeriesUID(seriesUID).getSeriesId());
+            sliceService.SortAndUpdateSlices(SeriesId);
         }
 //        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
-        return "You successfully uploaded !";
+        HibernateUtil.closeSession();
+        return "You successfully uploaded DICOM files!";
     }
 
     //	private List<Structure> getStructures(Attributes dcmObj){

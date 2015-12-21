@@ -35,7 +35,6 @@ public class RabbitMQConfig {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
 //        rabbitAdmin.deleteExchange("java");
         queueName = rabbitAdmin.declareQueue().getName();
-
         return rabbitAdmin;
     }
 

@@ -12,6 +12,7 @@ import java.util.List;
 public class Series {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int seriesId;
 
     @Column(name = "created")
@@ -25,6 +26,9 @@ public class Series {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "series_ins_id")
+    private String series_ins_id;
 
     @Column(name = "seriesInsUID")
     private String seriesInsUID;
@@ -64,10 +68,10 @@ public class Series {
 
     }
 
-    public Series(int seriesId, String seriesInsUID, int seriesNumber, Date seriesDateTime, String description,
+    public Series(String series_ins_id, String seriesInsUID, int seriesNumber, Date seriesDateTime, String description,
                   String modality, String manufacturer, String manufctModel, Date created, Date updated, Date deleted, String name) {
 
-        this.seriesId = seriesId;
+        this.series_ins_id = series_ins_id;
         this.seriesInsUID = seriesInsUID;
         this.seriesNumber = seriesNumber;
         this.seriesDateTime = seriesDateTime;
