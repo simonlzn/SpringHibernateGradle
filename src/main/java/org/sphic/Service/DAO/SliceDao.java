@@ -42,6 +42,10 @@ public class SliceDao extends Dao{
         List<Slice> sliceList = cr.list();
 
         tx.commit();
+
+        if (sliceList.isEmpty())
+            return null;
+
         return sliceList.get(0);
     }
 }
