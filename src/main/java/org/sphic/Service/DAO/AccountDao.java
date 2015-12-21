@@ -33,7 +33,7 @@ public class AccountDao extends Dao{
         tx.commit();
         if (list.isEmpty())
             return null;
-        
+
         return (Account) list.get(0);
     }
 }
