@@ -26,12 +26,6 @@ public class Contour {
     @JoinColumn(name = "slice_id")
     private Slice slice;
 
-    @Column(name="view")
-    private Character view;
-
-    @Column(name="number")
-    private Integer number;
-
     @Column(name="color_id")
     private Integer colorId;
 
@@ -145,27 +139,11 @@ public class Contour {
         this.slice = slice;
     }
 
-    public char getView() {
-        return view;
-    }
-
-    public void setView(char view) {
-        this.view = view;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getColorId() {
+    public Integer getColorId() {
         return colorId;
     }
 
-    public void setColorId(int colorId) {
+    public void setColorId(Integer colorId) {
         this.colorId = colorId;
     }
 }

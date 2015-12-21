@@ -29,7 +29,7 @@ public class SliceService {
         int count = 1;
         for (Slice slice:slices) {
             slice.setNumber(count);
-            slice.setContours(null);
+//            slice.setContours(null);
             sliceDao.update(slice);
             count++;
         }
