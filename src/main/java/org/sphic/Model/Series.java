@@ -30,7 +30,7 @@ public class Series {
     @Column(name = "series_ins_id")
     private String series_ins_id;
 
-    @Column(name = "seriesInsUID")
+    @Column(name = "series_ins_uid")
     private String seriesInsUID;
 
     @Column(name = "series_number")

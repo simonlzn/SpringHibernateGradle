@@ -4,9 +4,6 @@ import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Sequence;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Model.*;
 import org.sphic.Service.DAO.Dao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class StructureExtractService {
