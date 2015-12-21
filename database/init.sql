@@ -30,7 +30,8 @@ CREATE TABLE `patient` (
 # ---------------------------------------------------------------------- #
 
 CREATE TABLE `study` (
-    `id` VARCHAR(16) NOT NULL COMMENT 'ID of study',
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'ID of study',
+    `study_ins_id` VARCHAR(50) COMMENT 'ID of study in DCM',
     `patient_id` VARCHAR(50) COMMENT 'ID of Patient',
     `accession_number` VARCHAR(100) COMMENT 'Accession number',
     `referring_physician_name` VARCHAR(100) COMMENT 'Referring physician name',
@@ -51,7 +52,7 @@ CREATE TABLE `study` (
 
 CREATE TABLE `series` (
     `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'ID of Series',
-    `study_id` VARCHAR(16) COMMENT 'ID of Study',
+    `study_id` INTEGER COMMENT 'ID of Study',
     `modality` VARCHAR(20) COMMENT 'Modality',
     `name` VARCHAR(100) COMMENT 'Name of series',
     `description` VARCHAR(300) COMMENT 'Description',
