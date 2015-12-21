@@ -3,7 +3,6 @@ package org.sphic.Controller;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
-import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Message.MessageQueue;
 import org.sphic.Model.Series;
 import org.sphic.Model.Slice;
@@ -123,7 +122,7 @@ public class FileController {
             sliceService.SortAndUpdateSlices(SeriesId);
         }
 //        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
-        HibernateUtil.closeSession();
+
         return "You successfully uploaded DICOM files!";
     }
 

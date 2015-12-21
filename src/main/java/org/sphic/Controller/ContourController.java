@@ -1,73 +1,60 @@
 package org.sphic.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
-import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Model.Contour;
 import org.sphic.Model.Slice;
 import org.sphic.Model.Structure;
-import org.sphic.Model.Study;
+import org.sphic.Service.DAO.ContourDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/contour")
 public class ContourController {
-	public ContourController() {
-	}
+    private ContourDao contourDao;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Contour Get(@PathVariable int id) {
-		Session session = HibernateUtil.currentSession();
-		Contour contour = (Contour)session.get(Contour.class, id);
+    @Autowired
+    public ContourController(ContourDao contourDao) {
+        this.contourDao = contourDao;
+    }
 
-		return contour;
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Contour Get(@PathVariable int id) {
+        Contour contour = contourDao.get(Contour.class, id);
+        return contour;
+    }
 
-	@RequestMapping(value = "/", method = RequestMethod.GET, params = "sliceId")
-	public List<Contour> GetListBySlice(@RequestParam("sliceId") int sliceId) {
-		Session session = HibernateUtil.currentSession();
-		List<Contour> contours = session.createCriteria(Contour.class).add(Restrictions.eq("slice.id", sliceId)).list();
+    @RequestMapping(value = "/", method = RequestMethod.GET, params = "sliceId")
+    public List<Contour> GetListBySlice(@RequestParam("sliceId") int sliceId) {
+        List<Contour> contours = contourDao.getBySliceId(sliceId);
 
-		return contours;
-	}
+        return contours;
+    }
 
-	@RequestMapping(value = "/", method = RequestMethod.GET, params = "structureId")
-	public List<Contour> GetListByStructure(@RequestParam("structureId") int structureId) {
-		Session session = HibernateUtil.currentSession();
-		List<Contour> contours = session.createCriteria(Contour.class).add(Restrictions.eq("structure.id", structureId)).list();
+    @RequestMapping(value = "/", method = RequestMethod.GET, params = "structureId")
+    public List<Contour> GetListByStructure(@RequestParam("structureId") int structureId) {
+        List<Contour> contours = contourDao.getByStructureId(structureId);
 
-		return contours;
-	}
+        return contours;
+    }
 
-	@RequestMapping(value = "/{id}/color/{colorId}", method = RequestMethod.POST)
-	public void Post(@PathVariable int id, @PathVariable int colorId) {
-		Session session = HibernateUtil.currentSession();
-		Contour c = (Contour)session.load(Contour.class, id);
+    @RequestMapping(value = "/{id}/color/{colorId}", method = RequestMethod.POST)
+    public void Post(@PathVariable int id, @PathVariable int colorId) {
+        Contour c = contourDao.get(Contour.class, id);
 
-		Transaction tx = session.beginTransaction();
-		c.setColorId(colorId);
+        c.setColorId(colorId);
 
-		session.save(c);
-		tx.commit();
-	}
+        contourDao.save(c);
+    }
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public int Put(@RequestBody Contour contour, @RequestParam int structureId, @RequestParam int sliceId) {
+    @RequestMapping(method = RequestMethod.PUT)
+    public int Put(@RequestBody Contour contour, @RequestParam int structureId, @RequestParam int sliceId) {
 
-		Session session = HibernateUtil.currentSession();
-		Transaction tx = session.beginTransaction();
-		Structure s = (Structure)session.get(Structure.class, structureId);
-		Slice sl = (Slice) session.get(Slice.class, sliceId);
-		contour.setStructure(s);
-		contour.setSlice(sl);
-		Integer c = (Integer) session.save(contour);
-
-		tx.commit();
-		return c.intValue();
-	}
+        Structure s = contourDao.get(Structure.class, structureId);
+        Slice sl = contourDao.get(Slice.class, sliceId);
+        contour.setStructure(s);
+        contour.setSlice(sl);
+        return contourDao.save(contour);
+    }
 }

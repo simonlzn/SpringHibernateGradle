@@ -5,15 +5,15 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.sphic.HibernateConfig.HibernateUtil;
-import org.sphic.Model.*;
-import org.sphic.Service.DAO.Dao;
+import org.sphic.Model.Series;
+import org.sphic.Model.Slice;
+import org.sphic.Service.DAO.SliceDao;
 import org.sphic.Service.ITKService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +28,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/slice")
 public class SliceController {
-    private Dao dao;
+    private SliceDao dao;
     private ITKService itkService;
 
     @Autowired
-    public SliceController(Dao dao, ITKService itkService) {
+    public SliceController(SliceDao dao, ITKService itkService) {
         this.dao = dao;
         this.itkService = itkService;
     }
@@ -41,13 +40,13 @@ public class SliceController {
     @RequestMapping(value = "/{seriesId}/{view}/{number}", method = RequestMethod.GET)
     public DeferredResult Get(@PathVariable final int seriesId, @PathVariable final char view, @PathVariable final int number, final HttpServletResponse response, final HttpServletRequest request) {
         response.setHeader("Cache-Control", "private, max-age=86400");
-        Session session = HibernateUtil.currentSession();
-        Criteria cr = session.createCriteria(Slice.class).add(Restrictions.eq("series.id", seriesId)).add(Restrictions.eq("view", view)).add(Restrictions.eq("number", number));
-        List<Slice> sliceList = cr.list();
+
+        final Slice slice = dao.getByViewAndNumber(seriesId, view,number);
+
         String channel = request.getRequestURI() + (request.getQueryString() == null ? "" :  "?" + request.getQueryString());
         DeferredResult result = new DeferredResult();
 
-        if (sliceList.isEmpty()) {
+        if (slice == null) {
             String views = constructViewsString(view, number);
             result = itkService.Slicing(channel, String.valueOf(seriesId), views);
 
@@ -68,8 +67,7 @@ public class SliceController {
                 }
             });
 
-        } else if (sliceList.get(0).getData() == null) {
-            final Slice slice = sliceList.get(0);
+        } else if (slice.getData() == null) {
 
             String views = constructViewsString(view, number);
             result = itkService.Slicing(channel, String.valueOf(seriesId), views);
@@ -100,7 +98,6 @@ public class SliceController {
 
 
         } else {
-            Slice slice = sliceList.get(0);
             result.setResult(slice);
         }
 

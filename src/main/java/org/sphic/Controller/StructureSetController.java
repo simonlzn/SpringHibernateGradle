@@ -1,47 +1,38 @@
 package org.sphic.Controller;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.sphic.HibernateConfig.HibernateUtil;
-import org.sphic.Model.Series;
 import org.sphic.Model.StructureSet;
+import org.sphic.Service.DAO.Dao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/structureset")
 public class StructureSetController {
-	public StructureSetController() {
-	}
+    private Dao dao;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public StructureSet Get(@PathVariable int id) {
-		Session session = HibernateUtil.currentSession();
-		StructureSet structureSet = (StructureSet) session.get(StructureSet.class, id);
+    @Autowired
+    public StructureSetController(Dao dao) {
+        this.dao = dao;
+    }
 
-		return structureSet;
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public StructureSet Get(@PathVariable int id) {
+        StructureSet structureSet = dao.get(StructureSet.class, id);
 
-	@RequestMapping(value = "/{id}/description/{description}", method = RequestMethod.POST)
-	public void Post(@PathVariable int id, @PathVariable String description) {
-		Session session = HibernateUtil.currentSession();
-		StructureSet s = (StructureSet)session.load(StructureSet.class, id);
+        return structureSet;
+    }
 
-		Transaction tx = session.beginTransaction();
-		s.setDescription(description);
+    @RequestMapping(value = "/{id}/description/{description}", method = RequestMethod.POST)
+    public void Post(@PathVariable int id, @PathVariable String description) {
+        StructureSet structureSet = dao.get(StructureSet.class, id);
 
-		session.save(s);
-		tx.commit();
-	}
+        structureSet.setDescription(description);
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public int Put(@RequestBody StructureSet structureSet) {
+        dao.save(structureSet);
+    }
 
-		Session session = HibernateUtil.currentSession();
-		Transaction tx = session.beginTransaction();
-
-		Integer s = (Integer) session.save(structureSet);
-
-		tx.commit();
-		return s.intValue();
-	}
+    @RequestMapping(method = RequestMethod.PUT)
+    public int Put(@RequestBody StructureSet structureSet) {
+        return (Integer) dao.save(structureSet);
+    }
 }
