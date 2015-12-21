@@ -1,5 +1,6 @@
 package org.sphic.Controller;
 
+import javafx.util.Pair;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
@@ -22,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
-import java.awt.Image;
 import java.io.*;
 import java.util.*;
 
@@ -65,7 +65,7 @@ public class FileController {
     @ResponseBody
     String Upload(@RequestParam("file") MultipartFile[] files) {
         Map<String, Slice> sliceMap = new HashMap<String, Slice>();
-        Map<String, Series> seriesMap = new HashMap<String, Series>();
+        Map<Pair<String,String>, Series> seriesMap = new HashMap<Pair<String,String>, Series>();
         List<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
         List<MultipartFile> structureFiles = new ArrayList<MultipartFile>();
         int SeriesId = 0;
@@ -117,24 +117,10 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
 
-            String seriesUID = seriesMap.keySet().toArray()[0].toString();
-//            sliceService.SortAndUpdateSlices(seriesDao.getBySeriesUID(seriesUID).getSeriesId());
             sliceService.SortAndUpdateSlices(SeriesId);
         }
 //        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
 
         return "You successfully uploaded DICOM files!";
-    }
-
-    //	private List<Structure> getStructures(Attributes dcmObj){
-//		int roiNumber = dcmObj.getInt(Tag.ROINumber,0);
-//		while(){
-//			int i = dcmObj.getInt(Tag.AnatomicStructure, 0);
-//
-//		}
-//    }
-    private Image Image() {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

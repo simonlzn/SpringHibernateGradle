@@ -187,20 +187,6 @@ CREATE TABLE `image_series` (
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "images"                                                     #
-# ---------------------------------------------------------------------- #
-
-CREATE TABLE `images` (
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `series_id` INTEGER NOT NULL,
-    `sop_ins_uid` VARCHAR(200),
-    `ins_num` VARCHAR(50),
-    `slice_location` INTEGER,
-    `image_pos_pat` VARCHAR(50),
-    PRIMARY KEY (`ID`)
-);
-
-# ---------------------------------------------------------------------- #
 # Add foreign key constraints                                            #
 # ---------------------------------------------------------------------- #
 
