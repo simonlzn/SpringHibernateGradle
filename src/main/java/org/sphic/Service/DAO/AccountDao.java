@@ -31,6 +31,9 @@ public class AccountDao extends Dao{
 
         List list = criteria.list();
         tx.commit();
+        if (list.isEmpty())
+            return null;
+
         return (Account) list.get(0);
     }
 }

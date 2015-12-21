@@ -51,7 +51,10 @@ public class Dao {
     public <T> T get(Class<T>c, Serializable id)
     {
         Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
 
-        return (T)session.get(c, id);
+        T o = (T) session.get(c, id);
+        tx.commit();
+        return o;
     }
 }

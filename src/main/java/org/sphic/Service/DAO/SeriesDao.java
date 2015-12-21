@@ -30,6 +30,10 @@ public class SeriesDao extends Dao{
 
         List seriesList = criteria.list();
         tx.commit();
+
+        if (seriesList.isEmpty())
+            return null;
+
         return (Series) seriesList.get(0);
     }
 }
