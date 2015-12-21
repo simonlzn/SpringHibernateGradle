@@ -64,10 +64,6 @@ public class FileController {
     public
     @ResponseBody
     String Upload(@RequestParam("file") MultipartFile[] files) {
-        Boolean HasBeenSavedToDatabase = false;
-        String patientId = null;
-        int SeriesID = 0;
-        Series nSeries = null;
         Map<String, Slice> sliceMap = new HashMap<String, Slice>();
         Map<String, Series> seriesMap = new HashMap<String, Series>();
         List<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
@@ -113,7 +109,6 @@ public class FileController {
             if (!file.isEmpty()) {
                 try {
                     structureExtractService.writeStructure(file, sliceMap, seriesMap);
-                    SeriesID = structureExtractService.getSeriesID();
                 } catch (Exception e) {
                     return "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
                 }
