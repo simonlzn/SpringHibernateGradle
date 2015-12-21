@@ -213,6 +213,3 @@ ALTER TABLE `contour` ADD CONSTRAINT `structure_contour`
 
 ALTER TABLE `image_series` ADD CONSTRAINT `series_image_series`
     FOREIGN KEY (`series_id`) REFERENCES `series` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `images` ADD CONSTRAINT `series_images`
-    FOREIGN KEY (`series_id`) REFERENCES `series` (`id`) ON DELETE CASCADE;
