@@ -28,7 +28,7 @@ public class ImageExtractService {
         this.patientDao = patientDao;
     }
 
-    public int writePatient(MultipartFile file, Map<Pair<String,String>, Series> seriesMap) throws Exception {
+    public int writePatient(MultipartFile file, Map<String, Series> seriesMap) throws Exception {
 
         InputStream is = file.getInputStream();
         DicomInputStream dis = new DicomInputStream(is);
@@ -64,7 +64,7 @@ public class ImageExtractService {
                 dcmObj.getDate(Tag.StudyDateAndTime),
                 dcmObj.getDate(Tag.StudyDateAndTime), null, null);
 
-        seriesMap.put(new Pair(dcmObj.getString(Tag.StudyInstanceUID),dcmObj.getString(Tag.SeriesNumber)), nSeries);
+        seriesMap.put(dcmObj.getString(Tag.SeriesInstanceUID), nSeries);
         ImageSeries imageSeries = new ImageSeries(
                 dcmObj.getString(Tag.SeriesInstanceUID),
                 dcmObj.getDouble(Tag.SliceThickness, 0.0),
@@ -87,6 +87,7 @@ public class ImageExtractService {
                 dcmObj.getInt(Tag.PixelRepresentation, 0),
                 dcmObj.getInt(Tag.SmallestImagePixelValue, 0),
                 dcmObj.getInt(Tag.LargestImagePixelValue, 0));
+
 
         imageSeries.setSeries(nSeries);
         nSeries.setImageSeries(imageSeries);
