@@ -34,17 +34,15 @@ public class FileController {
     private ContourService contourService;
     private StructureExtractService structureExtractService;
     private ImageExtractService imageExtractService;
-    private SeriesDao seriesDao;
 
     @Autowired
     public FileController(MessageQueue messageQueue, SliceService sliceService, ContourService contourService, StructureExtractService structureExtractService,
-                          ImageExtractService imageExtractService, SeriesDao seriesDao) {
+                          ImageExtractService imageExtractService) {
         this.messageQueue = messageQueue;
         this.sliceService = sliceService;
         this.contourService = contourService;
         this.structureExtractService = structureExtractService;
         this.imageExtractService = imageExtractService;
-        this.seriesDao = seriesDao;
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
@@ -52,11 +50,11 @@ public class FileController {
     @ResponseBody
     String download(final HttpServletResponse response) throws InterruptedException {
 //		sliceService.SortAndUpdateSlices(107205);
-        String message = contourService.ConstructDataByStructureId(29);
-        System.out.println(new Date().getTime());
+//        String message = contourService.ConstructDataByStructureId(29);
+//        System.out.println(new Date().getTime());
 //		messageQueue.Send("{\"func\": \"contourReconstruct\", \"id\": \"1\",\"key\": \"test\",\"contours\": " +"\"" + "" + "\"" + "}", "1");
         Thread.sleep(5000);
-        return message;
+        return "";//message;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
