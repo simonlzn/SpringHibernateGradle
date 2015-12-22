@@ -1,6 +1,5 @@
 package org.sphic.Controller;
 
-import javafx.util.Pair;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
@@ -63,7 +62,7 @@ public class FileController {
     @ResponseBody
     String Upload(@RequestParam("file") MultipartFile[] files) {
         Map<String, Slice> sliceMap = new HashMap<String, Slice>();
-        Map<Pair<String,String>, Series> seriesMap = new HashMap<Pair<String,String>, Series>();
+        Map<String, Series> seriesMap = new HashMap<String, Series>();
         List<MultipartFile> imageFiles = new ArrayList<MultipartFile>();
         List<MultipartFile> structureFiles = new ArrayList<MultipartFile>();
         int SeriesId = 0;

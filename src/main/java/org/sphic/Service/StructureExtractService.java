@@ -27,7 +27,7 @@ public class StructureExtractService {
         this.dao = dao;
     }
 
-    public void writeStructure(MultipartFile file, Map<String, Slice> sliceMap, Map<Pair<String, String>, Series> seriesMap) throws Exception {
+    public void writeStructure(MultipartFile file, Map<String, Slice> sliceMap, Map<String, Series> seriesMap) throws Exception {
 
         InputStream is = file.getInputStream();
         DicomInputStream dis = new DicomInputStream(is);
@@ -67,9 +67,9 @@ public class StructureExtractService {
         nStructureSet.setStructures(structures);
 
         structureSet.add(nStructureSet);
-        Pair StructureSetSeriesMap = new Pair(dcmObj.getString(Tag.StudyInstanceUID), dcmObj.getString(Tag.SeriesNumber));
-        if (seriesMap.containsKey(StructureSetSeriesMap)) {
-            Series series = seriesMap.get(StructureSetSeriesMap);
+        String strReferencedSeriesUID = dcmObj.getSequence(Tag.ReferencedFrameOfReferenceSequence).get(0).getSequence(Tag.RTReferencedStudySequence).get(0).getSequence(Tag.RTReferencedSeriesSequence).get(0).getString(Tag.SeriesInstanceUID);
+        if (seriesMap.containsKey(strReferencedSeriesUID)) {
+            Series series = seriesMap.get(strReferencedSeriesUID);
             series.setStructureSets(structureSet);
             nStructureSet.setSeries(series);
         }
