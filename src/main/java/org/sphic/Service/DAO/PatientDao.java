@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 @Repository
 public class PatientDao extends Dao{
@@ -28,5 +30,15 @@ public class PatientDao extends Dao{
         session.flush();
         tx.commit();
         return patientId;
+    }
+
+
+    public List<Patient> getAll()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Patient> list =session.createSQLQuery("select * from patient;").addEntity(Patient.class).list();
+        tx.commit();
+        return list;
     }
 }
