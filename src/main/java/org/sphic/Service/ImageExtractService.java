@@ -1,5 +1,6 @@
 package org.sphic.Service;
 
+import javafx.util.Pair;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
@@ -16,10 +17,8 @@ import java.util.*;
 @Component
 public class ImageExtractService {
 
-    private int seriesId;
     private Dao dao;
     private PatientDao patientDao;
-    private boolean HasBeenSavedToDatabase = false;
     private Series nSeries;
     private String patientId = null;
 
@@ -89,6 +88,7 @@ public class ImageExtractService {
                 dcmObj.getInt(Tag.SmallestImagePixelValue, 0),
                 dcmObj.getInt(Tag.LargestImagePixelValue, 0));
 
+
         imageSeries.setSeries(nSeries);
         nSeries.setImageSeries(imageSeries);
         nSeries.setStudy(nStudy);
@@ -124,12 +124,12 @@ public class ImageExtractService {
         is.close();
 
         byte[] bytes = file.getBytes();
-        if (patientId == null)
-            throw new Exception("patient ID can not be retrieved");
+        if (nSeries.getSeriesId() == 0)
+            throw new Exception("Series ID can not be retrieved");
 
-        String name = "~/data/" + patientId.toString() + "/" + file.getOriginalFilename();
+        String name = "~/data/" + Integer.toString(nSeries.getSeriesId()) + "/" + file.getOriginalFilename();
 
-        File dataFolder = new File("~/data/" + patientId.toString() + "/");
+        File dataFolder = new File("~/data/" + Integer.toString(nSeries.getSeriesId()) + "/");
         if (dataFolder.exists() || dataFolder.mkdirs()) {
             BufferedOutputStream stream =
                     new BufferedOutputStream(new FileOutputStream(new File(name)));
@@ -139,4 +139,5 @@ public class ImageExtractService {
             System.out.println(name + " is uploaded!");
         }
     }
+
 }

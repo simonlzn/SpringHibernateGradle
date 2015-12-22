@@ -1,5 +1,6 @@
 package org.sphic.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GeneratorType;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "patient")
+@JsonIgnoreProperties("studies")
 public class Patient {
 
 	@Id

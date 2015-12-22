@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
-import java.awt.Image;
 import java.io.*;
 import java.util.*;
 
@@ -35,17 +34,15 @@ public class FileController {
     private ContourService contourService;
     private StructureExtractService structureExtractService;
     private ImageExtractService imageExtractService;
-    private SeriesDao seriesDao;
 
     @Autowired
     public FileController(MessageQueue messageQueue, SliceService sliceService, ContourService contourService, StructureExtractService structureExtractService,
-                          ImageExtractService imageExtractService, SeriesDao seriesDao) {
+                          ImageExtractService imageExtractService) {
         this.messageQueue = messageQueue;
         this.sliceService = sliceService;
         this.contourService = contourService;
         this.structureExtractService = structureExtractService;
         this.imageExtractService = imageExtractService;
-        this.seriesDao = seriesDao;
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
@@ -53,11 +50,11 @@ public class FileController {
     @ResponseBody
     String download(final HttpServletResponse response) throws InterruptedException {
 //		sliceService.SortAndUpdateSlices(107205);
-        String message = contourService.ConstructDataByStructureId(29);
-        System.out.println(new Date().getTime());
+//        String message = contourService.ConstructDataByStructureId(29);
+//        System.out.println(new Date().getTime());
 //		messageQueue.Send("{\"func\": \"contourReconstruct\", \"id\": \"1\",\"key\": \"test\",\"contours\": " +"\"" + "" + "\"" + "}", "1");
         Thread.sleep(5000);
-        return message;
+        return "";//message;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -117,24 +114,10 @@ public class FileController {
                 return "You failed to upload " + file.getOriginalFilename() + " because the file was empty.";
             }
 
-            String seriesUID = seriesMap.keySet().toArray()[0].toString();
-//            sliceService.SortAndUpdateSlices(seriesDao.getBySeriesUID(seriesUID).getSeriesId());
             sliceService.SortAndUpdateSlices(SeriesId);
         }
 //        messageQueue.Send("{\"func\": \"imageReady\", \"folderPath\": " +"\"~/data/" + patientId.toString() + "\"" + "}", "1");
 
         return "You successfully uploaded DICOM files!";
-    }
-
-    //	private List<Structure> getStructures(Attributes dcmObj){
-//		int roiNumber = dcmObj.getInt(Tag.ROINumber,0);
-//		while(){
-//			int i = dcmObj.getInt(Tag.AnatomicStructure, 0);
-//
-//		}
-//    }
-    private Image Image() {
-        // TODO Auto-generated method stub
-        return null;
     }
 }
