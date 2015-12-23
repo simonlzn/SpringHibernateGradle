@@ -1,6 +1,5 @@
 package org.sphic.Service;
 
-import javafx.util.Pair;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
@@ -9,12 +8,14 @@ import org.sphic.Service.DAO.Dao;
 import org.sphic.Service.DAO.PatientDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.*;
 
 @Component
+@Transactional
 public class ImageExtractService {
 
     private Dao dao;
@@ -28,7 +29,7 @@ public class ImageExtractService {
         this.patientDao = patientDao;
     }
 
-    public int writePatient(MultipartFile file, Map<String, Series> seriesMap) throws Exception {
+    public int writePatient(MultipartFile file, Map<String, Series> seriesMap, int sliceNum) throws Exception {
 
         InputStream is = file.getInputStream();
         DicomInputStream dis = new DicomInputStream(is);
@@ -71,6 +72,7 @@ public class ImageExtractService {
                 String.join(",", dcmObj.getStrings(Tag.ImageOrientationPatient)),
                 dcmObj.getInt(Tag.Rows, 512),
                 dcmObj.getInt(Tag.Columns, 512),
+                sliceNum,
                 dcmObj.getString(Tag.PatientPosition),
                 String.join(",", dcmObj.getStrings(Tag.PixelSpacing)),
                 dcmObj.getDouble(Tag.RescaleSlope, 1.0),
@@ -115,7 +117,7 @@ public class ImageExtractService {
                 Integer.parseInt(dcmObj.getString(Tag.InstanceNumber)),
                 dcmObj.getDouble(Tag.SliceLocation, 0.0),
                 String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
-                new Date(), null, null, null, null, null);
+                new Date(), null, null, null, null);
 
         sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
         nSlice.setSeries(nSeries);

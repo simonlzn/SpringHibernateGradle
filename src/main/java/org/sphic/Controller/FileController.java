@@ -7,7 +7,6 @@ import org.sphic.Message.MessageQueue;
 import org.sphic.Model.Series;
 import org.sphic.Model.Slice;
 import org.sphic.Service.ContourService;
-import org.sphic.Service.DAO.SeriesDao;
 import org.sphic.Service.ImageExtractService;
 import org.sphic.Service.SliceService;
 import org.sphic.Service.StructureExtractService;
@@ -91,7 +90,7 @@ public class FileController {
 			if (!file.isEmpty()) {
 				try {
 					if(bWritePatient) {
-                        SeriesId = imageExtractService.writePatient(file, seriesMap);
+                        SeriesId = imageExtractService.writePatient(file, seriesMap, imageFiles.size());
 						bWritePatient = false;
 					}
 					imageExtractService.writeImage(file, sliceMap);

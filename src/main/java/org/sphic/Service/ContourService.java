@@ -4,10 +4,12 @@ import org.sphic.Model.Contour;
 import org.sphic.Service.DAO.ContourDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ContourService {
     private ContourDao contourDao;
 

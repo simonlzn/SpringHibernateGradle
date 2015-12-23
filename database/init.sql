@@ -167,6 +167,7 @@ CREATE TABLE `image_series` (
     `image_orient_pat` VARCHAR(100),
     `rows` INTEGER,
     `columns` INTEGER,
+    `slice_num` INTEGER,
     `patient_position` VARCHAR(100),
     `pixel_spacing` VARCHAR(100),
     `slope` DOUBLE,

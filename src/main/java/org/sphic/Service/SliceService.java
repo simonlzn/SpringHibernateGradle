@@ -1,14 +1,19 @@
 package org.sphic.Service;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Service.DAO.SliceDao;
 import org.sphic.Model.Slice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Component
+@Transactional
 public class SliceService {
     private SliceDao sliceDao;
 
@@ -26,12 +31,16 @@ public class SliceService {
             }
         });
 
+        Session session = HibernateUtil.currentSession();
+        Transaction tx = session.beginTransaction();
+
         int count = 1;
         for (Slice slice:slices) {
             slice.setNumber(count);
-//            slice.setContours(null);
             sliceDao.update(slice);
             count++;
         }
+
+        tx.commit();
     }
 }
