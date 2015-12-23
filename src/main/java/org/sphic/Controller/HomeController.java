@@ -5,24 +5,45 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.sphic.Model.Patient;
+import org.sphic.Service.DAO.PatientDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+
+
 
 @Controller
 @RequestMapping("/home")
 public class HomeController {
+	
+	private PatientDao patientDao;
+	
+	@Autowired
+	public HomeController(PatientDao patientDao) {
+		this.patientDao = patientDao;
+	}	
+	
 	@RequestMapping(value = "/main",  method = RequestMethod.GET)
     public ModelAndView Login() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("main");
 		return mav;
     }	
-
-	@RequestMapping(value = "/contour",  method = RequestMethod.GET)
-    public ModelAndView Test() {
+//value = "/{id}", method = RequestMethod.GET
+	
+	@RequestMapping(value = "/contour/{id}",  method = RequestMethod.GET)
+    public ModelAndView contour(@PathVariable String id) {
+		Patient patient = patientDao.get(Patient.class, id);
+		if (patient == null) {
+			patient =  new Patient();
+		}
+		
 		ModelAndView mav = new ModelAndView();
+	    mav.addObject("patient", patient);
 		mav.setViewName("contour");
 		return mav;
     }	
