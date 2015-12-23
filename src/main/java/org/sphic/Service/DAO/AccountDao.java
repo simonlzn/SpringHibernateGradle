@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Model.Account;
 import org.sphic.Model.Series;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,9 @@ import java.util.List;
 @Transactional
 @Repository
 public class AccountDao extends Dao{
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    public AccountDao(SessionFactory sessionFactory) {
-        super(sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
 
     public Account getByUsername(String username){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = HibernateUtil.currentSession();
         Transaction tx = session.beginTransaction();
         Criteria criteria = session.createCriteria(Account.class).add(Restrictions.eq("username", username));
 

@@ -9,6 +9,7 @@ import org.sphic.Model.*;
 import org.sphic.Service.DAO.Dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Transactional
 public class StructureExtractService {
 
     private Dao dao;

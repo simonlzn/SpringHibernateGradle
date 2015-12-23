@@ -9,12 +9,14 @@ import org.sphic.Service.DAO.Dao;
 import org.sphic.Service.DAO.PatientDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.*;
 
 @Component
+@Transactional
 public class ImageExtractService {
 
     private Dao dao;
@@ -115,7 +117,7 @@ public class ImageExtractService {
                 Integer.parseInt(dcmObj.getString(Tag.InstanceNumber)),
                 dcmObj.getDouble(Tag.SliceLocation, 0.0),
                 String.join(",", dcmObj.getStrings(Tag.ImagePositionPatient)),
-                new Date(), null, null, null, null, null);
+                new Date(), null, null, null, null);
 
         sliceMap.put(dcmObj.getString(Tag.SOPInstanceUID), nSlice);
         nSlice.setSeries(nSeries);

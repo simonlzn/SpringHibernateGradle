@@ -1,10 +1,10 @@
 package org.sphic.Service.DAO;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.sphic.HibernateConfig.HibernateUtil;
 import org.sphic.Model.Patient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,20 +14,12 @@ import java.util.List;
 @Repository
 public class PatientDao extends Dao{
 
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    public PatientDao(SessionFactory sessionFactory) {
-        super(sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
-
     public String save(Patient p){
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = HibernateUtil.currentSession();
         Transaction tx = session.beginTransaction();
         String patientId = (String) session.save(p);
-        session.flush();
+
         tx.commit();
         return patientId;
     }
@@ -35,10 +27,12 @@ public class PatientDao extends Dao{
 
     public List<Patient> getAll()
     {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        List<Patient> list =session.createSQLQuery("select * from patient;").addEntity(Patient.class).list();
-        tx.commit();
+        Session session = HibernateUtil.currentSession();
+        List<Patient> list =session.createSQLQuery("select * from patient").addEntity(Patient.class).list();
+        for (Patient p : list) {
+            Hibernate.initialize(p.getStudies());
+        }
+
         return list;
     }
 }

@@ -58,9 +58,6 @@ public class Slice {
     @Column(name="deleted")
     private Date deleted;
 
-    @Column(name="comments")
-    private String comments;
-
     @Column(name="data")
     private String data;
 
@@ -70,7 +67,7 @@ public class Slice {
     public Slice() {
     }
 
-    public Slice(char view, int number, int row, int column, double rowspacing, double columnspacing, String sop_ins_uid, int ins_number,  double slice_location, String image_pos_pat, Date created, Date updated, Date deleted, String comments, String data, List<Contour> contours) {
+    public Slice(char view, int number, int row, int column, double rowspacing, double columnspacing, String sop_ins_uid, int ins_number,  double slice_location, String image_pos_pat, Date created, Date updated, Date deleted, String data, List<Contour> contours) {
         this.view = view;
         this.number = number;
         this.row = row;
@@ -84,7 +81,6 @@ public class Slice {
         this.created = created;
         this.updated = updated;
         this.deleted = deleted;
-        this.comments = comments;
         this.data = data;
         this.contours = contours;
     }
@@ -207,14 +203,6 @@ public class Slice {
 
     public void setDeleted(Date deleted) {
         this.deleted = deleted;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
     }
 
     public String getData() {
