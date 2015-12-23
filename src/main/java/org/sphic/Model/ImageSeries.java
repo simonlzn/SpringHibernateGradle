@@ -40,7 +40,10 @@ public class ImageSeries {
 	
 	@Column(name="columns")
 	private int columns;
-	
+
+	@Column(name="slice_num")
+	private int sliceNum;
+
 	@Column(name="patient_position")
 	private String patient_position;
 	
@@ -93,7 +96,7 @@ public class ImageSeries {
 		
 	}
 
-	public ImageSeries(String sop_cls_uid, double slice_thick, String image_orient_pat, int rows, int columns,
+	public ImageSeries(String sop_cls_uid, double slice_thick, String image_orient_pat, int rows, int columns, int sliceNum,
 					   String patient_position, String pixel_spacing, double slope, double intercept, String image_type,
 					   String derivation_descrpt, String patient_orient, String specific_character_set, String sample_per_pixel,
 					   String photometric_interpretation, int bits_allocated, int bits_stored, int high_bit, int pixel_representation,
@@ -103,6 +106,7 @@ public class ImageSeries {
 		this.image_orient_pat = image_orient_pat;
 		this.rows = rows;
 		this.columns = columns;
+		this.sliceNum = sliceNum;
 		this.patient_position = patient_position;
 		this.pixel_spacing = pixel_spacing;
 		this.slope = slope;
@@ -287,5 +291,21 @@ public class ImageSeries {
 
 	public void setLargest_image_pixel_value(int largest_image_pixel_value) {
 		this.largest_image_pixel_value = largest_image_pixel_value;
+	}
+
+	public String getImage_orient_pat() {
+		return image_orient_pat;
+	}
+
+	public void setImage_orient_pat(String image_orient_pat) {
+		this.image_orient_pat = image_orient_pat;
+	}
+
+	public int getSliceNum() {
+		return sliceNum;
+	}
+
+	public void setSliceNum(int sliceNum) {
+		this.sliceNum = sliceNum;
 	}
 }

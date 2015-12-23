@@ -1,6 +1,5 @@
 package org.sphic.Service;
 
-import javafx.util.Pair;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
@@ -30,7 +29,7 @@ public class ImageExtractService {
         this.patientDao = patientDao;
     }
 
-    public int writePatient(MultipartFile file, Map<String, Series> seriesMap) throws Exception {
+    public int writePatient(MultipartFile file, Map<String, Series> seriesMap, int sliceNum) throws Exception {
 
         InputStream is = file.getInputStream();
         DicomInputStream dis = new DicomInputStream(is);
@@ -73,6 +72,7 @@ public class ImageExtractService {
                 String.join(",", dcmObj.getStrings(Tag.ImageOrientationPatient)),
                 dcmObj.getInt(Tag.Rows, 512),
                 dcmObj.getInt(Tag.Columns, 512),
+                sliceNum,
                 dcmObj.getString(Tag.PatientPosition),
                 String.join(",", dcmObj.getStrings(Tag.PixelSpacing)),
                 dcmObj.getDouble(Tag.RescaleSlope, 1.0),
