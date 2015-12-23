@@ -13,6 +13,7 @@
     <h1>
 		This is an example for adjust window level/center images and interactive window/level
     </h1>
+    <div id="url"></div>
     <br>
 
 	<button id="hFlip" type="button" class="btn btn-default">HFlip</button>
@@ -75,37 +76,60 @@
 
 $(document).ready(function() {
     
-		//load the data from http://10.11.12.33:8080/slice/107205/T/221
-    	$.when($.getJSON("/slice/107205/T/221"))
-    	.done( function(json) 
-    	{ 
+    	var viewType = "T"; 
+    	var frameNo = 209; //221, C256
+    	var viewPos = 0;
+    	if("T"===viewType)
+    	{
+    		viewPos = 0; 
+    	} 
+    	else if ("C"===viewType)
+    	{
+    		viewPos = 1; 
+    	}
+    	else if ("S"===viewType)
+    	{
+    		viewPos = 2; 
+    	}
     	
+    	var currentURL = "/slice/107205/" + viewType + "/" + frameNo; 
+    	$('#url').html(currentURL);
+		//load the data from http://10.11.12.33:8080/slice/107205/T/221
+    	$.when($.getJSON(currentURL)).done( function(json) 
+    	{ 
+
 			var pixelDataAsString = ""; 
     	
-    		pixelDataAsString = json[0].data;
+    		pixelDataAsString = json[viewPos].data;
     		 
 			console.log(pixelDataAsString);
 			
-			console.log(json[0].view);
+			console.log(json[viewPos].view);
 
-			console.log(json[0].row);
+			console.log(json[viewPos].row);
 
-			console.log(json[0].column);
+			console.log(json[viewPos].column);
 
-			console.log(json[0].rowspacing);
+			console.log(json[viewPos].rowspacing);
 
-			console.log(json[0].columnspacing);
-						
-			var width = json[0].row;
-        	var height = json[0].column;
-
-			//var width = json[0].colum;
-        	//var height = json[0].row;
-
+			console.log(json[viewPos].columnspacing);
 			
-			var rowPixelSpacing = json[0].rowspacing;
-            var columnPixelSpacing = json[0].columnspacing;
+						
+			var width = json[viewPos].row;
+        	var height = json[viewPos].column;
+
+
+			var rowPixelSpacing = json[viewPos].rowspacing;
+            var columnPixelSpacing = json[viewPos].columnspacing;
+
+/*
+			var width = json[viewPos].colum;
+        	var height = json[viewPos].row;
             
+
+			var rowPixelSpacing = json[viewPos].columnspacing;
+            var columnPixelSpacing = json[viewPos].rowspacing;
+*/			
 			//"view":"coronal","row":512,"column":394,"rowspacing":0.6640625,"columnspacing":1.0,
 
 			    	
@@ -126,7 +150,7 @@ $(document).ready(function() {
         }
         return bufView;
     }
-*/
+	*/
 	
 	// Converts a comma-separated ASCII ordinal string list
 	//  back to an ArrayBuffer (see note for bufferToString())
@@ -238,7 +262,8 @@ $(document).ready(function() {
 	
 	        // load the image and display it
 	        var imageId = 'example://1';
-	        cornerstone.loadImage(imageId).then(function(image) {
+	        cornerstone.loadImage(imageId).then(function(image) 
+	        {
 	           cornerstone.displayImage(element, image);
 			   
 	           var viewport = cornerstone.getViewport(element);
