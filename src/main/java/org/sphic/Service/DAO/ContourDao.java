@@ -13,38 +13,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
-@Repository
-public class ContourDao extends Dao {
 
+@Repository
+@Transactional
+public class ContourDao extends Dao {
+    public int save(Contour contour){
+        Session session = HibernateUtil.currentSession();
+        int id = (Integer) session.save(contour);
+
+        return id;
+    }
 
     public List<Contour> getByStructureId(int id){
         Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
 
         Criteria criteria = session.createCriteria(Contour.class).add(Restrictions.eq("structure.id", id));
 
         List list = criteria.list();
-        tx.commit();
         return list;
     }
 
     public List<Contour> getBySliceId(int id){
         Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
         Criteria criteria = session.createCriteria(Contour.class).add(Restrictions.eq("slice.id", id));
 
         List list = criteria.list();
-        tx.commit();
         return list;
-    }
-
-    public int save(Contour contour){
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        int id = (Integer) session.save(contour);
-
-        tx.commit();
-        return id;
     }
 }

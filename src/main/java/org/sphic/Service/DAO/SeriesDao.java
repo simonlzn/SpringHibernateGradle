@@ -13,17 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
-@Repository
-public class SeriesDao extends Dao{
 
+@Repository
+@Transactional(readOnly = true)
+public class SeriesDao extends Dao{
     public Series getBySeriesUID(String uid){
         Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
         Criteria criteria = session.createCriteria(Series.class).add(Restrictions.eq("seriesInsUID", uid));
 
         List seriesList = criteria.list();
-        tx.commit();
 
         if (seriesList.isEmpty())
             return null;

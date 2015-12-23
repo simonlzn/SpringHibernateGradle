@@ -11,29 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Repository
+@Transactional(readOnly = true)
 public class SliceDao extends Dao{
 
     public List<Slice> getBySeriesId(int id){
         Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
 
         Criteria criteria = session.createCriteria(Slice.class).add(Restrictions.eq("series.id", id));
         List sliceList = criteria.list();
 
-        tx.commit();
         return sliceList;
     }
 
     public Slice getByViewAndNumber(int seriesId, char view, int number){
         Session session = HibernateUtil.currentSession();
 
-        Transaction tx = session.beginTransaction();
         Criteria cr = session.createCriteria(Slice.class).add(Restrictions.eq("series.id", seriesId)).add(Restrictions.eq("view", view)).add(Restrictions.eq("number", number));
         List<Slice> sliceList = cr.list();
-
-        tx.commit();
 
         if (sliceList.isEmpty())
             return null;
