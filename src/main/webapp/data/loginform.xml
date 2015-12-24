@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<items>
+	<item type="settings" position="label-left" labelWidth="180" inputWidth="250" noteWidth="250"/>
+	<item type="fieldset" name="data" inputWidth="370" label="Login">
+			<item type="input" value="" label="Login" info="true">
+				<note>Please type your login here</note>
+			</item>
+			<item type="password" value="" label="Password" info="1">
+				<note width="150">Please type your password here</note>
+			</item>
+			<item type="checkbox" checked="true" label="Forgot Password"/>
+	</item>
+	<item type="button" value="Login"/>
+			
+</items>
