@@ -9,7 +9,10 @@ import org.sphic.Model.Series;
 import org.sphic.Model.Slice;
 import org.sphic.Service.DAO.SliceDao;
 import org.sphic.Service.ITKService;
+import org.sphic.Service.SliceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,74 +33,47 @@ import java.util.Map;
 public class SliceController {
     private SliceDao dao;
     private ITKService itkService;
+    private SliceService sliceService;
 
     @Autowired
-    public SliceController(SliceDao dao, ITKService itkService) {
+    public SliceController(SliceDao dao, ITKService itkService, SliceService sliceService) {
         this.dao = dao;
         this.itkService = itkService;
+        this.sliceService = sliceService;
     }
 
     @RequestMapping(value = "/{seriesId}/{view}/{number}", method = RequestMethod.GET)
     public DeferredResult Get(@PathVariable final int seriesId, @PathVariable final char view, @PathVariable final int number, final HttpServletResponse response, final HttpServletRequest request) {
-        response.setHeader("Cache-Control", "private, max-age=86400");
+
 
         final Slice slice = dao.getByViewAndNumber(seriesId, view,number);
 
-        String channel = request.getRequestURI() + (request.getQueryString() == null ? "" :  "?" + request.getQueryString());
+
         DeferredResult result = new DeferredResult();
 
-        if (slice == null) {
+        if (slice == null || slice.getData() == null) {
             String views = constructViewsString(view, number);
+
+            String channel = request.getRequestURI() + (request.getQueryString() == null ? "" :  "?" + request.getQueryString());
             result = itkService.Slicing(channel, String.valueOf(seriesId), views);
 
-//                ret = "[{\"view\":\"trabsverse\",\"row\":512,\"column\":512,\"rowspacing\":0.6,\"columnspacing\":0.6,\"data\":\"-1000,-995, 850, 900, 1000\"}, {\"view\":\"coronal\",\"row\":512,\"column\":394,\"rowspacing\":0.6,\"columnspacing\":1.0,\"data\":\"-1000,-995,850,900,1000\"},{}]";
             final DeferredResult finalResult = result;
             result.onCompletion(new Runnable() {
                 @Override
                 public void run() {
+                    if (finalResult.getResult() == "Time out")
+                        return;
+
                     for (Map userData : (List<Map>)finalResult.getResult()) {
                         if (userData.size() > 0) {
-                            Slice slice = new Slice(view, number, Integer.parseInt(userData.get("row").toString()), Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()), null, 0, 0, null, new Date(), new Date(),  null, userData.get("data").toString(), null);
-                            System.out.println(userData);
-                            Series series = dao.get(Series.class, seriesId);
-                            slice.setSeries(series);
-                            dao.save(slice);
+                            sliceService.saveOrUpdateData(seriesId, view, number, userData);
                         }
                     }
                 }
             });
 
-        } else if (slice.getData() == null) {
-
-            String views = constructViewsString(view, number);
-            result = itkService.Slicing(channel, String.valueOf(seriesId), views);
-
-
-            final DeferredResult finalResult1 = result;
-            result.onCompletion(new Runnable() {
-                @Override
-                public void run() {
-                    String ret = finalResult1.getResult().toString();
-                    List<Map> userDatas = null;
-                    try {
-                        userDatas = new ObjectMapper().readValue(ret, List.class);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    for (Map userData : userDatas) {
-                        if (userData.size() > 0) {
-                            slice.setData(userData.get("data").toString());
-                            Series series = dao.get(Series.class, seriesId);
-                            slice.setSeries(series);
-                            dao.save(slice);
-                        }
-                    }
-                }
-            });
-
-
-        } else {
+        }  else {
+            response.setHeader("Cache-Control", "private, max-age=86400");
             result.setResult(slice);
         }
 
@@ -119,21 +95,5 @@ public class SliceController {
                 break;
         }
         return views;
-    }
-
-    private StringBuffer getHTTPResponse(String url) throws IOException {
-        HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(url);
-
-        HttpResponse response = client.execute(request);
-        BufferedReader rd = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
-
-        StringBuffer r = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            r.append(line);
-        }
-        return r;
     }
 }

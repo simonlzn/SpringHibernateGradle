@@ -16,9 +16,9 @@ public class StructureDao extends Dao{
     public int save(Structure structure){
 
         Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
+
         int structureId = (Integer) session.save(structure);
-        tx.commit();
+        session.flush();
         return structureId;
     }
 }

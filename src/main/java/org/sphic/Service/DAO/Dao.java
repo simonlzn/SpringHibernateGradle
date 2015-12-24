@@ -1,6 +1,7 @@
 package org.sphic.Service.DAO;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.sphic.HibernateConfig.HibernateUtil;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class Dao {
         Session session = HibernateUtil.currentSession();
 
         Serializable id = session.save(o);
+        session.flush();
         return  id;
     }
 
@@ -23,6 +25,7 @@ public class Dao {
     {
         Session session = HibernateUtil.currentSession();
         session.update(o);
+        session.flush();
     }
 
     public <T> void saveOrUpdate(T o)
@@ -30,6 +33,7 @@ public class Dao {
         Session session = HibernateUtil.currentSession();
 
         session.saveOrUpdate(o);
+        session.flush();
     }
 
     public <T> T get(Class<T>c, Serializable id)

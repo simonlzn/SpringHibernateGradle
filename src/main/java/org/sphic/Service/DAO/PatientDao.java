@@ -18,6 +18,7 @@ public class PatientDao extends Dao{
         Session session = HibernateUtil.currentSession();
 
         String patientId = (String) session.save(p);
+        session.flush();
         return patientId;
     }
 

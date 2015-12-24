@@ -17,7 +17,7 @@ public class ContourDao extends Dao {
     public int save(Contour contour){
         Session session = HibernateUtil.currentSession();
         int id = (Integer) session.save(contour);
-
+        session.flush();
         return id;
     }
 

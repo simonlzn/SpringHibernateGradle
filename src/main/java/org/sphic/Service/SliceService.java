@@ -3,6 +3,7 @@ package org.sphic.Service;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sphic.HibernateConfig.HibernateUtil;
+import org.sphic.Model.Series;
 import org.sphic.Service.DAO.SliceDao;
 import org.sphic.Model.Slice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Transactional
@@ -42,5 +45,17 @@ public class SliceService {
         }
 
         tx.commit();
+    }
+
+    public void saveOrUpdateData(int seriesId, char view, int number, Map userData){
+        Slice slice = sliceDao.getByViewAndNumber(seriesId, view,number);
+        if (slice == null)
+            slice = new Slice(view, number, Integer.parseInt(userData.get("row").toString()), Integer.parseInt(userData.get("column").toString()), Double.parseDouble(userData.get("rowspacing").toString()), Double.parseDouble(userData.get("columnspacing").toString()), null, 0, 0, null, new Date(), new Date(),  null, userData.get("data").toString(), null);
+        else
+            slice.setData(userData.get("data").toString());
+
+        Series series = sliceDao.get(Series.class, seriesId);
+        slice.setSeries(series);
+        sliceDao.save(slice);
     }
 }
