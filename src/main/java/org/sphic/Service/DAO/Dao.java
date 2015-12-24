@@ -25,7 +25,6 @@ public class Dao {
     {
         Session session = HibernateUtil.currentSession();
         session.update(o);
-        session.flush();
     }
 
     public <T> void saveOrUpdate(T o)
