@@ -1,102 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Patient</title>
-<script src="/js/jquery-1.9.0.min.js"></script>
+    <title>Patient</title>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script src="lib/core/vtkweb-loader-min.js" load="core-min"></script>
 </head>
 
 <body>
-	<h2>Patient</h2>
-	<div id="patient">San Zhang</div>
-	<div id="profile"><input type="button" value="history" /></div>
-	<br>
-	<table id="profileTable" style="display:none" cellpadding="10">
-		<tr>
-			<td>patient_id</td>
-		
-			<td>step</td>
-	
-			<td>staff_type</td>
-	
-			<td>staff</td>
-		
-			<td>start_date</td>
-		
-			<td>end_date</td>
-		
-			<td>description</td>
-		</tr>
-	</table>
-	
-	<table id="pt" style="display:none; margin-left : 10px">
-		<tr>
-			<td><h2>Profile</h2></td>
-		</tr>
-		<tr>
-			<td>id</td>
-			<td id="id"></td>
-		</tr>
+<h2>Patient</h2>
 
-		<tr>
-			<td>cname</td>
-			<td id="cname"></td>
-		</tr>
+<div id="patient">San Zhang</div>
+<div id="profile"><input type="button" value="history"/></div>
+<br>
+<table id="profileTable" style="display:none" cellpadding="10">
+    <tr>
+        <td>patient_id</td>
 
-		<tr>
-			<td>name</td>
-			<td id="name"></td>
-		</tr>
+        <td>step</td>
 
-		<tr>
-			<td>address</td>
-			<td id="address"></td>
-		</tr>
+        <td>staff_type</td>
 
-		<tr>
-			<td>phone</td>
-			<td id="phone"></td>
-		</tr>
+        <td>staff</td>
 
-		<tr>
-			<td>age</td>
-			<td id="age"></td>
-		</tr>
+        <td>start_date</td>
 
-		<tr>
-			<td>birthdate</td>
-			<td id="birthdate"></td>
-		</tr>
-	</table>
+        <td>end_date</td>
 
-	<table id="study_table" style="display:none" cellpadding="10">
-		<tr>
-			<td><h2>Study</h2></td>
-		</tr>
-		<tr>
-			<td>id</td>
-			<td>patient id</td>
-			<td>comments</td>
-			<td>physician</td>
-			<td>modalities</td>
+        <td>description</td>
+    </tr>
+</table>
 
-		</tr>
-	</table>
-	
-	<table id="series_table" style="display:none" cellpadding="10">
-		<tr>
-			<td><h2>Series</h2></td>
-		</tr>
-		<tr>
-			<td>id</td>
-			<td>study id</td>			
-			<td>institution</td>
-			<td>comments</td>
-			<td>modality</td>
-			<td>time</td>
-		</tr>
-	</table>
+<table id="pt" style="display:none; margin-left : 10px">
+    <tr>
+        <td><h2>Profile</h2></td>
+    </tr>
+    <tr>
+        <td>id</td>
+        <td id="id"></td>
+    </tr>
 
-	<script type="text/javascript">
+    <tr>
+        <td>cname</td>
+        <td id="cname"></td>
+    </tr>
+
+    <tr>
+        <td>name</td>
+        <td id="name"></td>
+    </tr>
+
+    <tr>
+        <td>address</td>
+        <td id="address"></td>
+    </tr>
+
+    <tr>
+        <td>phone</td>
+        <td id="phone"></td>
+    </tr>
+
+    <tr>
+        <td>age</td>
+        <td id="age"></td>
+    </tr>
+
+    <tr>
+        <td>birthdate</td>
+        <td id="birthdate"></td>
+    </tr>
+</table>
+
+<table id="study_table" style="display:none" cellpadding="10">
+    <tr>
+        <td><h2>Study</h2></td>
+    </tr>
+    <tr>
+        <td>id</td>
+        <td>patient id</td>
+        <td>comments</td>
+        <td>physician</td>
+        <td>modalities</td>
+
+    </tr>
+</table>
+
+<table id="series_table" style="display:none" cellpadding="10">
+    <tr>
+        <td><h2>Series</h2></td>
+    </tr>
+    <tr>
+        <td>id</td>
+        <td>study id</td>
+        <td>institution</td>
+        <td>comments</td>
+        <td>modality</td>
+        <td>time</td>
+    </tr>
+</table>
+
+<div>
+    <button id="3d_view_start1">3D view 1 start</button>
+    <button id="3d_view_start2">3D view 2 start</button>
+</div>
+<div>
+    <button id="3d_view1" data-container="viewport-container">3D view 1</button>
+    <button id="3d_view2" data-container="viewport-container1">3D view 2</button>
+</div>
+
+
+<div style="position:relative;width:500px;height:500px; float:left; ">
+    <div class="viewport-container"></div>
+</div>
+<div style="position:relative;width:500px;height:500px; left: 100px; float:left">
+    <div class="viewport-container1"></div>
+</div>
+<!--<iframe id="3d_view" src="localhost:9003/apps/"></iframe>-->
+<script type="text/javascript">
 		$('#patient').on('click', function() {
 			$('#pt').show();
 			$('#study_table').show();
@@ -142,6 +161,51 @@
 				}
 			})
 		})
-	</script>
+
+        $('#3d_view_start1').on('click', function(){
+            $.get("http://localhost:8080/rest/vtk?cmd=graph", function(ret){
+                $('#3d_view1').data('url', JSON.parse(ret).sessionURL);
+            })
+        });
+
+        $('#3d_view_start2').on('click', function(){
+            $.get("http://localhost:8080/rest/vtk?cmd=abc", function(ret){
+                $('#3d_view2').data('url', JSON.parse(ret).sessionURL);
+            })
+        });
+
+		$('#3d_view1, #3d_view2').on('click', function(){
+			var container = $(this).data('container');
+			var conn;
+			var start = function(connection) {
+			conn = connection;
+							// Create viewport
+							var viewport = vtkWeb.createViewport({session:connection.session});
+
+
+							viewport.bind("." + container);
+
+							// Handle window resize
+							$(window).resize(function() {
+								if(viewport) {
+									viewport.render();
+								}
+							}).trigger('resize');
+
+							// Update stop method to use the connection
+							stop = function() {
+								connection.session.call('application.exit');
+							}
+						};
+
+				var connection = {     sessionURL: $(this).data('url') };
+					vtkWeb.smartConnect(connection, start, function(){
+					    $("." + container).html();
+					})
+		});
+
+
+
+</script>
 </body>
 </html>

@@ -23,11 +23,14 @@ public class ContourService {
         List<Contour> contours = contourDao.getByStructureId(id);
 
         StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("[");
         for (Contour contour : contours) {
+            stringBuffer.append("(");
             stringBuffer.append(contour.getContourData());
+            stringBuffer.append(")");
             stringBuffer.append(",");
         }
-
+        stringBuffer.append("]");
         return stringBuffer.toString();
     }
 }
