@@ -163,13 +163,13 @@
 		})
 
         $('#3d_view_start1').on('click', function(){
-            $.get("http://localhost:8080/rest/vtk?cmd=graph", function(ret){
+            $.get("http://localhost:8080/rest/vtk?cmd=new&filename=volume1", function(ret){
                 $('#3d_view1').data('url', JSON.parse(ret).sessionURL);
             })
         });
 
         $('#3d_view_start2').on('click', function(){
-            $.get("http://localhost:8080/rest/vtk?cmd=abc", function(ret){
+            $.get("http://localhost:8080/rest/vtk?cmd=new&filename=volume2", function(ret){
                 $('#3d_view2').data('url', JSON.parse(ret).sessionURL);
             })
         });

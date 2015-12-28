@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.HashMap; 
 
 import org.sphic.Model.Patient;
+import org.sphic.Model.Study;
 import org.sphic.Service.DAO.PatientDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,17 @@ public class PatientController {
 		}
 
 		return patient;
+	}
+
+	@RequestMapping(value = "/{id}/studies", method = RequestMethod.GET)
+	public List<Study> GetStudies(@PathVariable String id) {
+		Patient patient = patientDao.get(Patient.class, id);
+
+		if (patient == null) {
+			return new ArrayList<Study>();
+		}
+
+		return patient.getStudies();
 	}
 
 	/*

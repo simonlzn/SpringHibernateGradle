@@ -31,7 +31,7 @@ public class RestAPIController {
     }
 
     @RequestMapping("/vtk")
-    public String startVTK(@RequestParam String cmd) throws IOException {
+    public String startVTK(@RequestParam String cmd, @RequestParam String filename) throws IOException {
         String url = "http://localhost:8081/paraview/";
 
         HttpClient client = new DefaultHttpClient();
@@ -41,6 +41,7 @@ public class RestAPIController {
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("sessionManagerURL", "localhost:8081/paraview/"));
         urlParameters.add(new BasicNameValuePair("application", cmd));
+        urlParameters.add(new BasicNameValuePair("filename", filename + ".nrrd"));
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
