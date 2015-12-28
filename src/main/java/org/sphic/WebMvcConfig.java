@@ -18,10 +18,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
     configurer.enable();
   }
 
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(new GlobalCustomHandler());
-  }
 /*
   @Bean
   public FreeMarkerViewResolver freeMarkerViewResolver() {
