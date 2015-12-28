@@ -1,9 +1,12 @@
 package org.sphic.Controller;
 
+import org.sphic.Model.Contour;
 import org.sphic.Model.Structure;
 import org.sphic.Service.DAO.StructureDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/structure")
@@ -21,6 +24,14 @@ public class StructureController {
         Structure structure = structureDao.get(Structure.class, id);
 
         return structure;
+    }
+
+    @RequestMapping(value = "/{id}/contours", method = RequestMethod.GET)
+    public List<Contour> GetContours(@PathVariable int id) {
+
+        Structure structure = structureDao.get(Structure.class, id);
+
+        return structure.getContours();
     }
 
     @RequestMapping(value = "/{id}/description/{description}", method = RequestMethod.POST)

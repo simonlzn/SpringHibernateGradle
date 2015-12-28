@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "series")
-@JsonIgnoreProperties(value={"study"})
+@JsonIgnoreProperties(value={"study", "structureSets", "slices"})
 public class Series {
     @Id
     @Column(name = "id")

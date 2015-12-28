@@ -1,9 +1,12 @@
 package org.sphic.Controller;
 
+import org.sphic.Model.Structure;
 import org.sphic.Model.StructureSet;
 import org.sphic.Service.DAO.Dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/structureset")
@@ -20,6 +23,13 @@ public class StructureSetController {
         StructureSet structureSet = dao.get(StructureSet.class, id);
 
         return structureSet;
+    }
+
+    @RequestMapping(value = "/{id}/structures", method = RequestMethod.GET)
+    public List<Structure> GetStructures(@PathVariable int id) {
+        StructureSet structureSet = dao.get(StructureSet.class, id);
+
+        return structureSet.getStructures();
     }
 
     @RequestMapping(value = "/{id}/description/{description}", method = RequestMethod.POST)

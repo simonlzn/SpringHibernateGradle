@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name="structure")
-@JsonIgnoreProperties(value={"structureSet"})
+@JsonIgnoreProperties(value={"structureSet", "contours"})
 public class Structure {
     @Id
     @Column(name="id")

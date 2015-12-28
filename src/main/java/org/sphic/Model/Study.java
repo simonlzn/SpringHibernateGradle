@@ -13,7 +13,7 @@ public class Study {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String studyId;
+	private int studyId;
 
 	@ManyToOne(targetEntity = Patient.class)
 	@JoinColumn(name = "patient_id")
@@ -102,11 +102,11 @@ public class Study {
 		this.accession_number = accession_number;
 	}
 
-	public String getStudyId() {
+	public int getStudyId() {
 		return studyId;
 	}
 
-	public void setStudyId(String studyId) {
+	public void setStudyId(int studyId) {
 		this.studyId = studyId;
 	}
 
