@@ -40,10 +40,10 @@ public class ContourController {
     }
 
     @RequestMapping(value = "/{id}/color/{colorId}", method = RequestMethod.POST)
-    public void Post(@PathVariable int id, @PathVariable int colorId) {
+    public void Post(@PathVariable int id, @PathVariable String color) {
         Contour c = contourDao.get(Contour.class, id);
 
-        c.setColorId(colorId);
+        c.setROIcolor(color);
 
         contourDao.save(c);
     }

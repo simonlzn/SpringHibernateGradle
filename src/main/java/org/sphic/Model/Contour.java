@@ -26,8 +26,7 @@ public class Contour {
     @JoinColumn(name = "slice_id")
     private Slice slice;
 
-    @Column(name="color_id")
-    private Integer colorId;
+    private String ROIcolor;
 
     @Column(name="created")
     private Date created;
@@ -139,11 +138,11 @@ public class Contour {
         this.slice = slice;
     }
 
-    public Integer getColorId() {
-        return colorId;
+    public String getROIcolor() {
+        return structure.getROIcolor();
     }
 
-    public void setColorId(Integer colorId) {
-        this.colorId = colorId;
+    public void setROIcolor(String ROIcolor) {
+        structure.setROIcolor(ROIcolor);
     }
 }

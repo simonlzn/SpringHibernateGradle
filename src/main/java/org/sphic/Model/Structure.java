@@ -34,9 +34,6 @@ public class Structure {
     @Column(name="description")
     private String description;
 
-    @Column(name="color_id")
-    public int colorId;
-
     @Column(name="roi_number")
     private int ROINumber;
 
@@ -81,14 +78,6 @@ public class Structure {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
     }
 
     public Date getCreated() {

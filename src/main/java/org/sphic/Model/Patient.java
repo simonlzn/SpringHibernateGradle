@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "patient")
-@JsonIgnoreProperties("studies")
+@JsonIgnoreProperties("series")
 public class Patient {
 
 	@Id
