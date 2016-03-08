@@ -21,15 +21,15 @@
 	<property name="hibernate.hbm2ddl.auto">update</property>
 	<property name="connection.username">root</property>
 	<property name="connection.password">sphic</property>
-	<mapping class="org.sphic.Model.Patient" />
-	<mapping class="org.sphic.Model.Study" />
-	<mapping class="org.sphic.Model.Series" />
-	<mapping class="org.sphic.Model.Account" />
-	<!--<mapping class="org.sphic.Model.Profile" />-->
-	<mapping class="org.sphic.Model.StructureSet" />
-	<mapping class="org.sphic.Model.Structure" />
-	<mapping class="org.sphic.Model.Contour" />
-	<mapping class="org.sphic.Model.Slice" />
-	<mapping class="org.sphic.Model.ImageSeries" />
+	<mapping class="org.sphic.tps.model.Patient" />
+	<mapping class="org.sphic.tps.model.Study" />
+	<mapping class="org.sphic.tps.model.Series" />
+	<mapping class="org.sphic.tps.model.Account" />
+	<!--<mapping class="org.sphic.model.Profile" />-->
+	<mapping class="org.sphic.tps.model.StructureSet" />
+	<mapping class="org.sphic.tps.model.Structure" />
+	<mapping class="org.sphic.tps.model.Contour" />
+	<mapping class="org.sphic.tps.model.Slice" />
+	<mapping class="org.sphic.tps.model.ImageSeries" />
 </session-factory>
 </hibernate-configuration>
