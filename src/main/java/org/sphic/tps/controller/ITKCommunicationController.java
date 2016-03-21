@@ -29,9 +29,9 @@ public class ITKCommunicationController {
     public DeferredResult Info(@RequestParam Map func, final HttpServletRequest request) throws JsonProcessingException {
         String channel = request.getRequestURI() + "?" + request.getQueryString();
         if (func.containsKey("func")) {
-            if (func.get("func").toString() == "reconstruct") {
+            if (func.get("func").toString().equals("reconstruct")) {
                 return itkService.Reconstruct(channel, func.get("id").toString(), func.get("folderPath").toString());
-            } else if (func.get("func").toString() == "slicing") {
+            } else if (func.get("func").toString().equals("slicing")) {
                 return itkService.Slicing(channel, func.get("id").toString(), func.get("views").toString());
             }
         }
