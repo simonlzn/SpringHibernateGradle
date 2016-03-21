@@ -32,7 +32,7 @@ public class ITKCommunicationController {
             if (func.get("func").toString().equals("reconstruct")) {
                 return itkService.Reconstruct(channel, func.get("id").toString(), func.get("folderPath").toString());
             } else if (func.get("func").toString().equals("slicing")) {
-                return itkService.Slicing(channel, func.get("id").toString(), func.get("views").toString());
+                return itkService.Slicing(channel, func.get("id").toString(), func.get("views").toString(), func.get("folderPath").toString());
             }
         }
 

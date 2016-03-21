@@ -43,7 +43,7 @@ public class SliceController {
             String views = constructViewsString(view, number);
 
             String channel = request.getRequestURI() + (request.getQueryString() == null ? "" :  "?" + request.getQueryString());
-            result = itkService.Slicing(channel, String.valueOf(seriesId), views);
+            result = itkService.Slicing(channel, String.valueOf(seriesId), views,"");
 
             final DeferredResult finalResult = result;
             result.onCompletion(new Runnable() {

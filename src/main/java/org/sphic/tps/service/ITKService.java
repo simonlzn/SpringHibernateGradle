@@ -37,8 +37,9 @@ public class ITKService {
         return ConstructResult(key);
     }
 
-    public DeferredResult Slicing(String key, String id, String views){
+    public DeferredResult Slicing(String key, String id, String views, String path){
         Map params = new HashMap();
+        params.put("folderPath", path);
         params.put("views", views);
         params.put("key", key);
         params.put("id", id);
